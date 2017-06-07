@@ -6,7 +6,7 @@ package com.esgi.extranet.QCM ;
 public class QCMController
 {
 
-    public float calculateQuestionScore(Question question, int[] userResponses)
+    public static float calculateQuestionScore(Question question, int[] userResponses)
     {
         float score = 0 ;
 
@@ -16,7 +16,7 @@ public class QCMController
         {
             boolean responseCorrect = false ;
 
-            for(int j = 0 ; j < question.getIndexCorrectResponses().length ; i++)
+            for(int j = 0 ; j < question.getIndexCorrectResponses().length ; j++)
             {
                 if(userResponses[i] == question.getIndexCorrectResponses()[j])
                 {
@@ -48,7 +48,7 @@ public class QCMController
         return score ;
     }
 
-    public float CalculateSurveyScore(Survey survey, int[][] userResponses)
+    public static float CalculateSurveyScore(Survey survey, int[][] userResponses)
     {
         float score = 0 ;
 
