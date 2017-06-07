@@ -23,5 +23,6 @@ public class Question
     @DecimalMin(value = "0.0")
     private float points = 0 ;
     private boolean allOrNot = true ;
+    private String imagePath ;
 
 }

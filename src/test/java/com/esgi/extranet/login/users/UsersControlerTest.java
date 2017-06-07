@@ -1,4 +1,4 @@
-package com.esgi.extranet;
+package com.esgi.extranet.login.users;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

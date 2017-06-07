@@ -17,5 +17,6 @@ public class Response
 
     @NotNull
     private String description ;
+    private String imagePath ;
 
 }

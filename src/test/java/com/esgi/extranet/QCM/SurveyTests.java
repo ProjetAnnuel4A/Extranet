@@ -1,8 +1,5 @@
-package QCM ;
+package com.esgi.extranet.QCM ;
 
-import com.esgi.extranet.QCM.Question ;
-import com.esgi.extranet.QCM.Response ;
-import com.esgi.extranet.QCM.Survey ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
@@ -20,11 +17,11 @@ public class SurveyTests
         ArrayList<Response> responses = new ArrayList<Response>() ;
         int[] correctResponses = new int[4] ;
 
-        Question q1 = new Question("question", responses, correctResponses, 6, true) ;
+        Question q1 = new Question("question", responses, correctResponses, 6, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true) ;
+        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 6, true) ;
+        Question q3 = new Question("question", responses, correctResponses, 6, true, "") ;
 
         ArrayList<Question> questions = new ArrayList<Question>() ;
 
@@ -32,7 +29,7 @@ public class SurveyTests
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null) ;
+        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
 
         Assert.assertNotNull(survey) ;
         Assert.assertNotNull(survey.getQuestions()) ;
@@ -52,11 +49,11 @@ public class SurveyTests
         ArrayList<Response> responses = new ArrayList<Response>() ;
         int[] correctResponses = new int[4] ;
 
-        Question q1 = new Question("question", responses, correctResponses, 6, true) ;
+        Question q1 = new Question("question", responses, correctResponses, 6, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true) ;
+        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 6, true) ;
+        Question q3 = new Question("question", responses, correctResponses, 6, true, "") ;
 
         ArrayList<Question> questions = new ArrayList<Question>() ;
 
@@ -64,14 +61,14 @@ public class SurveyTests
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null) ;
+        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
 
         survey.calculateMark() ;
 
         Assert.assertEquals(20, survey.getMark(), 0) ;
     }
 
-    // @PostConstruct ne fonctionne pas
+    // @PostConstruct ne fonctionne pas, nécessite peut-être le contexte de Spring
     /*
     @Test
     public void should_calculate_mark_after_creation()
@@ -79,11 +76,11 @@ public class SurveyTests
         ArrayList<Response> responses = new ArrayList<Response>() ;
         int[] correctResponses = new int[4] ;
 
-        Question q1 = new Question("question", responses, correctResponses, 7, true) ;
+        Question q1 = new Question("question", responses, correctResponses, 7, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true) ;
+        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 5, true) ;
+        Question q3 = new Question("question", responses, correctResponses, 5, true, "") ;
 
         ArrayList<Question> questions = new ArrayList<Question>() ;
 
@@ -91,7 +88,7 @@ public class SurveyTests
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null) ;
+        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
 
         Assert.assertEquals(20, survey.getMark(), 0) ;
     }

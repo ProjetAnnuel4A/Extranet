@@ -24,9 +24,10 @@ public class Survey
     private ArrayList<Question> questions ;
     @DecimalMin(value = "0.0")
     private float mark = 0 ;
-    @Min(value = 0)
-    private int chances = 0 ; // Détermine si exercice ou évaluation : 0 = exercice (infini), 1 = evaluation, >1 = exercice
+    @Min(value = -1)
+    private int chances = 0 ; // Détermine le nombre d'essais (-1 = infini)
     private Date deadLine ;
+    private String imagePath ;
 
 
     @PostConstruct
@@ -34,13 +35,13 @@ public class Survey
     {
         this.mark = 0 ;
 
-        int questionsNumber = questions.size() ;
+        int questionsNumber = this.questions.size() ;
 
         if(questionsNumber > 0)
         {
-            for(int i = 0 ; i < questions.size() ; i++)
+            for(int i = 0 ; i < questionsNumber ; i++)
             {
-                this.mark += questions.get(i).getPoints() ;
+                this.mark += this.questions.get(i).getPoints() ;
             }
         }
     }
