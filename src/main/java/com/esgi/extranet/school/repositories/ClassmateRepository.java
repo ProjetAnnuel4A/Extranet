@@ -1,0 +1,17 @@
+package com.esgi.extranet.school.repositories;
+
+import com.esgi.extranet.administration.entities.TeacherEntity;
+import com.esgi.extranet.school.entities.ClassmateEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+/**
+ * @author timotheearnauld
+ */
+@Repository
+public interface ClassmateRepository extends JpaRepository<ClassmateEntity, Long>{
+    Optional<TeacherEntity> findByClassmateName(String classmateName);
+    Optional<TeacherEntity> findById(Long id);
+}
