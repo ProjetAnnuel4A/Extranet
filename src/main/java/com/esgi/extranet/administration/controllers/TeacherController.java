@@ -5,6 +5,8 @@ import com.esgi.extranet.administration.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author timotheearnauld
  */
@@ -16,6 +18,11 @@ public class TeacherController {
     @Autowired
     public TeacherController(TeacherService teacherService){
         this.teacherService = teacherService;
+    }
+
+    @GetMapping("")
+    public List<TeacherEntity> getAll(){
+        return teacherService.getAll();
     }
 
     @RequestMapping(value = "/addTeacher", method = RequestMethod.POST)

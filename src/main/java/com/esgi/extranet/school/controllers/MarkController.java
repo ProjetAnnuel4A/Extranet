@@ -3,10 +3,9 @@ package com.esgi.extranet.school.controllers;
 import com.esgi.extranet.school.entities.MarkEntity;
 import com.esgi.extranet.school.services.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -19,6 +18,11 @@ public class MarkController {
     @Autowired
     public MarkController(MarkService markService) {
         this.markService = markService;
+    }
+
+    @GetMapping("")
+    public List<MarkEntity>getAll(){
+        return markService.getAll();
     }
 
     @RequestMapping(value = "/addMark", method = RequestMethod.POST)

@@ -3,10 +3,9 @@ package com.esgi.extranet.school.controllers;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -19,6 +18,11 @@ public class ClassmateController {
     @Autowired
     public ClassmateController(ClassmateService classmateService) {
         this.classmateService = classmateService;
+    }
+
+    @GetMapping("")
+    public List<ClassmateEntity>getAll(){
+        return classmateService.getAll();
     }
 
     @RequestMapping(value = "/addClassmate", method = RequestMethod.POST)

@@ -3,10 +3,9 @@ package com.esgi.extranet.school.controllers;
 import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -19,6 +18,11 @@ public class StudentController {
     @Autowired
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
+    }
+
+    @GetMapping("")
+    public List<StudentEntity> getAll(){
+        return studentService.getAll();
     }
 
     @RequestMapping(value = "/addStudent", method = RequestMethod.POST)

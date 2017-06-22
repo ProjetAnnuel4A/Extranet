@@ -6,6 +6,8 @@ import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author timotheearnauld
  */
@@ -16,6 +18,11 @@ public class ClassmateServiceImpl implements ClassmateService{
     @Autowired
     public ClassmateServiceImpl(ClassmateRepository classmateRepository) {
         this.classmateRepository = classmateRepository;
+    }
+
+    @Override
+    public List<ClassmateEntity> getAll() {
+        return classmateRepository.findAll();
     }
 
     @Override

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -18,6 +19,11 @@ public class StudentServiceImpl implements StudentService{
     @Autowired
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
+    }
+
+    @Override
+    public List<StudentEntity> getAll() {
+        return studentRepository.findAll();
     }
 
     @Override
