@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author timotheearnauld
  */
 @RestController
-@RequestMapping(name="/courses/")
+@RequestMapping(value="/courses/")
 public class CourseController {
     private final CourseService courseService;
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author timotheearnauld
  */
 @RestController
-@RequestMapping(name="/classmates/")
+@RequestMapping(value="/classmates/")
 public class ClassmateController {
     private final ClassmateService classmateService;
 

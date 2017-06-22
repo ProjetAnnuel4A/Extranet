@@ -3,5 +3,6 @@ package com.esgi.extranet.planning.services;
 /**
  * @author timotheearnauld
  */
-public class PlanningService {
+public interface PlanningService {
+    void find(Long id);
 }

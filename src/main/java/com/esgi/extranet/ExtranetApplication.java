@@ -12,10 +12,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@EnableNeo4jRepositories("com.esgi.extranet.login.users")
+//@EnableNeo4jRepositories("com.esgi.extranet.login.users")
 @EnableTransactionManagement
 public class ExtranetApplication {
-    @Bean
+    /*@Bean
     public SessionFactory sessionFactory() {
         return new SessionFactory(configuration(), "com.esgi.extranet.login.users");
     }
@@ -33,7 +33,7 @@ public class ExtranetApplication {
     @Bean
     public Neo4jTransactionManager transactionManager() {
         return new Neo4jTransactionManager(sessionFactory());
-    }
+    }*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExtranetApplication.class, args);

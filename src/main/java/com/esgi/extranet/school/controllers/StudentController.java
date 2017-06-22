@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author timotheearnauld
  */
 @RestController
-@RequestMapping(name="/students/")
+@RequestMapping(value="/students/")
 public class StudentController {
     private final StudentService studentService;
 
@@ -21,13 +21,13 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @RequestMapping(name = "/addStudent", method = RequestMethod.POST)
+    @RequestMapping(value = "/addStudent", method = RequestMethod.POST)
     public StudentEntity addStudent(@RequestParam(name = "firstname") String firstname,
                                     @RequestParam(name = "lastname") String lastname){
         return studentService.addStudent(firstname, lastname);
     }
 
-    @RequestMapping(name = "/removeStudent", method = RequestMethod.POST)
+    @RequestMapping(value = "/removeStudent", method = RequestMethod.POST)
     public boolean removeStudent(@RequestParam(name = "id") Long id){
         return studentService.removeStudent(id);
     }

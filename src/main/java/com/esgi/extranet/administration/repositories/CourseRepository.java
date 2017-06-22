@@ -1,7 +1,6 @@
 package com.esgi.extranet.administration.repositories;
 
 import com.esgi.extranet.administration.entities.CourseEntity;
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

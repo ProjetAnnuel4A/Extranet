@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author timotheearnauld
  */
 @RestController
-@RequestMapping(name="/marks/")
+@RequestMapping(value="/marks")
 public class MarkController {
     private final MarkService markService;
 
@@ -21,7 +21,7 @@ public class MarkController {
         this.markService = markService;
     }
 
-    @RequestMapping(name = "/addMark", method = RequestMethod.POST)
+    @RequestMapping(value = "/addMark", method = RequestMethod.POST)
     public MarkEntity addMark(@RequestParam(name="idStudent") Long idStudent,
                               @RequestParam(name="idTeacher") Long idTeacher,
                               @RequestParam(name="idCourse") Long idCourse,
@@ -29,7 +29,7 @@ public class MarkController {
         return markService.addMark(idStudent, idTeacher, idCourse, mark);
     }
 
-    @RequestMapping(name = "/removeMark", method = RequestMethod.POST)
+    @RequestMapping(value = "/removeMark", method = RequestMethod.POST)
     public boolean removeMark(@RequestParam(name="id") Long id){
         return markService.removeMark(id);
     }

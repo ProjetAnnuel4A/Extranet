@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
  * @author timotheearnauld
  */
 @RestController
-@RequestMapping("/teachers")
+@RequestMapping(value = "/teachers")
 public class TeacherController {
     private final TeacherService teacherService;
 
