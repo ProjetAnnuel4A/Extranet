@@ -2,6 +2,7 @@ package com.esgi.extranet.planning.services;
 
 import com.esgi.extranet.planning.entities.PlanningEntity;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,5 +12,5 @@ public interface PlanningService {
     List<PlanningEntity> getAll();
     void find(Long id);
     boolean createPlanning(String name, Long idClassmate);
-    boolean addCourse(Long idCourse, Long idTeacher, Long idClassmate, Long begin, Long end);
+    boolean addCourse(Long idPlanning, Date date, Long idCourse, Long idTeacher, Long idClassmate, Long begin, Long end);
 }

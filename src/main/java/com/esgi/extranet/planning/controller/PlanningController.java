@@ -3,11 +3,9 @@ package com.esgi.extranet.planning.controller;
 import com.esgi.extranet.planning.entities.PlanningEntity;
 import com.esgi.extranet.planning.services.PlanningService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,13 +31,15 @@ public class PlanningController {
         return planningService.createPlanning(name, idClassmate);
     }
 
-    @RequestMapping(value = "/addCourse", method = RequestMethod.POST)
-    public boolean addCourse(@RequestParam("idCourse")Long idCourse,
+    @RequestMapping(value = "/addCourse/{id}", method = RequestMethod.POST)
+    public boolean addCourse(@PathVariable("id") Long idPlanning,
+                             @RequestParam("date") Date date,
+                             @RequestParam("idCourse")Long idCourse,
                              @RequestParam("idTeacher")Long idTeacher,
                              @RequestParam("idClassmate")Long idClassmate,
                              @RequestParam("begin")Long begin,
                              @RequestParam("end")Long end){
-        return planningService.addCourse(idCourse, idTeacher, idClassmate, begin, end);
+        return planningService.addCourse(idPlanning, date, idCourse, idTeacher, idClassmate, begin, end);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,8 +45,10 @@ public class PlanningServiceImpl implements PlanningService{
     }
 
     @Override
-    public boolean addCourse(Long idCourse, Long idTeacher, Long idClassmate, Long begin, Long end) {
+    public boolean addCourse(Long idPlanning, Date date, Long idCourse, Long idTeacher, Long idClassmate, Long begin, Long end) {
         ScheduleEntity scheduleEntity = ScheduleEntity.builder()
+                .idPlanning(idPlanning)
+                .date(date)
                 .idCourseEntity(idCourse)
                 .idTeacherEntity(idTeacher)
                 .idClassmateEntity(idClassmate)

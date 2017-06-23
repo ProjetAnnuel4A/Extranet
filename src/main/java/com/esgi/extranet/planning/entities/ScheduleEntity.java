@@ -4,6 +4,7 @@ import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author timotheearnauld
@@ -23,6 +24,9 @@ public class ScheduleEntity {
 
     @Column
     private Long idPlanning;
+
+    @Column
+    private Date date;
 
     @Column
     private Long idCourseEntity;
