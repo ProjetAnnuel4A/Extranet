@@ -2,12 +2,13 @@ package com.esgi.extranet.school.entities;
 
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author timotheearnauld
  */
+
 @Builder
 @Getter
 @Setter
@@ -26,4 +27,16 @@ public class StudentEntity {
 
     @Column(nullable = false)
     private String lastname;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private Date birtday;
+
+    @Column(nullable = false)
+    private String photo;
+
+    @Column(nullable = false)
+    private String address;
 }

@@ -4,7 +4,6 @@ import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -15,16 +14,28 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="planning")
+@Table(name="attribution")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class PlanningEntity {
+public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column
-    private String name;
+    private Long idPlanning;
 
     @Column
-    private Long idClassmate;
+    private Long idCourseEntity;
+
+    @Column
+    private Long idTeacherEntity;
+
+    @Column
+    private Long idClassmateEntity;
+
+    @Column
+    private Long begin;
+
+    @Column
+    private Long end;
 }

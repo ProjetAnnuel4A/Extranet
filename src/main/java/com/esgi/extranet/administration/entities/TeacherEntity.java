@@ -29,5 +29,14 @@ public class TeacherEntity {
     private String lastname;
 
     @Column(nullable = false)
-    private Date birthday;
+    private String email;
+
+    @Column(nullable = false)
+    private Date birtday;
+
+    @Column(nullable = false)
+    private String photo;
+
+    @Column(nullable = false)
+    private String address;
 }
