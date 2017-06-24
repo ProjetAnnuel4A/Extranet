@@ -3,6 +3,7 @@ package com.esgi.extranet.school.entities;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -32,7 +33,7 @@ public class StudentEntity {
     private String email;
 
     @Column(nullable = false)
-    private Date birtday;
+    private LocalDate birthday;
 
     @Column(nullable = false)
     private String photo;

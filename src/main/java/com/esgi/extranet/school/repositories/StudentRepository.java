@@ -2,8 +2,11 @@ package com.esgi.extranet.school.repositories;
 
 import com.esgi.extranet.school.entities.StudentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -13,5 +16,5 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<StudentEntity, Long>{
     Optional<StudentEntity> findByFirstname(String firstname);
     Optional<StudentEntity> findByLastname(String lastname);
-    Optional<StudentEntity> findById(Long id);
+    StudentEntity findById(Long id);
 }

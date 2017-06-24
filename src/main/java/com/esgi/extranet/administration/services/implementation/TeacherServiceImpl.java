@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,10 +32,14 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     @Transactional
-    public TeacherEntity addTeacher(String firstname, String lastname) {
+    public TeacherEntity addTeacher(String firstname, String lastname, String email, LocalDate birthday, String photo, String address) {
         TeacherEntity teacherEntity = TeacherEntity.builder()
                 .firstname(firstname)
                 .lastname(lastname)
+                .email(email)
+                .birthday(birthday)
+                .photo(photo)
+                .address(address)
                 .build();
         teacherRepository.save(teacherEntity);
         return teacherEntity;

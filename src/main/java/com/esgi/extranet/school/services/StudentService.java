@@ -2,6 +2,8 @@ package com.esgi.extranet.school.services;
 
 import com.esgi.extranet.school.entities.StudentEntity;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,6 +11,8 @@ import java.util.List;
  */
 public interface StudentService {
     List<StudentEntity> getAll();
-    StudentEntity addStudent(String firstname, String lastname);
+    StudentEntity addStudent(String firstname, String lastname, String email, LocalDate birthday, String photo, String address);
+    StudentEntity updateStudent(String firstname, String lastname, String email, LocalDate date, String photo, String address, Long id);
     boolean removeStudent(Long id);
+    StudentEntity getStudent(Long id);
 }
