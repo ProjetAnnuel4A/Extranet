@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Afficher les classes</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Gérer une classe</h1>
+
+	<table id="classmates">
+	</table>
+
+	<script>
+		var table = $("#classmates");
+		$.getJSON("http://localhost:8888/classmates/", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "id"){
+						if(k == "classmateName")
+							dom += "<td>"+v+"</td>";
+					}else{
+						dom += "<td><button onclick='manageClassmate("+v+")'>Gérer</button></td>";
+						dom += "<td><button onclick='manageTeachers("+v+")'>Ajouter/supprimer des professeurs</button></td>";
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+  		function manageClassmate(id){
+  			window.location.replace("manageClassmate.html?id="+id);
+  		}
+
+  		function manageTeachers(id){
+  			window.location.replace("manageTeachers.html?id="+id);
+  		}
+	</script>
+</body>
+</html>

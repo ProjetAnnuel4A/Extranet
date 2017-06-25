@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Ajouter un élève</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Ajouter un élève</h1>
+
+	<input type="text" id="firstname" required name="firstname" placeholder="Prénom">
+	<input type="text" id="lastname" required name="lastname" placeholder="Nom">
+	<input type="email" id="email" required name="email" placeholder="Email">
+	<input type="date" id="birthday" required name="birthday">
+	<input type="text" id="address" required name="address" placeholder="Adresse">
+	<input type="text" id="photo" required name="photo" placeholder="Photo">
+	<input type="submit" onclick="addStudent()" value="Enregistrer"/>
+	
+	<script>
+  		function addStudent(){
+			$.post("http://localhost:8888/students/addStudent",{firstname: $("#firstname").val(),
+																lastname: $("#lastname").val(),
+																email: $("#email").val(),
+																birthday: $("#birthday").val(),
+																address: $("#address").val(),
+																photo: $("#photo").val()})
+				.done(function( data ) {
+				location.reload(true);
+			});
+  		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Gérer une classe</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1 id="classmateName"></h1>
+
+	<p>
+		<button onclick="removeTeachers()">Supprimer</button>
+		<table id="actual"></table>
+		<button onclick="removeTeachers()">Supprimer</button>
+	</p>
+
+	<p>
+		<button onclick="addTeachers()">Ajouter</button>
+		<table id="teachers"></table>
+		<button onclick="addTeachers()">Ajouter</button>
+	</p>
+
+	<script>
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		var i = getUrlParameter('id');
+		$.getJSON( "http://localhost:8888/classmates/getClassmate?id=" + i, function(data){
+			$.each(data, function( key, val ){
+				if(key == "id"){
+					$("#id").val(val);
+				}else{
+					if(key == "classmateName")
+						$("#classmateName").append("Gérer la classe: " + val); 
+				}
+			});
+		});
+
+  		var actual = $("#actual");
+		$.getJSON("http://localhost:8888/classmates/getTeachersFromClassmate?idClassmate="+i, function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "idClassmate"){
+						if(k != "id"){
+							if(k == "birthday"){
+							var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+							dom + "<td>"+birthday+"</td>";
+							}
+							else{
+								dom += "<td>"+v+"</td>";
+							}
+						}else{
+							dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+						}
+					}
+				});
+				actual.append(dom + "</tr>");
+			});
+  		});
+
+  		var teachers = $("#teachers");
+		$.getJSON("http://localhost:8888/teachers", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "idClassmate"){
+						if(k != "id"){
+							if(k == "birthday"){
+							var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+							dom + "<td>"+birthday+"</td>";
+							}
+							else{
+								dom += "<td>"+v+"</td>";
+							}
+						}else{
+							dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+						}
+					}
+				});
+				teachers.append(dom + "</tr>");
+			});
+  		});
+
+  		function addTeachers(){
+  			$("#teachers > tr").each(function() {
+			  $this = $(this);
+			  var value = $this.find("input.id");
+			  if(value.is(':checked') == true){
+				$.get("http://localhost:8888/classmates/addTeacherForClassmate", { idClassmate: i,
+																						idTeacher : value.val()})
+				  .done(function( data ) {
+				    location.reload(true);
+				  });
+			  }
+			});
+  		}
+
+  		function removeTeachers(){
+  			$("#actual > tr").each(function() {
+			  $this = $(this);
+			  var value = $this.find("input.id");
+			  if(value.is(':checked') == true){
+				$.get("http://localhost:8888/classmates/deleteTeachersFromClassmate", { idClassmate: i,
+																						idTeacher : value.val()})
+				  .done(function( data ) {
+				    location.reload(true);
+				  });
+			  }
+			});
+  		}
+	</script>
+</body>
+</html>

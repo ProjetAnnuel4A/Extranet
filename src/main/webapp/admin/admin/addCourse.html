@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Ajouter un cours</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Ajouter un cours</h1>
+
+	<input type="text" id="coursename" required name="coursename" placeholder="Nom de la matière">
+	<input type="submit" onclick="addCoursename()" value="Enregistrer"/>
+
+	<script>
+  		function addCoursename(){
+			$.post("http://localhost:8888/courses/addCourse", { coursename: $("#coursename").val()})
+				.done(function( data ) {
+				location.reload(true);
+			});
+  		}
+	</script>
+	
+</body>
+</html>

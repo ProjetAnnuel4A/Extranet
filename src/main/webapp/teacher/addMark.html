@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Ajouter une note</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Ajouter une note</h1>
+
+	<p>
+		<button onclick="saveMarks()">Sauvegarder</button>
+		<table id="students"></table>
+		<button onclick="saveMarks()">Sauvegarder</button>
+	</p>
+
+	<script>
+	var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		var i = getUrlParameter('id');
+		var table = $("#students");
+		$.getJSON("http://localhost:8888/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "idClassmate"){
+						if(k != "id"){
+							if(k == "firstname" || k == "lastname"){
+								dom += "<td>"+v+"</td>";
+							}
+						}else{
+							dom += "<td><input hidden type='text' class='id' value='"+v+"'/></td>";
+						}
+					}
+				});
+				table.append(dom + "<td><input type='text' class='mark' required name='mark' placeholder='20.00'/></td></tr>");
+			});
+  		});
+  		function saveMarks(){
+  			$("#students > tr").each(function() {
+			  	$this = $(this);
+			  	var mark = $this.find("input.mark");
+			  	var student = $this.find("input.id");
+			  	var course = "0";
+				$.post("http://localhost:8888/marks/addMark", { idStudent: student.val(),
+																idCourse: course,
+																mark: mark.val()})
+					 .done(function( data ) {
+				    	location.reload(true);
+				});
+			});
+  		}
+	</script>
+</body>
+</html>

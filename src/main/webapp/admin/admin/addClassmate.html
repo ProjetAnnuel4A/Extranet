@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Ajouter une classe</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Ajouter une classe</h1>
+
+		<input type="text" id="classmateName" required name="classmateName" placeholder="Nom de la classe">
+		<input type="submit" onclick="addClassmate()" value="Enregistrer"/>
+
+	<script>
+  		function addClassmate(){
+			$.post("http://localhost:8888/classmates/addClassmate", { classmateName: $("#classmateName").val()})
+				.done(function( data ) {
+				location.reload(true);
+			});
+  		}
+	</script>
+</body>
+</html>

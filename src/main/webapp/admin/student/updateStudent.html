@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Modifier les informations</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Modifier les informations d'un élève</h1>
+
+	<table id="students">
+	</table>
+
+	<script>
+		var table = $("#students");
+		$.getJSON("http://localhost:8888/students/", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "id"){
+						if(k == "birthday"){
+						var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+						dom + "<td>"+birthday+"</td>";
+						}
+						else{
+							dom += "<td>"+v+"</td>";
+						}
+					}else{
+						dom += "<td><button onclick='updateStudent("+v+")'>Modifier</button></td>";
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+  		function updateStudent(id){
+  			window.location.replace("informationsStudent.html?id="+id);
+  		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Modifier les informations</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Modifier les informations d'un élève</h1>
+
+	<form action="../../students/updateStudent" method="post">
+		<input hidden type="text" id="id" name="id"/>
+		<input type="text" id="firstname" required name="firstname" placeholder="Prénom">
+		<input type="text" id="lastname" required name="lastname" placeholder="Nom">
+		<input type="email" id="email" required name="email" placeholder="Email">
+		<input type="date" id="birthday" required name="birthday">
+		<input type="text" id="address" required name="address" placeholder="Adresse">
+		<input type="text" id="photo" required name="photo" placeholder="Photo">
+		<input type="submit" value="Enregistrer"/>
+	</form>
+
+	<script>
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		var i = getUrlParameter('id');
+		$.getJSON( "http://localhost:8888/students/getStudent?id=" + i, function(data){
+			$.each(data, function( key, val ){
+				if(key == "id"){
+					$("#id").val(val);
+				}
+				if(key == "firstname"){
+					$("#firstname").val(val);
+				}
+				if(key == "lastname"){
+					$("#lastname").val(val);
+				}
+				if(key == "email"){
+					$("#email").val(val);
+				}
+				if(key == "birthday"){
+					var birthday = val.year + "-" + ("0" + val.monthValue).slice(-2) + "-" + ("0" + val.dayOfMonth).slice(-2);
+					$("#birthday").val(birthday);
+				}
+				if(key == "photo"){
+					$("#photo").val(val);
+				}
+				if(key == "address"){
+					$("#address").val(val);
+				}
+			});
+		});
+	</script>
+</body>
+</html>

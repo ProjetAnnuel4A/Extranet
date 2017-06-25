@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Supprimer un enseignant</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Supprimer un enseignant</h1>
+
+	<button onclick="deleteTeachers()">Supprimer</button>
+
+	<table id="teachers">
+	</table>
+
+	<button onclick="deleteTeachers()">Supprimer</button>
+
+	<script>
+		var table = $("#teachers");
+		$.getJSON("http://localhost:8888/teachers/", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "id"){
+						if(k == "birthday"){
+						var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+						dom + "<td>"+birthday+"</td>";
+						}
+						else{
+							dom += "<td>"+v+"</td>";
+						}
+					}else{
+						dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+  		function deleteTeachers(){
+  			$("#teachers > tr").each(function() {
+			  $this = $(this);
+			  var value = $this.find("input.id");
+			  if(value.is(':checked') == true){
+				$.post("http://localhost:8888/teachers/removeTeacher", { id: value.val()})
+				  .done(function( data ) {
+				    location.reload(true);
+				  });
+			  }
+			});
+  		}
+	</script>
+</body>
+</html>

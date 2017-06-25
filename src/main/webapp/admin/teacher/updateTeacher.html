@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Mettre à jour les informations d'un enseignant</title><script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Modifier les informations d'un enseignant</h1>
+
+	<table id="teachers">
+	</table>
+
+	<script>
+		var table = $("#teachers");
+		$.getJSON("http://localhost:8888/teachers/", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "id"){
+						if(k == "birthday"){
+						var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+						dom + "<td>"+birthday+"</td>";
+						}
+						else{
+							dom += "<td>"+v+"</td>";
+						}
+					}else{
+						dom += "<td><button onclick='updateTeacher("+v+")'>Modifier</button></td>";
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+  		function updateTeacher(id){
+  			window.location.replace("informationsTeacher.html?id="+id);
+  		}
+	</script>
+</body>
+</html>
