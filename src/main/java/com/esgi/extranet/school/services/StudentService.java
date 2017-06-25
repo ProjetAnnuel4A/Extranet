@@ -15,4 +15,8 @@ public interface StudentService {
     StudentEntity updateStudent(String firstname, String lastname, String email, LocalDate date, String photo, String address, Long id);
     boolean removeStudent(Long id);
     StudentEntity getStudent(Long id);
+    boolean addClassmateForStudent(Long studentId, Long classmateId);
+    boolean removeClassmateForStudent(Long studentId);
+    List<StudentEntity> getStudentsForClassmate(Long idClassmate);
+    List<StudentEntity> getStudentsWithoutClassmate();
 }

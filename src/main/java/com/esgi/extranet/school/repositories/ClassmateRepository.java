@@ -12,6 +12,6 @@ import java.util.Optional;
  */
 @Repository
 public interface ClassmateRepository extends JpaRepository<ClassmateEntity, Long>{
-    Optional<TeacherEntity> findByClassmateName(String classmateName);
-    Optional<TeacherEntity> findById(Long id);
+    ClassmateEntity findByClassmateName(String classmateName);
+    ClassmateEntity findById(Long id);
 }

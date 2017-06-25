@@ -71,4 +71,32 @@ public class StudentServiceImpl implements StudentService{
     public StudentEntity getStudent(Long id) {
         return studentRepository.findById(id);
     }
+
+    @Override
+    public boolean addClassmateForStudent(Long studentId, Long classmateId) {
+        StudentEntity studentEntity = studentRepository.getOne(studentId);
+        studentEntity.setIdClassmate(classmateId);
+        studentRepository.save(studentEntity);
+
+        return (studentRepository.getOne(studentId).getIdClassmate().equals(classmateId));
+    }
+
+    @Override
+    public boolean removeClassmateForStudent(Long studentId) {
+        StudentEntity studentEntity = studentRepository.getOne(studentId);
+        studentEntity.setIdClassmate(null);
+        studentRepository.save(studentEntity);
+
+        return (studentRepository.getOne(studentId).getIdClassmate() == null);
+    }
+
+    @Override
+    public List<StudentEntity> getStudentsForClassmate(Long idClassmate) {
+        return studentRepository.findAllByIdClassmate(idClassmate);
+    }
+
+    @Override
+    public List<StudentEntity> getStudentsWithoutClassmate() {
+        return studentRepository.findAllByIdClassmate(null);
+    }
 }

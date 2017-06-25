@@ -1,6 +1,7 @@
 package com.esgi.extranet.school.services.implementation;
 
 import com.esgi.extranet.school.entities.ClassmateEntity;
+import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.repositories.ClassmateRepository;
 import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class ClassmateServiceImpl implements ClassmateService{
     public boolean removeClassmate(Long id) {
         classmateRepository.delete(id);
         return (classmateRepository.findById(id) == null);
+    }
+
+    @Override
+    public ClassmateEntity getClassmate(Long id) {
+        return classmateRepository.findById(id);
     }
 }

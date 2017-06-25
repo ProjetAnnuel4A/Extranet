@@ -3,15 +3,9 @@ package com.esgi.extranet.school.controllers;
 import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,6 +31,27 @@ public class StudentController {
     @GetMapping("/getStudent")
     public StudentEntity getStudent(@RequestParam("id")Long id){
         return studentService.getStudent(id);
+    }
+
+    @PostMapping("/addClassmateForStudent")
+    public boolean addClassmateForStudent(@RequestParam("studentId")Long studentId,
+                                          @RequestParam("classmateId")Long classmateId){
+        return studentService.addClassmateForStudent(studentId, classmateId);
+    }
+
+    @PostMapping("/removeClassmateForStudent")
+    public boolean removeClassmateForStudent(@RequestParam("studentId")Long studentId){
+        return studentService.removeClassmateForStudent(studentId);
+    }
+
+    @GetMapping("/getStudentsForClassmate")
+    public List<StudentEntity>getStudentsForClassmate(@RequestParam("idClassmate")Long idClassmate){
+        return studentService.getStudentsForClassmate(idClassmate);
+    }
+
+    @GetMapping("/getStudentsWithoutClassmate")
+    public List<StudentEntity>getStudentsWithoutClassmate(){
+        return studentService.getStudentsWithoutClassmate();
     }
 
     @PostMapping("/addStudent")

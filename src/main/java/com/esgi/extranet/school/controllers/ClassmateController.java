@@ -1,9 +1,9 @@
 package com.esgi.extranet.school.controllers;
 
 import com.esgi.extranet.school.entities.ClassmateEntity;
+import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +25,11 @@ public class ClassmateController {
     @GetMapping("")
     public List<ClassmateEntity>getAll(){
         return classmateService.getAll();
+    }
+
+    @GetMapping("/getClassmate")
+    public ClassmateEntity getClassmate(@RequestParam("id")Long id){
+        return classmateService.getClassmate(id);
     }
 
     @PostMapping("/addClassmate")
