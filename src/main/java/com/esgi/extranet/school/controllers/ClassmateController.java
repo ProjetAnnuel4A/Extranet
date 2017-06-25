@@ -61,6 +61,11 @@ public class ClassmateController {
         return classmateService.addClassmate(classmateName);
     }
 
+    @GetMapping("/getClassmatesForTeacher")
+    public List<ClassmateEntity> getClassmatesForTeacher(@RequestParam(name = "idTeacher")Long idTeacher){
+        return classmateService.getClassmatesForTeacher(idTeacher);
+    }
+
     @RequestMapping(value = "/removeClassmate", method = RequestMethod.POST)
     public boolean removeClassmate(@RequestParam(name = "id") Long id){
         return classmateService.removeClassmate(id);

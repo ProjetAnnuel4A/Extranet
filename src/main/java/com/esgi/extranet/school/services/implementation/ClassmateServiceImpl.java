@@ -9,6 +9,7 @@ import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,5 +76,20 @@ public class ClassmateServiceImpl implements ClassmateService{
     @Override
     public List<TeacherEntity> getTeachersFromClassmate(Long idClassmate) {
         return classmateRepository.findById(idClassmate).getTeacherEntities();
+    }
+
+    @Override
+    public List<ClassmateEntity> getClassmatesForTeacher(Long idTeacher) {
+        List<ClassmateEntity> classmateEntities = classmateRepository.findAll();
+        List<ClassmateEntity> result = new ArrayList<>();
+
+        for(ClassmateEntity classmateEntity : classmateEntities){
+            for(TeacherEntity teacherEntity : classmateEntity.getTeacherEntities()){
+                if(teacherEntity.getId().equals(idTeacher)) {
+                    result.add(classmateEntity);
+                }
+            }
+        }
+        return result;
     }
 }

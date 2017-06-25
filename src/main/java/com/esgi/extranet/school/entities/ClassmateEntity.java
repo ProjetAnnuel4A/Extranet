@@ -28,6 +28,7 @@ public class ClassmateEntity {
     @NotNull
     private String classmateName;
 
-    @OneToMany
+    @ManyToMany
+    @JoinColumn
     private List<TeacherEntity> teacherEntities;
 }
