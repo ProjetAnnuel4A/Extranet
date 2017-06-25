@@ -13,4 +13,5 @@ public interface ClassmateService {
     ClassmateEntity addClassmate(String classmateName);
     boolean removeClassmate(Long id);
     ClassmateEntity getClassmate(Long id);
+    boolean getTeachersFromClassmate(Long idClassmate, Long idTeacher);
 }

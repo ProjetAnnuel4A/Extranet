@@ -1,5 +1,6 @@
 package com.esgi.extranet.school.services.implementation;
 
+import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.repositories.ClassmateRepository;
@@ -44,5 +45,19 @@ public class ClassmateServiceImpl implements ClassmateService{
     @Override
     public ClassmateEntity getClassmate(Long id) {
         return classmateRepository.findById(id);
+    }
+
+    @Override
+    public boolean getTeachersFromClassmate(Long idClassmate, Long idTeacher) {
+        ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
+        List<TeacherEntity> teacherEntities = classmateEntity.getTeacherEntities();
+        for(int i = 0; i < teacherEntities.size(); i++){
+            if(teacherEntities.get(i).getId().equals(idTeacher)){
+                teacherEntities.remove(i);
+                break;
+            }
+        }
+        classmateRepository.save(classmateEntity);
+        return true;
     }
 }
