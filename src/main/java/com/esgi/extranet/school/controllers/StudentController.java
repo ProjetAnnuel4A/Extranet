@@ -19,7 +19,7 @@ import java.util.Locale;
  * @author timotheearnauld
  */
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping(value="/students")
 public class StudentController {
     private final StudentService studentService;
@@ -30,19 +30,17 @@ public class StudentController {
     }
 
     @GetMapping("")
-    @ResponseBody
     public List<StudentEntity> getAll(){
         return studentService.getAll();
     }
 
     @GetMapping("/getStudent")
-    @ResponseBody
     public StudentEntity getStudent(@RequestParam("id")Long id){
         return studentService.getStudent(id);
     }
 
     @PostMapping("/addStudent")
-    public String addStudent(@RequestParam(name = "firstname") String firstname,
+    public StudentEntity addStudent(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
@@ -52,12 +50,10 @@ public class StudentController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        studentService.addStudent(firstname, lastname, email, date, photo, address);
-        return "redirect:../home";
+        return studentService.addStudent(firstname, lastname, email, date, photo, address);
     }
 
     @PostMapping("/updateStudent")
-    @ResponseBody
     public StudentEntity udpateStudent(@RequestParam(name = "firstname") String firstname,
                               @RequestParam(name = "lastname") String lastname,
                               @RequestParam(name = "email") String email,
@@ -73,7 +69,6 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/removeStudent", method = RequestMethod.POST)
-    @ResponseBody
     public boolean removeStudent(@RequestParam(name = "id") Long id){
         return studentService.removeStudent(id);
     }

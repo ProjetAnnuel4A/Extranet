@@ -12,7 +12,7 @@ import java.util.List;
  * @author timotheearnauld
  */
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping(value="/courses")
 public class CourseController {
     private final CourseService courseService;
@@ -23,19 +23,16 @@ public class CourseController {
     }
 
     @GetMapping("")
-    @ResponseBody
     public List<CourseEntity> getAll(){
         return courseService.getAll();
     }
 
     @PostMapping(value = "/addCourse")
-    public String addTeacher(@RequestParam("coursename") String coursename){
-        courseService.addCourse(coursename);
-        return "redirect:../home";
+    public CourseEntity addCourseName(@RequestParam("coursename") String coursename){
+        return courseService.addCourse(coursename);
     }
 
     @RequestMapping(value = "/removeCourse", method = RequestMethod.POST)
-    @ResponseBody
     public boolean removeCourse(@RequestParam("id") Long id){
         return courseService.removeCourse(id);
     }

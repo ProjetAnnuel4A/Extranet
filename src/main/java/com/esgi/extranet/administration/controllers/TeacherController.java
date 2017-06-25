@@ -20,7 +20,7 @@ import java.util.Locale;
  * @author timotheearnauld
  */
 @CrossOrigin
-@Controller
+@RestController
 @RequestMapping(value = "/teachers")
 public class TeacherController {
     private final TeacherService teacherService;
@@ -31,19 +31,17 @@ public class TeacherController {
     }
 
     @GetMapping("")
-    @ResponseBody
     public List<TeacherEntity> getAll(){
         return teacherService.getAll();
     }
 
     @GetMapping("/getTeacher")
-    @ResponseBody
     public TeacherEntity getTeacher(@RequestParam("id")Long id){
         return teacherService.getTeacher(id);
     }
 
     @PostMapping(value = "/addTeacher")
-    public String addTeacher(@RequestParam(name = "firstname") String firstname,
+    public TeacherEntity addTeacher(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
@@ -53,12 +51,10 @@ public class TeacherController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        teacherService.addTeacher(firstname, lastname, email, date, photo, address);
-        return "redirect:../home";
+        return teacherService.addTeacher(firstname, lastname, email, date, photo, address);
     }
 
     @PostMapping("/updateTeacher")
-    @ResponseBody
     public TeacherEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
                                        @RequestParam(name = "lastname") String lastname,
                                        @RequestParam(name = "email") String email,
@@ -74,7 +70,6 @@ public class TeacherController {
     }
 
     @RequestMapping(value = "/removeTeacher", method = RequestMethod.POST)
-    @ResponseBody
     public boolean removeTeacher(@RequestParam("id") Long id){
         return teacherService.removeTeacher(id);
     }
