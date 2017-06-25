@@ -1,5 +1,7 @@
 package com.esgi.extranet.school.controllers;
 
+import com.esgi.extranet.administration.entities.TeacherEntity;
+import com.esgi.extranet.administration.services.TeacherService;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.services.ClassmateService;
@@ -18,7 +20,7 @@ public class ClassmateController {
     private final ClassmateService classmateService;
 
     @Autowired
-    public ClassmateController(ClassmateService classmateService) {
+    public ClassmateController(ClassmateService classmateService, TeacherService teacherService) {
         this.classmateService = classmateService;
     }
 
@@ -30,6 +32,12 @@ public class ClassmateController {
     @GetMapping("/getClassmate")
     public ClassmateEntity getClassmate(@RequestParam("id")Long id){
         return classmateService.getClassmate(id);
+    }
+
+    @GetMapping("/getTeachersForClassmate")
+    public List<TeacherEntity> getTeachersForClassmate(@RequestParam("idClassmate")Long idClassmate){
+        ClassmateEntity teachersId = classmateService.getClassmate(idClassmate);
+        return teachersId.getTeacherEntities();
     }
 
     @PostMapping("/addClassmate")

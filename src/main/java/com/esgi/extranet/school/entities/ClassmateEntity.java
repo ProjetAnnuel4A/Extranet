@@ -1,10 +1,12 @@
 package com.esgi.extranet.school.entities;
 
+import com.esgi.extranet.administration.entities.TeacherEntity;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -25,4 +27,7 @@ public class ClassmateEntity {
     @Column(nullable = false)
     @NotNull
     private String classmateName;
+
+    @OneToMany
+    private List<TeacherEntity> teacherEntities;
 }

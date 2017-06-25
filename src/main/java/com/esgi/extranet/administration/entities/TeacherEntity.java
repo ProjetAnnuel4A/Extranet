@@ -1,5 +1,6 @@
 package com.esgi.extranet.administration.entities;
 
+import com.esgi.extranet.school.entities.ClassmateEntity;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -40,4 +41,6 @@ public class TeacherEntity {
 
     @Column(nullable = false)
     private String address;
+
+
 }
