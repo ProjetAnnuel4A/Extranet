@@ -2,6 +2,7 @@ package com.esgi.extranet.administration.controllers;
 
 import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.TeacherService;
+import com.esgi.extranet.school.entities.StudentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,12 @@ public class TeacherController {
         return teacherService.getAll();
     }
 
+    @GetMapping("/getTeacher")
+    @ResponseBody
+    public TeacherEntity getTeacher(@RequestParam("id")Long id){
+        return teacherService.getTeacher(id);
+    }
+
     @PostMapping(value = "/addTeacher")
     public String addTeacher(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
@@ -48,6 +55,22 @@ public class TeacherController {
         date = LocalDate.parse(birthday, formatter);
         teacherService.addTeacher(firstname, lastname, email, date, photo, address);
         return "redirect:../home";
+    }
+
+    @PostMapping("/updateTeacher")
+    @ResponseBody
+    public TeacherEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
+                                       @RequestParam(name = "lastname") String lastname,
+                                       @RequestParam(name = "email") String email,
+                                       @RequestParam(name = "birthday") String birthday,
+                                       @RequestParam(name = "photo") String photo,
+                                       @RequestParam(name = "address") String address,
+                                       @RequestParam(name = "id") Long id){
+        LocalDate date = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        formatter = formatter.withLocale( Locale.FRANCE);
+        date = LocalDate.parse(birthday, formatter);
+        return teacherService.updateTeacher(firstname, lastname, email, date, photo, address, id);
     }
 
     @RequestMapping(value = "/removeTeacher", method = RequestMethod.POST)
