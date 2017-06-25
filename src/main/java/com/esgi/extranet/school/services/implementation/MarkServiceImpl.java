@@ -5,7 +5,6 @@ import com.esgi.extranet.school.repositories.MarkRepository;
 import com.esgi.extranet.school.services.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -28,10 +27,9 @@ public class MarkServiceImpl implements MarkService{
 
     @Override
     @Transactional
-    public MarkEntity addMark(Long idStudent, Long idTeacher, Long idCourse, Long mark) {
+    public MarkEntity addMark(Long idStudent, Long idCourse, Float mark) {
         MarkEntity markEntity = MarkEntity.builder()
                 .idStudent(idStudent)
-                .idTeacher(idTeacher)
                 .idCourse(idCourse)
                 .mark(mark)
                 .build();

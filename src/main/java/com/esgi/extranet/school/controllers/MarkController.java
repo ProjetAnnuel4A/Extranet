@@ -25,12 +25,11 @@ public class MarkController {
         return markService.getAll();
     }
 
-    @RequestMapping(value = "/addMark", method = RequestMethod.POST)
-    public MarkEntity addMark(@RequestParam(name="idStudent") Long idStudent,
-                              @RequestParam(name="idTeacher") Long idTeacher,
-                              @RequestParam(name="idCourse") Long idCourse,
-                              @RequestParam(name="mark") Long mark){
-        return markService.addMark(idStudent, idTeacher, idCourse, mark);
+    @PostMapping("/addMark")
+    public MarkEntity addMark(@RequestParam(name="idStudent")Long idStudent,
+                              @RequestParam(name="idCourse")Long idCourse,
+                              @RequestParam(name="mark")Float mark){
+        return markService.addMark(idStudent, idCourse, mark);
     }
 
     @RequestMapping(value = "/removeMark", method = RequestMethod.POST)

@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface MarkService {
     List<MarkEntity> getAll();
-    MarkEntity addMark(Long idStudent, Long idTeacher, Long idCourse, Long mark);
+    MarkEntity addMark(Long idStudent, Long idCourse, Float mark);
     boolean removeMark(Long id);
 }

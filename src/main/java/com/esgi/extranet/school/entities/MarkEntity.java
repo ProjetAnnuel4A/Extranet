@@ -25,11 +25,8 @@ public class MarkEntity {
     private Long idStudent;
 
     @Column(nullable = false)
-    private Long idTeacher;
-
-    @Column(nullable = false)
     private Long idCourse;
 
     @Column(nullable = false)
-    private Long mark;
+    private Float mark;
 }
