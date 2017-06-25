@@ -3,12 +3,12 @@ package com.esgi.extranet.planning.services.implementations;
 import com.esgi.extranet.planning.entities.ScheduleEntity;
 import com.esgi.extranet.planning.entities.PlanningEntity;
 import com.esgi.extranet.planning.repositories.PlanningRepository;
+import com.esgi.extranet.planning.repositories.ScheduleRepository;
 import com.esgi.extranet.planning.services.PlanningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,10 +17,12 @@ import java.util.List;
 @Service
 public class PlanningServiceImpl implements PlanningService{
     private final PlanningRepository planningRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Autowired
-    public PlanningServiceImpl(PlanningRepository planningRepository) {
+    public PlanningServiceImpl(PlanningRepository planningRepository, ScheduleRepository scheduleRepository) {
         this.planningRepository = planningRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -45,18 +47,38 @@ public class PlanningServiceImpl implements PlanningService{
     }
 
     @Override
-    public boolean addCourse(Long idPlanning, Date date, Long idCourse, Long idTeacher, Long idClassmate, Long begin, Long end) {
+    public boolean addCourse(Long idClassmate, String start, String end, String title) {
+        PlanningEntity planningEntity = planningRepository.findById(idClassmate);
         ScheduleEntity scheduleEntity = ScheduleEntity.builder()
-                .idPlanning(idPlanning)
-                .date(date)
-                .idCourseEntity(idCourse)
-                .idTeacherEntity(idTeacher)
-                .idClassmateEntity(idClassmate)
-                .begin(begin)
+                .start(start)
                 .end(end)
+                .title(title)
                 .build();
-
-
+        scheduleRepository.save(scheduleEntity);
+        planningEntity.getScheduleEntities().add(scheduleEntity);
+        planningRepository.save(planningEntity);
         return false;
     }
+
+    @Override
+    public boolean removeCourse(Long idClassmate, Long idCourse) {
+        PlanningEntity planningEntity = planningRepository.findById(idClassmate);
+        List<ScheduleEntity>scheduleEntities = planningEntity.getScheduleEntities();
+
+        for(int i = 0; i < scheduleEntities.size(); i++){
+            if(scheduleEntities.get(i).getId().equals(idCourse)){
+                scheduleEntities.remove(i);
+                break;
+            }
+        }
+        planningRepository.save(planningEntity);
+        return false;
+    }
+
+    @Override
+    public List<ScheduleEntity> getCourseForClassmate(Long idClassmate) {
+        PlanningEntity planningEntity = planningRepository.findByIdClassmate(idClassmate);
+        return planningEntity.getScheduleEntities();
+    }
+
 }

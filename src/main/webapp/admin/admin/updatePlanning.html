@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Mettre à jour le planning</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1 id="classmate"></h1>
+
+	<input type="text" id="title" required name="title" placeholder="Nom du cours" />
+	Début: <input id="start" type="datetime-local" required name="start"/>
+	Fin: <input id="end" type="datetime-local" required name="end"/>
+	<button onclick="save()">Enregistrer</button>
+
+	<table id="actual"></table>
+
+	<script>
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		var i = getUrlParameter('id');
+		function save(){
+			$.post("http://localhost:8888/planning/addCourse",{idClassmate: i,
+																start: $("#start").val()+":00.000+10:00",
+																end: $("#end").val()+":00.000+10:00",
+																title: $("#title").val()})
+				.done(function( data ) {
+				location.reload(true);
+			});
+		}
+	</script>
+</body>
+</html>

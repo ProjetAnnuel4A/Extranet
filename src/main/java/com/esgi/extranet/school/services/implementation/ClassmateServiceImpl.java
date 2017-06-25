@@ -4,6 +4,7 @@ import com.esgi.extranet.administration.entities.CourseEntity;
 import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.repositories.CourseRepository;
 import com.esgi.extranet.administration.repositories.TeacherRepository;
+import com.esgi.extranet.planning.services.PlanningService;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.repositories.ClassmateRepository;
@@ -22,9 +23,11 @@ public class ClassmateServiceImpl implements ClassmateService{
     ClassmateRepository classmateRepository;
     TeacherRepository teacherRepository;
     CourseRepository courseRepository;
+    PlanningService planningService;
 
     @Autowired
-    public ClassmateServiceImpl(ClassmateRepository classmateRepository, TeacherRepository teacherRepository, CourseRepository courseRepository) {
+    public ClassmateServiceImpl(PlanningService planningService, ClassmateRepository classmateRepository, TeacherRepository teacherRepository, CourseRepository courseRepository) {
+        this.planningService = planningService;
         this.classmateRepository = classmateRepository;
         this.teacherRepository = teacherRepository;
         this.courseRepository = courseRepository;
@@ -41,6 +44,7 @@ public class ClassmateServiceImpl implements ClassmateService{
                 .classmateName(classmateName)
                 .build();
         classmateRepository.save(classmateEntity);
+        planningService.createPlanning(classmateName, classmateEntity.getId());
         return classmateEntity;
     }
 

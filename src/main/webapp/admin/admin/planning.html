@@ -3,9 +3,35 @@
 <head>
 	<meta charset="utf-8"/>
 	<title>Brotherhood - Planning</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 	<a href="../../home">Retourner au menu principal</a>
+	<h1>Sélectionner une classe</h1>
 	
+	<table id="classmates">
+	</table>
+
+	<script>
+		var table = $("#classmates");
+		$.getJSON("http://localhost:8888/classmates/", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "id"){
+						if(k == "classmateName")
+							dom += "<td>"+v+"</td>";
+					}else{
+						dom += "<td><button onclick='updatePlanning("+v+")'>Saisir le planning</button></td>";
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+
+  		function updatePlanning(id){
+  			window.location.replace("updatePlanning.html?id="+id);
+  		}
+	</script>
 </body>
 </html>

@@ -11,5 +11,6 @@ import java.util.Optional;
  */
 @Repository
 public interface PlanningRepository extends JpaRepository<PlanningEntity, Long>{
-    Optional<PlanningEntity> findById(Long id);
+    PlanningEntity findById(Long id);
+    PlanningEntity findByIdClassmate(Long idClassmate);
 }

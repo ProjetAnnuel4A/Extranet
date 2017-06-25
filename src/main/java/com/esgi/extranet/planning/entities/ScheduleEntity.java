@@ -2,6 +2,7 @@ package com.esgi.extranet.planning.entities;
 
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,23 +24,11 @@ public class ScheduleEntity {
     private Long id;
 
     @Column
-    private Long idPlanning;
+    private String start;
 
     @Column
-    private Date date;
+    private String end;
 
     @Column
-    private Long idCourseEntity;
-
-    @Column
-    private Long idTeacherEntity;
-
-    @Column
-    private Long idClassmateEntity;
-
-    @Column
-    private Long begin;
-
-    @Column
-    private Long end;
+    private String title;
 }

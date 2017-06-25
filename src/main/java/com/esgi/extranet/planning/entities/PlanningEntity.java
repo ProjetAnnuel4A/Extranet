@@ -27,4 +27,8 @@ public class PlanningEntity {
 
     @Column
     private Long idClassmate;
+
+    @ManyToMany
+    @JoinColumn
+    private List<ScheduleEntity>scheduleEntities;
 }
