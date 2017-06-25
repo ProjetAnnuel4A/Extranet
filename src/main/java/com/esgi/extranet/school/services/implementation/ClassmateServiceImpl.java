@@ -1,6 +1,8 @@
 package com.esgi.extranet.school.services.implementation;
 
+import com.esgi.extranet.administration.entities.CourseEntity;
 import com.esgi.extranet.administration.entities.TeacherEntity;
+import com.esgi.extranet.administration.repositories.CourseRepository;
 import com.esgi.extranet.administration.repositories.TeacherRepository;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.entities.StudentEntity;
@@ -19,11 +21,13 @@ import java.util.List;
 public class ClassmateServiceImpl implements ClassmateService{
     ClassmateRepository classmateRepository;
     TeacherRepository teacherRepository;
+    CourseRepository courseRepository;
 
     @Autowired
-    public ClassmateServiceImpl(ClassmateRepository classmateRepository, TeacherRepository teacherRepository) {
+    public ClassmateServiceImpl(ClassmateRepository classmateRepository, TeacherRepository teacherRepository, CourseRepository courseRepository) {
         this.classmateRepository = classmateRepository;
         this.teacherRepository = teacherRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -91,5 +95,36 @@ public class ClassmateServiceImpl implements ClassmateService{
             }
         }
         return result;
+    }
+
+    @Override
+    public List<CourseEntity> getCoursesForClassmate(Long idClassmate) {
+        ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
+        return classmateEntity.getCourseEntities();
+    }
+
+    @Override
+    public boolean addCoursesForClassmate(Long idClassmate, Long idCourse) {
+        ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
+        CourseEntity courseEntity = courseRepository.findById(idCourse);
+
+        classmateEntity.getCourseEntities().add(courseEntity);
+        classmateRepository.save(classmateEntity);
+        return true;
+    }
+
+    @Override
+    public boolean removeCoursesForClassmate(Long idClassmate, Long idCourse) {
+        ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
+        List<CourseEntity> courseEntities = classmateEntity.getCourseEntities();
+
+        for(int i = 0; i < courseEntities.size(); i++){
+            if(courseEntities.get(i).getId().equals(idCourse)){
+                courseEntities.remove(i);
+                break;
+            }
+        }
+        classmateRepository.save(classmateEntity);
+        return false;
     }
 }

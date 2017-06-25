@@ -109,8 +109,9 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.get("http://localhost:8888/courses/removeTeacherFromACourse", { courseId:i, teacherId: value.val()})
-				  .done(function( data ) {
+				$.get("http://localhost:8888/courses/removeTeacherFromACourse", { courseId:i, 
+																				teacherId: value.val()})
+				.done(function( data ) {
 				    location.reload(true);
 				  });
 			  }

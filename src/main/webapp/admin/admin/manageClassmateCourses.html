@@ -2,23 +2,23 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-	<title>Brotherhood - Gérer une classe</title>
+	<title>Brotherhood - Attribuer un cours</title>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 	<a href="../../home">Retourner au menu principal</a>
-	<h1 id="classmateName"></h1>
+	<h1 id="classmate"></h1>
 
 	<p>
-		<button onclick="removeStudents()">Supprimer</button>
+		<button onclick="removeCourse()">Supprimer un cours</button>
 		<table id="actual"></table>
-		<button onclick="removeStudents()">Supprimer</button>
+		<button onclick="removeCourse()">Supprimer un cours</button>
 	</p>
 
 	<p>
-		<button onclick="addStudents()">Ajouter</button>
-		<table id="students"></table>
-		<button onclick="addStudents()">Ajouter</button>
+		<button onclick="addCourse()">Ajouter un cours</button>
+		<table id="courses"></table>
+		<button onclick="addCourse()">Ajouter un cours</button>
 	</p>
 
 	<script>
@@ -43,29 +43,23 @@
 					$("#id").val(val);
 				}else{
 					if(key == "classmateName"){
-						$("#classmateName").append("Gérer la classe: " + val); 
+						$("#classmate").append("Gérer la classe: " + val); 
 					}
 				}
 			});
 		});
 
-		var table = $("#students");
-		$.getJSON("http://localhost:8888/students/getStudentsWithoutClassmate", function( data ) {
+		var table = $("#courses");
+		$.getJSON("http://localhost:8888/courses/", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
-					if(k != "idClassmate"){
-						if(k != "id"){
-							if(k == "birthday"){
-							var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
-							dom + "<td>"+birthday+"</td>";
-							}
-							else{
-								dom += "<td>"+v+"</td>";
-							}
-						}else{
-							dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+					if(k != "id"){
+						if(k == "coursename"){
+							dom += "<td>"+v+"</td>";
 						}
+					}else{
+						dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
 					}
 				});
 				table.append(dom + "</tr>");
@@ -73,34 +67,28 @@
   		});
 
   		var actual = $("#actual");
-		$.getJSON("http://localhost:8888/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+		$.getJSON("http://localhost:8888/classmates/getCoursesForClassmate?idClassmate="+i, function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
-					if(k != "idClassmate"){
-						if(k != "id"){
-							if(k == "birthday"){
-							var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
-							dom + "<td>"+birthday+"</td>";
-							}
-							else{
-								dom += "<td>"+v+"</td>";
-							}
-						}else{
-							dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+					if(k != "id"){
+						if(k == "coursename"){
+							dom += "<td>"+v+"</td>";
 						}
+					}else{
+						dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
 					}
 				});
 				actual.append(dom + "</tr>");
 			});
   		});
 
-  		function addStudents(){
-  			$("#students > tr").each(function() {
+  		function addCourse(){
+  			$("#courses > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.post("http://localhost:8888/students/addClassmateForStudent", { studentId: value.val(), classmateId: i})
+				$.get("http://localhost:8888/classmates/addCoursesForClassmate", { idClassmate:i, idCourse: value.val()})
 				  .done(function( data ) {
 				    location.reload(true);
 				  });
@@ -108,13 +96,14 @@
 			});
   		}
 
-  		function removeStudents(){
+  		function removeCourse(){
   			$("#actual > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.post("http://localhost:8888/students/removeClassmateForStudent", { studentId: value.val()})
-				  .done(function( data ) {
+				$.get("http://localhost:8888/classmates/removeCoursesForClassmate", { idClassmate:i, 
+																				idCourse: value.val()})
+				.done(function( data ) {
 				    location.reload(true);
 				  });
 			  }

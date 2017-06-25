@@ -76,7 +76,7 @@ public class CourseServiceImpl implements CourseService{
 
         for(int i = 0; i < teacherEntities.size(); i++){
             if(teacherEntities.get(i).getId().equals(teacherId)){
-                courseEntity.getTeacherEntities().remove(i);
+                teacherEntities.remove(i);
                 courseRepository.save(courseEntity);
                 return true;
             }

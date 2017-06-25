@@ -1,5 +1,6 @@
 package com.esgi.extranet.school.controllers;
 
+import com.esgi.extranet.administration.entities.CourseEntity;
 import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.TeacherService;
 import com.esgi.extranet.school.entities.ClassmateEntity;
@@ -43,6 +44,23 @@ public class ClassmateController {
     public boolean removeTeachersFromClassmate(@RequestParam("idClassmate")Long idClassmate,
                                                         @RequestParam("idTeacher") Long idTeacher){
         return classmateService.removeTeachersFromClassmate(idClassmate, idTeacher);
+    }
+
+    @GetMapping("/getCoursesForClassmate")
+    public List<CourseEntity> getCoursesForClassmate(@RequestParam("idClassmate")Long idClassmate){
+        return classmateService.getCoursesForClassmate(idClassmate);
+    }
+
+    @GetMapping("/addCoursesForClassmate")
+    public boolean addCoursesForClassmate(@RequestParam("idClassmate")Long idClassmate,
+                                          @RequestParam("idCourse") Long idCourse){
+        return classmateService.addCoursesForClassmate(idClassmate, idCourse);
+    }
+
+    @GetMapping("/removeCoursesForClassmate")
+    public boolean removeCoursesForClassmate(@RequestParam("idClassmate") Long idClassmate,
+                                             @RequestParam("idCourse")Long idCourse){
+        return classmateService.removeCoursesForClassmate(idClassmate, idCourse);
     }
 
     @GetMapping("/getTeachersFromClassmate")

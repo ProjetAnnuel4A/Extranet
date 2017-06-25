@@ -23,14 +23,20 @@
 							dom += "<td>"+v+"</td>";
 					}else{
 						dom += "<td><button onclick='manageClassmate("+v+")'>Gérer</button></td>";
+						dom += "<td><button onclick='manageCourses("+v+")'>Ajouter/supprimer un cours</button></td>";
 						dom += "<td><button onclick='manageTeachers("+v+")'>Ajouter/supprimer des professeurs</button></td>";
 					}
 				});
 				table.append(dom + "</tr>");
 			});
   		});
+
   		function manageClassmate(id){
   			window.location.replace("manageClassmate.html?id="+id);
+  		}
+
+  		function manageCourses(id){
+  			window.location.replace("manageClassmateCourses.html?id="+id);
   		}
 
   		function manageTeachers(id){
