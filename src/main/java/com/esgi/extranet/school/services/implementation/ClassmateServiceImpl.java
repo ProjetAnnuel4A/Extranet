@@ -51,7 +51,7 @@ public class ClassmateServiceImpl implements ClassmateService{
     }
 
     @Override
-    public boolean getTeachersFromClassmate(Long idClassmate, Long idTeacher) {
+    public boolean removeTeachersFromClassmate(Long idClassmate, Long idTeacher) {
         ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
         List<TeacherEntity> teacherEntities = classmateEntity.getTeacherEntities();
         for(int i = 0; i < teacherEntities.size(); i++){
@@ -70,5 +70,10 @@ public class ClassmateServiceImpl implements ClassmateService{
         classmateEntity.getTeacherEntities().add(teacherRepository.findById(idTeacher));
         classmateRepository.save(classmateEntity);
         return false;
+    }
+
+    @Override
+    public List<TeacherEntity> getTeachersFromClassmate(Long idClassmate) {
+        return classmateRepository.findById(idClassmate).getTeacherEntities();
     }
 }

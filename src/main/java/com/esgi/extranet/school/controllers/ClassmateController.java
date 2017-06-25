@@ -3,7 +3,6 @@ package com.esgi.extranet.school.controllers;
 import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.TeacherService;
 import com.esgi.extranet.school.entities.ClassmateEntity;
-import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +40,14 @@ public class ClassmateController {
     }
 
     @GetMapping("/deleteTeachersFromClassmate")
-    public boolean getTeachersFromClassmate(@RequestParam("idClassmate")Long idClassmate,
+    public boolean removeTeachersFromClassmate(@RequestParam("idClassmate")Long idClassmate,
                                                         @RequestParam("idTeacher") Long idTeacher){
-        return classmateService.getTeachersFromClassmate(idClassmate, idTeacher);
+        return classmateService.removeTeachersFromClassmate(idClassmate, idTeacher);
+    }
+
+    @GetMapping("/getTeachersFromClassmate")
+    public List<TeacherEntity>getTeachersFromClassmate(@RequestParam("idClassmate")Long idClassmate){
+        return classmateService.getTeachersFromClassmate(idClassmate);
     }
 
     @GetMapping("/addTeacherForClassmate")

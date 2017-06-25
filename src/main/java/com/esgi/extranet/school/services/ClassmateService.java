@@ -1,5 +1,6 @@
 package com.esgi.extranet.school.services;
 
+import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.entities.StudentEntity;
 
@@ -13,6 +14,7 @@ public interface ClassmateService {
     ClassmateEntity addClassmate(String classmateName);
     boolean removeClassmate(Long id);
     ClassmateEntity getClassmate(Long id);
-    boolean getTeachersFromClassmate(Long idClassmate, Long idTeacher);
+    boolean removeTeachersFromClassmate(Long idClassmate, Long idTeacher);
     boolean addTeacherForClassmate(Long idClassmate, Long idTeacher);
+    List<TeacherEntity> getTeachersFromClassmate(Long idClassmate);
 }
