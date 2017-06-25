@@ -1,6 +1,7 @@
 package com.esgi.extranet.school.services.implementation;
 
 import com.esgi.extranet.administration.entities.TeacherEntity;
+import com.esgi.extranet.administration.repositories.TeacherRepository;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.repositories.ClassmateRepository;
@@ -16,10 +17,12 @@ import java.util.List;
 @Service
 public class ClassmateServiceImpl implements ClassmateService{
     ClassmateRepository classmateRepository;
+    TeacherRepository teacherRepository;
 
     @Autowired
-    public ClassmateServiceImpl(ClassmateRepository classmateRepository) {
+    public ClassmateServiceImpl(ClassmateRepository classmateRepository, TeacherRepository teacherRepository) {
         this.classmateRepository = classmateRepository;
+        this.teacherRepository = teacherRepository;
     }
 
     @Override
@@ -59,5 +62,13 @@ public class ClassmateServiceImpl implements ClassmateService{
         }
         classmateRepository.save(classmateEntity);
         return true;
+    }
+
+    @Override
+    public boolean addTeacherForClassmate(Long idClassmate, Long idTeacher) {
+        ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
+        classmateEntity.getTeacherEntities().add(teacherRepository.findById(idTeacher));
+        classmateRepository.save(classmateEntity);
+        return false;
     }
 }

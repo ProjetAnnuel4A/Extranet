@@ -46,6 +46,12 @@ public class ClassmateController {
         return classmateService.getTeachersFromClassmate(idClassmate, idTeacher);
     }
 
+    @GetMapping("/addTeacherForClassmate")
+    public boolean addTeacherForClassmate(@RequestParam("idClassmate")Long idClassmate,
+                                            @RequestParam("idTeacher") Long idTeacher){
+        return classmateService.addTeacherForClassmate(idClassmate, idTeacher);
+    }
+
     @PostMapping("/addClassmate")
     public ClassmateEntity addClassmate(@RequestParam(name = "classmateName") String classmateName){
         return classmateService.addClassmate(classmateName);
