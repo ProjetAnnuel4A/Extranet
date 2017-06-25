@@ -4,6 +4,7 @@ import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author timotheearnauld
@@ -23,4 +24,8 @@ public class CourseEntity {
 
     @Column(nullable = false)
     private String coursename;
+
+    @ManyToMany
+    @JoinColumn
+    private List<TeacherEntity> teacherEntities;
 }

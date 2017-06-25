@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Brotherhood - Afficher les cours</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<a href="../../home">Retourner au menu principal</a>
+	<h1>Afficher les cours</h1>
+
+	<table id="courses">
+	</table>
+
+	<script>
+		var table = $("#courses");
+		$.getJSON("http://localhost:8888/courses/", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "id"){
+						if(k == "coursename")
+							dom += "<td>"+v+"</td>";
+					}else{
+						dom += "<td><button onclick='manageTeachersCourses("+v+")'>Gérer</button></td>";
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+  		function manageTeachersCourses(id){
+  			window.location.replace("manageTeachersCourses.html?id="+id);
+  		}
+	</script>
+</body>
+</html>
