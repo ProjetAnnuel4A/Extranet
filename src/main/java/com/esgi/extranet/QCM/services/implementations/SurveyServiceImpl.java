@@ -39,7 +39,7 @@ public class SurveyServiceImpl implements SurveyService
     @Transactional
     public SurveyEntity addSurvey(Long id, String name, ArrayList<QuestionEntity> questions, float mark, int chances, Date deadLine, String imagePath)
     {
-        SurveyEntity surveyEntity = QuestionEntity.builder()
+        SurveyEntity surveyEntity = SurveyEntity.builder()
                 .name(name)
                 .questions(questions)
                 .mark(mark)
