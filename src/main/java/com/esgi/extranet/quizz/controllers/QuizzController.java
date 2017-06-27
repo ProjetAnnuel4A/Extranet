@@ -1,12 +1,12 @@
-package com.esgi.extranet.QCM.controllers ;
+package com.esgi.extranet.quizz.controllers ;
 
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
-import com.esgi.extranet.QCM.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.QuestionEntity ;
+import com.esgi.extranet.quizz.entities.SurveyEntity ;
 
 /**
  * Created by Samuel Bijou on 07/06/2017.
  */
-public class QCMController
+public class QuizzController
 {
 
     public static float calculateQuestionScore(QuestionEntity question, int[] userResponses)
@@ -17,7 +17,7 @@ public class QCMController
 
         if(question.isAllOrNot())
         {
-            if(userResponses.length != question.getIndexCorrectResponses().length)
+            if(userResponses.length != question.getCorrectResponses().size())
             {
                 return 0 ;
             }
@@ -27,9 +27,9 @@ public class QCMController
         {
             boolean responseCorrect = false ;
 
-            for(int j = 0 ; j < question.getIndexCorrectResponses().length ; j++)
+            for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
             {
-                if(userResponses[i] == question.getIndexCorrectResponses()[j])
+                if(userResponses[i] == question.getCorrectResponses().get(j))
                 {
                     responseCorrect = true ;
 
@@ -45,7 +45,7 @@ public class QCMController
 
         if(question.isAllOrNot())
         {
-            if(nbCorrectResponses == question.getIndexCorrectResponses().length)
+            if(nbCorrectResponses == question.getCorrectResponses().size())
             {
                 score = question.getPoints() ;
             }
@@ -53,7 +53,7 @@ public class QCMController
 
         else
         {
-            score = (question.getPoints() / question.getIndexCorrectResponses().length) * nbCorrectResponses ;
+            score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
         }
 
         return score ;

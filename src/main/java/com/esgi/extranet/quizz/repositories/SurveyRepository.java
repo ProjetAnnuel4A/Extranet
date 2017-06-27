@@ -1,6 +1,6 @@
-package com.esgi.extranet.QCM.repositories ;
+package com.esgi.extranet.quizz.repositories ;
 
-import com.esgi.extranet.QCM.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import org.springframework.data.jpa.repository.JpaRepository ;
 import org.springframework.stereotype.Repository ;
 
