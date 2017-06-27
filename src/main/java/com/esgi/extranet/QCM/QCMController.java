@@ -12,6 +12,14 @@ public class QCMController
 
         int nbCorrectResponses = 0 ;
 
+        if(question.isAllOrNot())
+        {
+            if(userResponses.length != question.getIndexCorrectResponses().length)
+            {
+                return 0 ;
+            }
+        }
+
         for(int i = 0 ; i < userResponses.length ; i++)
         {
             boolean responseCorrect = false ;
