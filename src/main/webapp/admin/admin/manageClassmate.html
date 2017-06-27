@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Brotherhood - Gérer une classe</title>
+    <meta charset="utf-8"/>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="style.css"/>
+<script src="script.js"></script>
+</head>
+<body class="home">
+    <div class="container-fluid display-table">
+        <div class="row display-table-row">
+            <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
+                <div class="logo">
+                </div>
+                
+                <div class="navi">
+                    <ul>
+                        <li class="active"><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Accueil</span></a></li>
+                        <li><a href="../student.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Elèves</span></a></li>
+                        <li><a href="../teacher.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Enseignants</span></a></li>
+                        <li><a href="../administration.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Administration</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-11 display-table-cell v-align">
+                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+                <div class="row">
+                    <header>
+                        <div class="col-md-7">
+                            <nav class="navbar-default pull-left">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#side-menu" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+                            </nav>
+                            <div class="search hidden-xs hidden-sm">
+                                <input type="text" placeholder="Rechercher" id="search">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="header-rightside">
+                                <ul class="list-inline header-top pull-right">
+                                    <li class="hidden-xs"><a href="#" class="add-project" data-toggle="modal" data-target="#add_project">Ajouter un fichier</a></li>
+                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+                                    <li>
+                                        <a href="#" class="icon-info">
+                                            <i class="fa fa-bell" aria-hidden="true"></i>
+                                            <span class="label label-primary">3</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://jskrishna.com/work/merkury/images/user-pic.jpg" alt="user">
+                                            <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <div class="navbar-content">
+                                                    <span>BananaMoon</span>
+                                                    <p class="text-muted small">
+                                                        info6@bananamoon.com
+                                                    </p>
+                                                    <div class="divider">
+                                                    </div>
+                                                    <a href="#" class="view btn-sm active">Voir le profil</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+                </div>
+                <div class="user-dashboard">
+                    <h1 id="classmateName"></h1>
+                    <div class="row">
+                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+	                        <p>
+								<button onclick="removeStudents()">Supprimer</button>
+								<table id="actual"></table>
+								<button onclick="removeStudents()">Supprimer</button>
+							</p>
+
+							<p>
+								<button onclick="addStudents()">Ajouter</button>
+								<table id="students"></table>
+								<button onclick="addStudents()">Ajouter</button>
+							</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Modal -->
+    <div id="add_project" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Nouveau fichier</h4>
+                </div>
+                <div class="modal-body">
+                            <input type="text" placeholder="Titre du fichier" name="name">
+                            <input type="text" placeholder="Post of Post" name="mail">
+                            <input type="text" placeholder="Auteur" name="passsword">
+                            <textarea placeholder="Description"></textarea>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="add-project" data-dismiss="modal">Sauvegarder</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+	<script>
+		var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : sParameterName[1];
+		        }
+		    }
+		};
+		var i = getUrlParameter('id');
+		$.getJSON( "http://localhost:8888/classmates/getClassmate?id=" + i, function(data){
+			$.each(data, function( key, val ){
+				if(key == "id"){
+					$("#id").val(val);
+				}else{
+					if(key == "classmateName"){
+						$("#classmateName").append("Gérer la classe: " + val); 
+					}
+				}
+			});
+		});
+
+		var table = $("#students");
+		$.getJSON("http://localhost:8888/students/getStudentsWithoutClassmate", function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "idClassmate"){
+						if(k != "id"){
+							if(k == "birthday"){
+							var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+							dom + "<td>"+birthday+"</td>";
+							}
+							else{
+								dom += "<td>"+v+"</td>";
+							}
+						}else{
+							dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+						}
+					}
+				});
+				table.append(dom + "</tr>");
+			});
+  		});
+
+  		var actual = $("#actual");
+		$.getJSON("http://localhost:8888/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+			$.each( data, function( key, val ) {
+				var dom = "<tr>";
+				$.each(val, function(k, v){
+					if(k != "idClassmate"){
+						if(k != "id"){
+							if(k == "birthday"){
+							var birthday = v.dayOfMonth + "/" + v.monthValue + "/" + v.year;
+							dom + "<td>"+birthday+"</td>";
+							}
+							else{
+								dom += "<td>"+v+"</td>";
+							}
+						}else{
+							dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+						}
+					}
+				});
+				actual.append(dom + "</tr>");
+			});
+  		});
+
+  		function addStudents(){
+  			$("#students > tr").each(function() {
+			  $this = $(this);
+			  var value = $this.find("input.id");
+			  if(value.is(':checked') == true){
+				$.post("http://localhost:8888/students/addClassmateForStudent", { studentId: value.val(), classmateId: i})
+				  .done(function( data ) {
+				    location.reload(true);
+				  });
+			  }
+			});
+  		}
+
+  		function removeStudents(){
+  			$("#actual > tr").each(function() {
+			  $this = $(this);
+			  var value = $this.find("input.id");
+			  if(value.is(':checked') == true){
+				$.post("http://localhost:8888/students/removeClassmateForStudent", { studentId: value.val()})
+				  .done(function( data ) {
+				    location.reload(true);
+				  });
+			  }
+			});
+  		}
+	</script>
+</body>
+</html>
