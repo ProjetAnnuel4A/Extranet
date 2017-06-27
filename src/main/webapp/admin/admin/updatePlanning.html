@@ -140,7 +140,7 @@
 		var i = getUrlParameter('id');
 
 		function save(){
-			$.post("./planning/addCourse",{idClassmate: i,
+			$.post("http://brotherhood9305.cloudapp.net:9000/planning/addCourse",{idClassmate: i,
 																start: $("#start").val()+":00.000+10:00",
 																end: $("#end").val()+":00.000+10:00",
 																title: $("#title").val()})
@@ -155,7 +155,7 @@
               $this = $(this);
               var value = $this.find("input.id");
               if(value.is(':checked') == true){
-                $.get("./planning/removeCourse", { idClassmate: i, idCourse: value.val()})
+                $.get("http://brotherhood9305.cloudapp.net:9000/planning/removeCourse", { idClassmate: i, idCourse: value.val()})
                   .done(function(data) {
                     location.reload(true);
                   });
@@ -163,7 +163,7 @@
             });
         }
 
-        $.getJSON("./planning/getCourseForClassmate?idClassmate="+i, function( data ) {
+        $.getJSON("http://brotherhood9305.cloudapp.net:9000/planning/getCourseForClassmate?idClassmate="+i, function( data ) {
             var actual = $("#actual");
             $.each( data, function( key, val ) {
                 var dom = "<tr>";

@@ -145,7 +145,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "./classmates/getClassmate?id=" + i, function(data){
+		$.getJSON( "http://brotherhood9305.cloudapp.net:9000/classmates/getClassmate?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);
@@ -158,7 +158,7 @@
 		});
 
 		var table = $("#students");
-		$.getJSON("./students/getStudentsWithoutClassmate", function( data ) {
+		$.getJSON("http://brotherhood9305.cloudapp.net:9000/students/getStudentsWithoutClassmate", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -181,7 +181,7 @@
   		});
 
   		var actual = $("#actual");
-		$.getJSON("./students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+		$.getJSON("http://brotherhood9305.cloudapp.net:9000/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -208,7 +208,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.post("./students/addClassmateForStudent", { studentId: value.val(), classmateId: i})
+				$.post("http://brotherhood9305.cloudapp.net:9000/students/addClassmateForStudent", { studentId: value.val(), classmateId: i})
 				  .done(function( data ) {
 				    location.reload(true);
 				  });
@@ -221,7 +221,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.post("./students/removeClassmateForStudent", { studentId: value.val()})
+				$.post("http://brotherhood9305.cloudapp.net:9000/students/removeClassmateForStudent", { studentId: value.val()})
 				  .done(function( data ) {
 				    location.reload(true);
 				  });
