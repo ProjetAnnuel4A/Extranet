@@ -1,4 +1,7 @@
-package com.esgi.extranet.QCM ;
+package com.esgi.extranet.QCM.controllers ;
+
+import com.esgi.extranet.QCM.entities.QuestionEntity ;
+import com.esgi.extranet.QCM.entities.SurveyEntity ;
 
 /**
  * Created by Samuel Bijou on 07/06/2017.
@@ -6,7 +9,7 @@ package com.esgi.extranet.QCM ;
 public class QCMController
 {
 
-    public static float calculateQuestionScore(Question question, int[] userResponses)
+    public static float calculateQuestionScore(QuestionEntity question, int[] userResponses)
     {
         float score = 0 ;
 
@@ -56,7 +59,7 @@ public class QCMController
         return score ;
     }
 
-    public static float CalculateSurveyScore(Survey survey, int[][] userResponses)
+    public static float CalculateSurveyScore(SurveyEntity survey, int[][] userResponses)
     {
         float score = 0 ;
 

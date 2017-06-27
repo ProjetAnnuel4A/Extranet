@@ -1,5 +1,7 @@
-package com.esgi.extranet.QCM ;
+package com.esgi.extranet.QCM.entities ;
 
+import com.esgi.extranet.QCM.entities.QuestionEntity ;
+import com.esgi.extranet.QCM.entities.ResponseEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
@@ -8,16 +10,16 @@ import java.util.ArrayList ;
 /**
  * Created by Samuel Bijou on 01/05/2017.
  */
-public class QuestionTests
+public class QuestionEntityTests
 {
 
     @Test
     public void should_create_question()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[4] ;
 
-        Question question = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
         Assert.assertNotNull(question) ;
 

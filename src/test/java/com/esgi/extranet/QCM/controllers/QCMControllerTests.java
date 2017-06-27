@@ -1,5 +1,9 @@
-package com.esgi.extranet.QCM ;
+package com.esgi.extranet.QCM.controllers ;
 
+import com.esgi.extranet.QCM.controllers.QCMController ;
+import com.esgi.extranet.QCM.entities.QuestionEntity ;
+import com.esgi.extranet.QCM.entities.ResponseEntity ;
+import com.esgi.extranet.QCM.entities.SurveyEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
@@ -14,12 +18,12 @@ public class QCMControllerTests
     @Test
     public void should_calculate_question_score()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question question = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
         int[] userResponses = new int[2] ;
         userResponses[0] = 2 ;
@@ -31,12 +35,12 @@ public class QCMControllerTests
     @Test
     public void should_give_all_question_points()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question question = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
         int[] userResponses = new int[2] ;
         userResponses[0] = 2 ;
@@ -48,12 +52,12 @@ public class QCMControllerTests
     @Test
     public void should_give_some_question_points()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question question = new Question("question", responses, correctResponses, 6, false, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, false, "") ;
 
         int[] userResponses = new int[1] ;
         userResponses[0] = 2 ;
@@ -64,12 +68,12 @@ public class QCMControllerTests
     @Test
     public void should_not_give_question_points()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question question = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
         int[] userResponses = new int[2] ;
         userResponses[0] = 1 ;
@@ -81,24 +85,24 @@ public class QCMControllerTests
     @Test
     public void should_calculate_survey_score()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question q1 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
+        QuestionEntity q2 = new QuestionEntity(new Long(2), "question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q3 = new QuestionEntity(new Long(3), "question", responses, correctResponses, 6, true, "") ;
 
-        ArrayList<Question> questions = new ArrayList<Question>() ;
+        ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
         questions.add(q1) ;
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
 
         int[][] userResponses = new int[3][2] ;
         userResponses[0][0] = 2 ;
@@ -114,24 +118,24 @@ public class QCMControllerTests
     @Test
     public void should_give_all_survey_points()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question q1 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
+        QuestionEntity q2 = new QuestionEntity(new Long(2), "question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q3 = new QuestionEntity(new Long(3), "question", responses, correctResponses, 6, true, "") ;
 
-        ArrayList<Question> questions = new ArrayList<Question>() ;
+        ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
         questions.add(q1) ;
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
 
         int[][] userResponses = new int[3][2] ;
         userResponses[0][0] = 2 ;
@@ -147,24 +151,24 @@ public class QCMControllerTests
     @Test
     public void should_give_some_survey_points()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question q1 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
+        QuestionEntity q2 = new QuestionEntity(new Long(2), "question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q3 = new QuestionEntity(new Long(3), "question", responses, correctResponses, 6, true, "") ;
 
-        ArrayList<Question> questions = new ArrayList<Question>() ;
+        ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
         questions.add(q1) ;
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
 
         int[][] userResponses = new int[3][2] ;
         userResponses[0][0] = 2 ;
@@ -180,24 +184,24 @@ public class QCMControllerTests
     @Test
     public void should_not_give_survey_points()
     {
-        ArrayList<Response> responses = new ArrayList<Response>() ;
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         int[] correctResponses = new int[2] ;
         correctResponses[0] = 2 ;
         correctResponses[1] = 3 ;
 
-        Question q1 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
-        Question q2 = new Question("question", responses, correctResponses, 8, true, "") ;
+        QuestionEntity q2 = new QuestionEntity(new Long(2), "question", responses, correctResponses, 8, true, "") ;
 
-        Question q3 = new Question("question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q3 = new QuestionEntity(new Long(3), "question", responses, correctResponses, 6, true, "") ;
 
-        ArrayList<Question> questions = new ArrayList<Question>() ;
+        ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
         questions.add(q1) ;
         questions.add(q2) ;
         questions.add(q3) ;
 
-        Survey survey = new Survey("test", questions, 19, 1, null, "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
 
         int[][] userResponses = new int[3][2] ;
         userResponses[0][0] = 4 ;
