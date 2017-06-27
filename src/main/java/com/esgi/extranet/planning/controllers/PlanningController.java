@@ -1,4 +1,4 @@
-package com.esgi.extranet.planning.controller;
+package com.esgi.extranet.planning.controllers;
 
 import com.esgi.extranet.planning.entities.PlanningEntity;
 import com.esgi.extranet.planning.entities.ScheduleEntity;
