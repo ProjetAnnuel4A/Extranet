@@ -1,6 +1,6 @@
-package com.esgi.extranet.QCM.services.interfaces ;
+package com.esgi.extranet.quizz.services.interfaces ;
 
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
+import com.esgi.extranet.quizz.entities.ResponseEntity ;
 
 import java.util.List ;
 

@@ -1,9 +1,8 @@
-package com.esgi.extranet.QCM.controllers ;
+package com.esgi.extranet.quizz.controllers ;
 
-import com.esgi.extranet.QCM.controllers.QCMController ;
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
-import com.esgi.extranet.QCM.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.QuestionEntity ;
+import com.esgi.extranet.quizz.entities.ResponseEntity ;
+import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
@@ -12,16 +11,16 @@ import java.util.ArrayList ;
 /**
  * Created by Samuel Bijou on 07/06/2017.
  */
-public class QCMControllerTests
+public class QuizzControllerTests
 {
 
     @Test
     public void should_calculate_question_score()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -29,16 +28,16 @@ public class QCMControllerTests
         userResponses[0] = 2 ;
         userResponses[1] = 3 ;
 
-        Assert.assertNotNull(QCMController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertNotNull(QuizzController.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
     public void should_give_all_question_points()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -46,32 +45,32 @@ public class QCMControllerTests
         userResponses[0] = 2 ;
         userResponses[1] = 3 ;
 
-        Assert.assertTrue(6 == QCMController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertTrue(6 == QuizzController.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
     public void should_give_some_question_points()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, false, "") ;
 
         int[] userResponses = new int[1] ;
         userResponses[0] = 2 ;
 
-        Assert.assertTrue(3 == QCMController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertTrue(3 == QuizzController.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
     public void should_not_give_question_points()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -79,16 +78,16 @@ public class QCMControllerTests
         userResponses[0] = 1 ;
         userResponses[1] = 4 ;
 
-        Assert.assertTrue(0 == QCMController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertTrue(0 == QuizzController.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
     public void should_calculate_survey_score()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -112,16 +111,16 @@ public class QCMControllerTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 3 ;
 
-        Assert.assertNotNull(QCMController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertNotNull(QuizzController.CalculateSurveyScore(survey, userResponses)) ;
     }
 
     @Test
     public void should_give_all_survey_points()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -145,16 +144,16 @@ public class QCMControllerTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 3 ;
 
-        Assert.assertTrue(20 == QCMController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertTrue(20 == QuizzController.CalculateSurveyScore(survey, userResponses)) ;
     }
 
     @Test
     public void should_give_some_survey_points()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -178,16 +177,16 @@ public class QCMControllerTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 4 ;
 
-        Assert.assertTrue(6 == QCMController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertTrue(6 == QuizzController.CalculateSurveyScore(survey, userResponses)) ;
     }
 
     @Test
     public void should_not_give_survey_points()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[2] ;
-        correctResponses[0] = 2 ;
-        correctResponses[1] = 3 ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        correctResponses.add(new Long (2)) ;
+        correctResponses.add(new Long (3)) ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -211,7 +210,7 @@ public class QCMControllerTests
         userResponses[2][0] = 4 ;
         userResponses[2][1] = 4 ;
 
-        Assert.assertTrue(0 == QCMController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertTrue(0 == QuizzController.CalculateSurveyScore(survey, userResponses)) ;
     }
 
 }

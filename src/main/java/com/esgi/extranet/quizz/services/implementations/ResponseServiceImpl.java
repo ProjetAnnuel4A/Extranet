@@ -1,8 +1,8 @@
-package com.esgi.extranet.QCM.services.implementations ;
+package com.esgi.extranet.quizz.services.implementations ;
 
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
-import com.esgi.extranet.QCM.repositories.ResponseRepository ;
-import com.esgi.extranet.QCM.services.interfaces.ResponseService ;
+import com.esgi.extranet.quizz.entities.ResponseEntity ;
+import com.esgi.extranet.quizz.repositories.ResponseRepository ;
+import com.esgi.extranet.quizz.services.interfaces.ResponseService ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 import javax.transaction.Transactional ;

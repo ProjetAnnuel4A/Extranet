@@ -1,4 +1,4 @@
-package com.esgi.extranet.QCM.entities ;
+package com.esgi.extranet.quizz.entities ;
 
 import lombok.* ;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties ;
@@ -36,7 +36,7 @@ public class QuestionEntity
     private ArrayList<ResponseEntity> responses ;
 
     @Column
-    private int[] indexCorrectResponses ;
+    private ArrayList<Long> correctResponses ;
 
     @DecimalMin(value = "0.0")
     @Column(nullable = false)

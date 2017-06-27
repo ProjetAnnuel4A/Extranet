@@ -1,8 +1,5 @@
-package com.esgi.extranet.QCM.entities ;
+package com.esgi.extranet.quizz.entities ;
 
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
-import com.esgi.extranet.QCM.entities.SurveyEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
@@ -18,7 +15,7 @@ public class SurveyEntityTests
     public void should_create_survey()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[4] ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -50,7 +47,7 @@ public class SurveyEntityTests
     public void should_calculate_mark()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[4] ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -77,7 +74,7 @@ public class SurveyEntityTests
     public void should_calculate_mark_after_creation()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[4] ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
         QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 7, true, "") ;
 

@@ -1,7 +1,5 @@
-package com.esgi.extranet.QCM.entities ;
+package com.esgi.extranet.quizz.entities ;
 
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
@@ -17,7 +15,7 @@ public class QuestionEntityTests
     public void should_create_question()
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        int[] correctResponses = new int[4] ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
         QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
@@ -25,7 +23,7 @@ public class QuestionEntityTests
 
         Assert.assertEquals("question", question.getDescription()) ;
         Assert.assertEquals(responses, question.getResponses()) ;
-        Assert.assertArrayEquals(correctResponses, question.getIndexCorrectResponses()) ;
+        Assert.assertEquals(correctResponses, question.getCorrectResponses()) ;
         Assert.assertTrue(6 == question.getPoints()) ;
         Assert.assertTrue(question.isAllOrNot()) ;
         Assert.assertEquals("", question.getImagePath()) ;

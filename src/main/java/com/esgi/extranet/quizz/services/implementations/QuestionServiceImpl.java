@@ -1,10 +1,10 @@
-package com.esgi.extranet.QCM.services.implementations ;
+package com.esgi.extranet.quizz.services.implementations ;
 
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
-import com.esgi.extranet.QCM.repositories.QuestionRepository ;
-import com.esgi.extranet.QCM.repositories.ResponseRepository ;
-import com.esgi.extranet.QCM.services.interfaces.QuestionService ;
+import com.esgi.extranet.quizz.entities.QuestionEntity ;
+import com.esgi.extranet.quizz.entities.ResponseEntity ;
+import com.esgi.extranet.quizz.repositories.QuestionRepository ;
+import com.esgi.extranet.quizz.repositories.ResponseRepository ;
+import com.esgi.extranet.quizz.services.interfaces.QuestionService ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 import javax.transaction.Transactional ;
@@ -36,12 +36,10 @@ public class QuestionServiceImpl implements QuestionService
 
     @Override
     @Transactional
-    public QuestionEntity addQuestion(Long id, String description, ArrayList<ResponseEntity> responses, int[] indexCorrectResponses, float points, boolean allOrNot, String imagePath)
+    public QuestionEntity addQuestion(Long id, String description, float points, boolean allOrNot, String imagePath)
     {
         QuestionEntity questionEntity = QuestionEntity.builder()
                 .description(description)
-                .responses(responses)
-                .indexCorrectResponses(indexCorrectResponses)
                 .points(points)
                 .allOrNot(allOrNot)
                 .imagePath(imagePath)
@@ -53,13 +51,11 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
-    public QuestionEntity updateQuestion(Long id, String description, ArrayList<ResponseEntity> responses, int[] indexCorrectResponses, float points, boolean allOrNot, String imagePath)
+    public QuestionEntity updateQuestion(Long id, String description, float points, boolean allOrNot, String imagePath)
     {
         QuestionEntity questionEntity = questionRepository.findById(id) ;
 
         questionEntity.setDescription(description) ;
-        questionEntity.setResponses(responses) ;
-        questionEntity.setIndexCorrectResponses(indexCorrectResponses) ;
         questionEntity.setPoints(points) ;
         questionEntity.setAllOrNot(allOrNot) ;
         questionEntity.setImagePath(imagePath) ;
@@ -118,6 +114,47 @@ public class QuestionServiceImpl implements QuestionService
             if(responseEntities.get(i).getId().equals(responseId))
             {
                 responseEntities.remove(i) ;
+                questionRepository.save(questionEntity) ;
+
+                return true ;
+            }
+        }
+
+        return false ;
+    }
+
+    @Override
+    public ArrayList<Long> getCorrectResponsesFromAQuestion(Long questionId)
+    {
+        QuestionEntity questionEntity = questionRepository.findById(questionId) ;
+
+        return questionEntity.getCorrectResponses() ;
+    }
+
+    @Override
+    public boolean addCorrectResponseForAQuestion(Long questionId, Long responseId)
+    {
+
+        QuestionEntity questionEntity = questionRepository.findById(questionId) ;
+
+        questionEntity.getCorrectResponses().add(responseId) ;
+
+        questionRepository.save(questionEntity) ;
+
+        return false ;
+    }
+
+    @Override
+    public boolean removeCorrectResponseFromAQuestion(Long questionId, Long responseId)
+    {
+        QuestionEntity questionEntity = questionRepository.findById(questionId) ;
+        List<Long> correctResponses = questionEntity.getCorrectResponses() ;
+
+        for(int i = 0 ; i < correctResponses.size() ; i++)
+        {
+            if(correctResponses.get(i).equals(responseId))
+            {
+                correctResponses.remove(i) ;
                 questionRepository.save(questionEntity) ;
 
                 return true ;

@@ -1,4 +1,4 @@
-package com.esgi.extranet.QCM.entities ;
+package com.esgi.extranet.quizz.entities ;
 
 import lombok.* ;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties ;

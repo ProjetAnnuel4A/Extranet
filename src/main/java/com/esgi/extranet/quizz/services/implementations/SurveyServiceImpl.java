@@ -1,10 +1,10 @@
-package com.esgi.extranet.QCM.services.implementations ;
+package com.esgi.extranet.quizz.services.implementations ;
 
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
-import com.esgi.extranet.QCM.entities.SurveyEntity ;
-import com.esgi.extranet.QCM.repositories.QuestionRepository ;
-import com.esgi.extranet.QCM.repositories.SurveyRepository ;
-import com.esgi.extranet.QCM.services.interfaces.SurveyService ;
+import com.esgi.extranet.quizz.entities.QuestionEntity ;
+import com.esgi.extranet.quizz.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.repositories.QuestionRepository ;
+import com.esgi.extranet.quizz.repositories.SurveyRepository ;
+import com.esgi.extranet.quizz.services.interfaces.SurveyService ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 import javax.transaction.Transactional ;
@@ -37,11 +37,10 @@ public class SurveyServiceImpl implements SurveyService
 
     @Override
     @Transactional
-    public SurveyEntity addSurvey(Long id, String name, ArrayList<QuestionEntity> questions, float mark, int chances, Date deadLine, String imagePath)
+    public SurveyEntity addSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath)
     {
         SurveyEntity surveyEntity = SurveyEntity.builder()
                 .name(name)
-                .questions(questions)
                 .mark(mark)
                 .chances(chances)
                 .deadLine(deadLine)
@@ -54,12 +53,11 @@ public class SurveyServiceImpl implements SurveyService
     }
 
     @Override
-    public SurveyEntity updateSurvey(Long id, String name, ArrayList<QuestionEntity> questions, float mark, int chances, Date deadLine, String imagePath)
+    public SurveyEntity updateSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(id) ;
 
         surveyEntity.setName(name) ;
-        surveyEntity.setQuestions(questions) ;
         surveyEntity.setMark(mark) ;
         surveyEntity.setChances(chances) ;
         surveyEntity.setDeadLine(deadLine) ;

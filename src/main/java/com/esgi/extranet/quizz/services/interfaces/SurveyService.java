@@ -1,7 +1,7 @@
-package com.esgi.extranet.QCM.services.interfaces ;
+package com.esgi.extranet.quizz.services.interfaces ;
 
-import com.esgi.extranet.QCM.entities.SurveyEntity ;
-import com.esgi.extranet.QCM.entities.QuestionEntity ;
+import com.esgi.extranet.quizz.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.QuestionEntity ;
 
 import java.sql.Date ;
 import java.util.List ;
@@ -15,8 +15,8 @@ public interface SurveyService
 
     List<SurveyEntity> getAll() ;
 
-    SurveyEntity addSurvey(Long id, String name, ArrayList<QuestionEntity> questions, float mark, int chances, Date deadLine, String imagePath) ;
-    SurveyEntity updateSurvey(Long id, String name, ArrayList<QuestionEntity> questions, float mark, int chances, Date deadLine, String imagePath) ;
+    SurveyEntity addSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath) ;
+    SurveyEntity updateSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath) ;
     boolean removeSurvey(Long questionId) ;
     SurveyEntity getSurvey(Long questionId) ;
 

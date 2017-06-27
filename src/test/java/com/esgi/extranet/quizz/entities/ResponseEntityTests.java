@@ -1,6 +1,5 @@
-package com.esgi.extranet.QCM.entities ;
+package com.esgi.extranet.quizz.entities ;
 
-import com.esgi.extranet.QCM.entities.ResponseEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 
