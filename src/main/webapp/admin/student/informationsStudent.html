@@ -144,7 +144,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "./students/getStudent?id=" + i, function(data){
+		$.getJSON( "http://brotherhood9305.cloudapp.net:9000/students/getStudent?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);
