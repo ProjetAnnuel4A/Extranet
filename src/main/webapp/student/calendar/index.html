@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -55,9 +55,9 @@
   var datetime = currentdate.getFullYear() + "-"
                 + ("0" + (currentdate.getMonth()+1)).slice(-2)  + "-" 
                 + ("0" + (currentdate.getDate()+1)).slice(-2) + "T"  
-                + currentdate.getHours() + ":"  
-                + currentdate.getMinutes() + ":" 
-                + currentdate.getSeconds();
+                + ("0" + (currentdate.getHours()+1)).slice(-2)  + ":"  
+                + ("0" + (currentdate.getMinutes()+1)).slice(-2) + ":" 
+                + ("0" + (currentdate.getSeconds()+1)).slice(-2);
   console.log(datetime);
 
 
