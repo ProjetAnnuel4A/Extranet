@@ -44,7 +44,23 @@
   <script type='text/javascript'>
   var data_json;
 
-  $.getJSON("http://localhost:8888/planning/getCourseForClassmate?idClassmate=1", function( data ) {
+  var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
+    };
+  var idClassmate = getUrlParameter('idClassmate');
+
+  $.getJSON("http://localhost:8888/planning/getCourseForClassmate?idClassmate=" + idClassmate, function( data ) {
       data_json = data;
       var year = new Date().getFullYear();
   var month = new Date().getMonth();

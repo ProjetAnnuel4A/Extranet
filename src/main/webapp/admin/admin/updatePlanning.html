@@ -3,13 +3,9 @@
 <head>
 	<title>Brotherhood - Mettre à jour le planning</title>
     <meta charset="utf-8"/>
-    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="style.css"/>
@@ -62,7 +58,7 @@
                                         </a>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://jskrishna.com/work/merkury/images/user-pic.jpg" alt="user">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <b class="caret"></b></a>
                                         <ul class="dropdown-menu">
                                             <li>
@@ -87,12 +83,15 @@
                     <h1 id="classmate"></h1>
                     <div class="row">
                         <div class="col-md-5 col-sm-5 col-xs-12 gutter">
-	                        <input type="text" id="title" required name="title" placeholder="Nom du cours" />
-							Début: <input id="start" type="datetime-local" required name="start"/>
-							Fin: <input id="end" type="datetime-local" required name="end"/>
-							<button onclick="save()">Enregistrer</button>
-
-							<table id="actual"></table>
+                            <input type="text" id="title" required name="title" placeholder="Nom du cours" />
+                            Début: <input id="start" type="datetime-local" required name="start"/>
+                            Fin: <input id="end" type="datetime-local" required name="end"/>
+                            <button onclick="save()">Enregistrer</button>
+                            <p>
+                                <button onclick="removeSchedule()">Supprimer</button>
+                                <table id="actual"></table>
+                                <button onclick="removeSchedule()">Supprimer</button>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -121,7 +120,6 @@
                     <button type="button" class="add-project" data-dismiss="modal">Sauvegarder</button>
                 </div>
             </div>
-
         </div>
     </div>
 	<script>
@@ -140,6 +138,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
+
 		function save(){
 			$.post("http://localhost:8888/planning/addCourse",{idClassmate: i,
 																start: $("#start").val()+":00.000+10:00",
@@ -149,6 +148,40 @@
 				location.reload(true);
 			});
 		}
+
+        function removeSchedule(){
+            console.log("input");
+            $("#actual > tr").each(function() {
+              $this = $(this);
+              var value = $this.find("input.id");
+              if(value.is(':checked') == true){
+                $.get("http://localhost:8888/planning/removeCourse", { idClassmate: i, idCourse: value.val()})
+                  .done(function(data) {
+                    location.reload(true);
+                  });
+              }
+            });
+        }
+
+        $.getJSON("http://localhost:8888/planning/getCourseForClassmate?idClassmate="+i, function( data ) {
+            var actual = $("#actual");
+            $.each( data, function( key, val ) {
+                var dom = "<tr>";
+                $.each(val, function(k, v){
+                        if(k != "id"){
+                            if(k != "title"){
+                                var d = v.substring(0, v.indexOf(":00.000+10:00"));
+                                dom += "<td><input type='datetime-local' class='id' value='"+d+"'/></td>";
+                            }else{
+                            dom += "<td>"+v+"</td>";
+                            }
+                        }else{
+                            dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+                        }
+                });
+                actual.append(dom + "</tr>");
+            });
+        });
 	</script>
 </body>
 </html>
