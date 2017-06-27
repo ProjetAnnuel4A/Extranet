@@ -121,7 +121,7 @@
     </div>
 	<script>
 		var table = $("#students");
-		$.getJSON("http://localhost:8888/students/", function( data ) {
+		$.getJSON("./students/", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){

@@ -142,7 +142,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "http://localhost:8888/teachers/getTeacher?id=" + i, function(data){
+		$.getJSON( "./teachers/getTeacher?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);

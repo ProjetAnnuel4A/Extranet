@@ -125,7 +125,7 @@
     </div>
 	<script>
 		var table = $("#classmates");
-		$.getJSON("http://localhost:8888/classmates/", function( data ) {
+		$.getJSON("./classmates/", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -143,7 +143,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.post("http://localhost:8888/classmates/removeClassmate", { id: value.val()})
+				$.post("./classmates/removeClassmate", { id: value.val()})
 				  .done(function( data ) {
 				    location.reload(true);
 				  });

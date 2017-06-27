@@ -145,7 +145,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "http://localhost:8888/classmates/getClassmate?id=" + i, function(data){
+		$.getJSON( "./classmates/getClassmate?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);
@@ -157,7 +157,7 @@
 		});
 
   		var actual = $("#actual");
-		$.getJSON("http://localhost:8888/classmates/getTeachersFromClassmate?idClassmate="+i, function( data ) {
+		$.getJSON("./classmates/getTeachersFromClassmate?idClassmate="+i, function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -180,7 +180,7 @@
   		});
 
   		var teachers = $("#teachers");
-		$.getJSON("http://localhost:8888/teachers", function( data ) {
+		$.getJSON("./teachers", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -207,7 +207,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.get("http://localhost:8888/classmates/addTeacherForClassmate", { idClassmate: i,
+				$.get("./classmates/addTeacherForClassmate", { idClassmate: i,
 																						idTeacher : value.val()})
 				  .done(function( data ) {
 				    location.reload(true);
@@ -221,7 +221,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.get("http://localhost:8888/classmates/deleteTeachersFromClassmate", { idClassmate: i,
+				$.get("./classmates/deleteTeachersFromClassmate", { idClassmate: i,
 																						idTeacher : value.val()})
 				  .done(function( data ) {
 				    location.reload(true);

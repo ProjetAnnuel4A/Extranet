@@ -32,7 +32,7 @@
 		};
 		var i = getUrlParameter('id');
 		var table = $("#students");
-		$.getJSON("http://localhost:8888/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+		$.getJSON("./students/getStudentsForClassmate?idClassmate="+i, function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -55,7 +55,7 @@
 			  	var mark = $this.find("input.mark");
 			  	var student = $this.find("input.id");
 			  	var course = "0";
-				$.post("http://localhost:8888/marks/addMark", { idStudent: student.val(),
+				$.post("./marks/addMark", { idStudent: student.val(),
 																idCourse: course,
 																mark: mark.val()})
 					 .done(function( data ) {

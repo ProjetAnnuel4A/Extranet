@@ -29,7 +29,7 @@
 		};
 		var idTeacher = getUrlParameter('idTeacher');
 		var table = $("#classmates");
-		$.getJSON("http://localhost:8888/classmates/getClassmatesForTeacher?idTeacher="+idTeacher, function( data ) {
+		$.getJSON("./classmates/getClassmatesForTeacher?idTeacher="+idTeacher, function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){

@@ -60,7 +60,7 @@
     };
   var idClassmate = getUrlParameter('idClassmate');
 
-  $.getJSON("http://localhost:8888/planning/getCourseForClassmate?idClassmate=" + idClassmate, function( data ) {
+  $.getJSON("./planning/getCourseForClassmate?idClassmate=" + idClassmate, function( data ) {
       data_json = data;
       var year = new Date().getFullYear();
   var month = new Date().getMonth();

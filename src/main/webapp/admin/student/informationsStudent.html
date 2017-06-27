@@ -144,7 +144,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "http://localhost:8888/students/getStudent?id=" + i, function(data){
+		$.getJSON( "./students/getStudent?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);

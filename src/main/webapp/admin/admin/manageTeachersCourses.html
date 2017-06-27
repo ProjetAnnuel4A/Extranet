@@ -145,7 +145,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "http://localhost:8888/courses/getCourse?courseId=" + i, function(data){
+		$.getJSON( "./courses/getCourse?courseId=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);
@@ -158,7 +158,7 @@
 		});
 
 		var table = $("#teachers");
-		$.getJSON("http://localhost:8888/teachers/", function( data ) {
+		$.getJSON("./teachers/", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -179,7 +179,7 @@
   		});
 
   		var actual = $("#actual");
-		$.getJSON("http://localhost:8888/courses/getTeachersForACourse?courseId="+i, function( data ) {
+		$.getJSON("./courses/getTeachersForACourse?courseId="+i, function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -204,7 +204,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.get("http://localhost:8888/courses/addTeacherForACourse", { courseId:i, teacherId: value.val()})
+				$.get("./courses/addTeacherForACourse", { courseId:i, teacherId: value.val()})
 				  .done(function( data ) {
 				    location.reload(true);
 				  });
@@ -217,7 +217,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.get("http://localhost:8888/courses/removeTeacherFromACourse", { courseId:i, 
+				$.get("./courses/removeTeacherFromACourse", { courseId:i, 
 																				teacherId: value.val()})
 				.done(function( data ) {
 				    location.reload(true);
