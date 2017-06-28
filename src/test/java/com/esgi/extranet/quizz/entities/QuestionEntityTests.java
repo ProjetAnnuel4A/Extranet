@@ -19,6 +19,7 @@ public class QuestionEntityTests
 
         QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
 
+
         Assert.assertNotNull(question) ;
 
         Assert.assertEquals("question", question.getDescription()) ;

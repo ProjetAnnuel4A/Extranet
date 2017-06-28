@@ -12,8 +12,8 @@ public interface ResponseService
 
     List<ResponseEntity> getAll() ;
 
-    ResponseEntity addResponse(Long id, String description, String imagePath) ;
-    ResponseEntity updateResponse(Long id, String description, String imagePath) ;
+    ResponseEntity addResponse(String description, String imagePath) ;
+    ResponseEntity updateResponse(Long responseId, String description, String imagePath) ;
     boolean removeResponse(Long responseId) ;
     ResponseEntity getResponse(Long responseId) ;
 

@@ -14,6 +14,7 @@ public class ResponseEntityTests
     {
         ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
 
+
         Assert.assertNotNull(response) ;
 
         Assert.assertEquals("Test", response.getDescription()) ;

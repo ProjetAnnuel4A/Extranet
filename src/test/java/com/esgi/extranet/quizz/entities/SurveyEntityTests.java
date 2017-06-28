@@ -31,6 +31,7 @@ public class SurveyEntityTests
 
         SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
 
+
         Assert.assertNotNull(survey) ;
         Assert.assertNotNull(survey.getQuestions()) ;
         Assert.assertNotNull(survey.getMark()) ;
@@ -65,6 +66,7 @@ public class SurveyEntityTests
 
         survey.calculateMark() ;
 
+
         Assert.assertEquals(20, survey.getMark(), 0) ;
     }
 
@@ -89,6 +91,7 @@ public class SurveyEntityTests
         questions.add(q3) ;
 
         SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
+
 
         Assert.assertEquals(20, survey.getMark(), 0) ;
     }

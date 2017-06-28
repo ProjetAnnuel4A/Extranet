@@ -35,60 +35,59 @@ public class SurveyController
     }
 
     @GetMapping("/getSurvey")
-    public SurveyEntity getSurvey(@RequestParam("id")Long id)
+    public SurveyEntity getSurvey(@RequestParam("surveyId" ) Long surveyId)
     {
-        return surveyService.getSurvey(id) ;
+        return surveyService.getSurvey(surveyId) ;
     }
 
     @PostMapping("/addSurvey")
-    public SurveyEntity addSurvey(@RequestParam(name = "id") Long id,
-                                  @RequestParam(name = "name") String name,
+    public SurveyEntity addSurvey(@RequestParam(name = "name") String name,
                                   @RequestParam(name = "mark") float mark,
                                   @RequestParam(name = "chances") int chances,
                                   @RequestParam(name = "deadLine") Date deadLine,
                                   @RequestParam(name = "imagePath") String imagePath)
     {
 
-        return surveyService.addSurvey(id, name, mark, chances, deadLine, imagePath) ;
+        return surveyService.addSurvey(name, mark, chances, deadLine, imagePath) ;
     }
 
     @PostMapping("/updateSurvey")
-    public SurveyEntity updateSurvey(@RequestParam(name = "id") Long id,
-                                       @RequestParam(name = "name") String name,
-                                       @RequestParam(name = "mark") float mark,
-                                       @RequestParam(name = "chances") int chances,
-                                       @RequestParam(name = "deadLine") Date deadLine,
-                                       @RequestParam(name = "imagePath") String imagePath)
+    public SurveyEntity updateSurvey(@RequestParam(name = "surveyId") Long surveyId,
+                                     @RequestParam(name = "name") String name,
+                                     @RequestParam(name = "mark") float mark,
+                                     @RequestParam(name = "chances") int chances,
+                                     @RequestParam(name = "deadLine") Date deadLine,
+                                     @RequestParam(name = "imagePath") String imagePath)
     {
 
-        return surveyService.updateSurvey(id, name, mark, chances, deadLine, imagePath) ;
+        return surveyService.updateSurvey(surveyId, name, mark, chances, deadLine, imagePath) ;
     }
 
     @RequestMapping(value = "/removeSurvey", method = RequestMethod.POST)
-    public boolean removeSurvey(@RequestParam(name = "id") Long id)
+    public boolean removeSurvey(@RequestParam(name = "surveyId") Long surveyId)
     {
-        return surveyService.removeSurvey(id) ;
+        return surveyService.removeSurvey(surveyId) ;
     }
 
 
     @GetMapping("/getQuestionsFromASurvey")
-    public List<QuestionEntity> getQuestionsFromASurvey(@RequestParam("idQuestion") Long idQuestion)
+    public List<QuestionEntity> getQuestionsFromASurvey(@RequestParam("surveyId") Long surveyId)
     {
-        return surveyService.getQuestionsFromASurvey(idQuestion) ;
+        return surveyService.getQuestionsFromASurvey(surveyId) ;
     }
 
     @PostMapping("/addQuestionForASurvey")
-    public boolean addQuestionForASurvey(@RequestParam("idSurvey") Long idSurvey,
-                                         @RequestParam("idQuestion") Long idQuestion)
+    public boolean addQuestionForASurvey(@RequestParam("surveyId") Long surveyId,
+                                         @RequestParam("questionId") Long questionId)
     {
-        return surveyService.addQuestionForASurvey(idSurvey, idQuestion) ;
+        return surveyService.addQuestionForASurvey(surveyId, questionId) ;
     }
 
     @PostMapping("/removeQuestionFromASurvey")
-    public boolean removeQuestionFromASurvey(@RequestParam("idSurvey") Long idSurvey,
-                                             @RequestParam("idQuestion") Long idQuestion)
+    public boolean removeQuestionFromASurvey(@RequestParam("surveyId") Long surveyId,
+                                             @RequestParam("questionId") Long questionId)
     {
-        return surveyService.removeQuestionFromASurvey(idSurvey, idQuestion) ;
+        return surveyService.removeQuestionFromASurvey(surveyId, questionId) ;
     }
 
 }

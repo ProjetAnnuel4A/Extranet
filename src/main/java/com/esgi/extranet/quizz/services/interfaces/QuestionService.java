@@ -14,10 +14,10 @@ public interface QuestionService
 
     List<QuestionEntity> getAll() ;
 
-    QuestionEntity addQuestion(Long id, String description, float points, boolean allOrNot, String imagePath) ;
-    QuestionEntity updateQuestion(Long id, String description, float points, boolean allOrNot, String imagePath) ;
-    boolean removeQuestion(Long id) ;
-    QuestionEntity getQuestion(Long id) ;
+    QuestionEntity addQuestion(String description, float points, boolean allOrNot, String imagePath) ;
+    QuestionEntity updateQuestion(Long questionId, String description, float points, boolean allOrNot, String imagePath) ;
+    boolean removeQuestion(Long questionId) ;
+    QuestionEntity getQuestion(Long questionId) ;
 
     ArrayList<ResponseEntity> getResponsesFromAQuestion(Long questionId) ;
     boolean addResponseForAQuestion(Long questionId, Long responseId) ;

@@ -34,79 +34,78 @@ public class QuestionController
     }
 
     @GetMapping("/getQuestion")
-    public QuestionEntity getQuestion(@RequestParam("id")Long id)
+    public QuestionEntity getQuestion(@RequestParam("questionId") Long questionId)
     {
-        return questionService.getQuestion(id) ;
+        return questionService.getQuestion(questionId) ;
     }
 
     @PostMapping("/addQuestion")
-    public QuestionEntity addQuestion(@RequestParam(name = "id") Long id,
-                                      @RequestParam(name = "description") String description,
+    public QuestionEntity addQuestion(@RequestParam(name = "description") String description,
                                       @RequestParam(name = "points") float points,
                                       @RequestParam(name = "allOrNot") boolean allOrNot,
                                       @RequestParam(name = "imagePath") String imagePath)
     {
 
-        return questionService.addQuestion(id, description, points, allOrNot, imagePath) ;
+        return questionService.addQuestion(description, points, allOrNot, imagePath) ;
     }
 
     @PostMapping("/updateQuestion")
-    public QuestionEntity updateQuestion(@RequestParam(name = "id") Long id,
+    public QuestionEntity updateQuestion(@RequestParam(name = "questionId") Long questionId,
                                          @RequestParam(name = "description") String description,
                                          @RequestParam(name = "points") float points,
                                          @RequestParam(name = "allOrNot") boolean allOrNot,
                                          @RequestParam(name = "imagePath") String imagePath)
     {
 
-        return questionService.updateQuestion(id, description, points, allOrNot, imagePath) ;
+        return questionService.updateQuestion(questionId, description, points, allOrNot, imagePath) ;
     }
 
     @RequestMapping(value = "/removeQuestion", method = RequestMethod.POST)
-    public boolean removeQuestion(@RequestParam(name = "id") Long id)
+    public boolean removeQuestion(@RequestParam(name = "questionId") Long questionId)
     {
-        return questionService.removeQuestion(id) ;
+        return questionService.removeQuestion(questionId) ;
     }
 
 
     @GetMapping("/getResponsesFromAQuestion")
-    public List<ResponseEntity> getResponsesFromAQuestion(@RequestParam("idQuestion") Long idQuestion)
+    public List<ResponseEntity> getResponsesFromAQuestion(@RequestParam("questionId") Long questionId)
     {
-        return questionService.getResponsesFromAQuestion(idQuestion) ;
+        return questionService.getResponsesFromAQuestion(questionId) ;
     }
 
     @PostMapping("/addResponseForAQuestion")
-    public boolean addResponseForAQuestion(@RequestParam("idQuestion") Long idQuestion,
-                                           @RequestParam("idResponse") Long idResponse)
+    public boolean addResponseForAQuestion(@RequestParam("questionId") Long questionId,
+                                           @RequestParam("responseId") Long responseId)
     {
-        return questionService.addResponseForAQuestion(idQuestion, idResponse) ;
+        return questionService.addResponseForAQuestion(questionId, responseId) ;
     }
 
     @PostMapping("/removeResponseFromAQuestion")
-    public boolean removeResponseFromAQuestion(@RequestParam("idQuestion") Long idQuestion,
-                                               @RequestParam("idResponse") Long idResponse)
+    public boolean removeResponseFromAQuestion(@RequestParam("questionId") Long questionId,
+                                               @RequestParam("responseId") Long responseId)
     {
-        return questionService.removeResponseFromAQuestion(idQuestion, idResponse) ;
+        return questionService.removeResponseFromAQuestion(questionId, responseId) ;
     }
 
 
     @GetMapping("/getCorrectResponsesFromAQuestion")
-    public List<Long> getCorrectResponsesFromAQuestion(@RequestParam("idQuestion") Long idQuestion)
+    public List<Long> getCorrectResponsesFromAQuestion(@RequestParam("questionId") Long questionId)
     {
-        return questionService.getCorrectResponsesFromAQuestion(idQuestion) ;
+        return questionService.getCorrectResponsesFromAQuestion(questionId) ;
     }
 
     @PostMapping("/addCorrectResponseForAQuestion")
-    public boolean addCorrectResponseForAQuestion(@RequestParam("idQuestion") Long idQuestion,
-                                                  @RequestParam("idCorrectResponse") Long idCorrectResponse)
+    public boolean addCorrectResponseForAQuestion(@RequestParam("questionId") Long questionId,
+                                                  @RequestParam("correctResponseId") Long correctResponseId)
     {
-        return questionService.addResponseForAQuestion(idQuestion, idCorrectResponse) ;
+        return questionService.addResponseForAQuestion(questionId, correctResponseId) ;
     }
 
     @PostMapping("/removeCorrectResponseFromAQuestion")
-    public boolean removeCorrectResponseFromAQuestion(@RequestParam("idQuestion") Long idQuestion,
-                                                      @RequestParam("idCorrectResponse") Long idCorrectResponse)
+    public boolean removeCorrectResponseFromAQuestion(@RequestParam("questionId") Long questionId,
+                                                      @RequestParam("correctResponseId") Long correctResponseId)
     {
-        return questionService.removeResponseFromAQuestion(idQuestion, idCorrectResponse) ;
+        return questionService.removeResponseFromAQuestion(questionId, correctResponseId) ;
     }
 
 }

@@ -33,33 +33,32 @@ public class ResponseController
     }
 
     @GetMapping("/getResponse")
-    public ResponseEntity getResponse(@RequestParam("id")Long id)
+    public ResponseEntity getResponse(@RequestParam("responseId") Long responseId)
     {
-        return responseService.getResponse(id) ;
+        return responseService.getResponse(responseId) ;
     }
 
     @PostMapping("/addResponse")
-    public ResponseEntity addResponse(@RequestParam(name = "id") Long id,
-                                      @RequestParam(name = "description") String description,
+    public ResponseEntity addResponse(@RequestParam(name = "description") String description,
                                       @RequestParam(name = "imagePath") String imagePath)
     {
 
-        return responseService.addResponse(id, description, imagePath) ;
+        return responseService.addResponse(description, imagePath) ;
     }
 
     @PostMapping("/updateResponse")
-    public ResponseEntity updateResponse(@RequestParam(name = "id") Long id,
+    public ResponseEntity updateResponse(@RequestParam(name = "responseId") Long responseId,
                                          @RequestParam(name = "description") String description,
                                          @RequestParam(name = "imagePath") String imagePath)
     {
 
-        return responseService.updateResponse(id, description, imagePath) ;
+        return responseService.updateResponse(responseId, description, imagePath) ;
     }
 
     @RequestMapping(value = "/removeResponse", method = RequestMethod.POST)
-    public boolean removeResponse(@RequestParam(name = "id") Long id)
+    public boolean removeResponse(@RequestParam(name = "responseId") Long responseId)
     {
-        return responseService.removeResponse(id) ;
+        return responseService.removeResponse(responseId) ;
     }
 
 }

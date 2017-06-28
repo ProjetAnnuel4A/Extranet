@@ -15,10 +15,10 @@ public interface SurveyService
 
     List<SurveyEntity> getAll() ;
 
-    SurveyEntity addSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath) ;
-    SurveyEntity updateSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath) ;
-    boolean removeSurvey(Long questionId) ;
-    SurveyEntity getSurvey(Long questionId) ;
+    SurveyEntity addSurvey(String name, float mark, int chances, Date deadLine, String imagePath) ;
+    SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date deadLine, String imagePath) ;
+    boolean removeSurvey(Long surveyId) ;
+    SurveyEntity getSurvey(Long surveyId) ;
 
     ArrayList<QuestionEntity> getQuestionsFromASurvey(Long surveyId) ;
     boolean addQuestionForASurvey(Long surveyId, Long questionId) ;
