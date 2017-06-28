@@ -6,6 +6,7 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.interfaces.QuestionService ;
 import org.springframework.beans.factory.annotation.Autowired ;
+import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
 import java.util.ArrayList ;
@@ -14,6 +15,7 @@ import java.util.List ;
 /**
  * Created by Samuel Bijou on 27/06/2017.
  */
+@Service
 public class QuestionServiceImpl implements QuestionService
 {
 
@@ -51,6 +53,7 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
+    @Transactional
     public QuestionEntity updateQuestion(Long id, String description, float points, boolean allOrNot, String imagePath)
     {
         QuestionEntity questionEntity = questionRepository.findById(id) ;
@@ -90,6 +93,7 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
+    @Transactional
     public boolean addResponseForAQuestion(Long questionId, Long responseId)
     {
 
@@ -104,6 +108,7 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
+    @Transactional
     public boolean removeResponseFromAQuestion(Long questionId, Long responseId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
@@ -132,6 +137,7 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
+    @Transactional
     public boolean addCorrectResponseForAQuestion(Long questionId, Long responseId)
     {
 
@@ -145,6 +151,7 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
+    @Transactional
     public boolean removeCorrectResponseFromAQuestion(Long questionId, Long responseId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;

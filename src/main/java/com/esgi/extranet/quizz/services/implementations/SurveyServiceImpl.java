@@ -6,6 +6,7 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
 import com.esgi.extranet.quizz.services.interfaces.SurveyService ;
 import org.springframework.beans.factory.annotation.Autowired ;
+import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
 import java.sql.Date ;
@@ -15,6 +16,7 @@ import java.util.List ;
 /**
  * Created by Samuel Bijou on 27/06/2017.
  */
+@Service
 public class SurveyServiceImpl implements SurveyService
 {
 
@@ -53,6 +55,7 @@ public class SurveyServiceImpl implements SurveyService
     }
 
     @Override
+    @Transactional
     public SurveyEntity updateSurvey(Long id, String name, float mark, int chances, Date deadLine, String imagePath)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(id) ;
@@ -93,6 +96,7 @@ public class SurveyServiceImpl implements SurveyService
     }
 
     @Override
+    @Transactional
     public boolean addQuestionForASurvey(Long surveyId, Long questionId)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;
@@ -106,6 +110,7 @@ public class SurveyServiceImpl implements SurveyService
     }
 
     @Override
+    @Transactional
     public boolean removeQuestionFromASurvey(Long surveyId, Long questionId)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;

@@ -1,5 +1,6 @@
-package com.esgi.extranet.quizz.controllers ;
+package com.esgi.extranet.quizz ;
 
+import com.esgi.extranet.quizz.QuizzSystem ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
@@ -11,7 +12,7 @@ import java.util.ArrayList ;
 /**
  * Created by Samuel Bijou on 07/06/2017.
  */
-public class QuizzControllerTests
+public class QuizzSystemTests
 {
 
     @Test
@@ -28,7 +29,7 @@ public class QuizzControllerTests
         userResponses[0] = 2 ;
         userResponses[1] = 3 ;
 
-        Assert.assertNotNull(QuizzController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertNotNull(QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
@@ -45,7 +46,7 @@ public class QuizzControllerTests
         userResponses[0] = 2 ;
         userResponses[1] = 3 ;
 
-        Assert.assertTrue(6 == QuizzController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertTrue(6 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
@@ -61,7 +62,7 @@ public class QuizzControllerTests
         int[] userResponses = new int[1] ;
         userResponses[0] = 2 ;
 
-        Assert.assertTrue(3 == QuizzController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertTrue(3 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
@@ -78,7 +79,7 @@ public class QuizzControllerTests
         userResponses[0] = 1 ;
         userResponses[1] = 4 ;
 
-        Assert.assertTrue(0 == QuizzController.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertTrue(0 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
 
     @Test
@@ -111,7 +112,7 @@ public class QuizzControllerTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 3 ;
 
-        Assert.assertNotNull(QuizzController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertNotNull(QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
 
     @Test
@@ -144,7 +145,7 @@ public class QuizzControllerTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 3 ;
 
-        Assert.assertTrue(20 == QuizzController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertTrue(20 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
 
     @Test
@@ -177,7 +178,7 @@ public class QuizzControllerTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 4 ;
 
-        Assert.assertTrue(6 == QuizzController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertTrue(6 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
 
     @Test
@@ -210,7 +211,33 @@ public class QuizzControllerTests
         userResponses[2][0] = 4 ;
         userResponses[2][1] = 4 ;
 
-        Assert.assertTrue(0 == QuizzController.CalculateSurveyScore(survey, userResponses)) ;
+        Assert.assertTrue(0 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
+    }
+
+
+    @Test
+    public void should_calculate_survey_mark()
+    {
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+
+        QuestionEntity q1 = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
+
+        QuestionEntity q2 = new QuestionEntity(new Long(2), "question", responses, correctResponses, 8, true, "") ;
+
+        QuestionEntity q3 = new QuestionEntity(new Long(3), "question", responses, correctResponses, 6, true, "") ;
+
+        ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
+
+        questions.add(q1) ;
+        questions.add(q2) ;
+        questions.add(q3) ;
+
+        SurveyEntity survey = new SurveyEntity(new Long(1), "test", questions, 19, 1, null, "") ;
+
+        QuizzSystem.calculateSurveyMark(survey) ;
+
+        Assert.assertEquals(20, survey.getMark(), 0) ;
     }
 
 }

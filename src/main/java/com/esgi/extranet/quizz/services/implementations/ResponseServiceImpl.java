@@ -4,6 +4,7 @@ import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.interfaces.ResponseService ;
 import org.springframework.beans.factory.annotation.Autowired ;
+import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
 import java.util.List ;
@@ -11,6 +12,7 @@ import java.util.List ;
 /**
  * Created by Samuel Bijou on 27/06/2017.
  */
+@Service
 public class ResponseServiceImpl implements ResponseService
 {
 
@@ -44,6 +46,7 @@ public class ResponseServiceImpl implements ResponseService
     }
 
     @Override
+    @Transactional
     public ResponseEntity updateResponse(Long id, String description, String imagePath)
     {
         ResponseEntity responseEntity = responseRepository.findById(id) ;

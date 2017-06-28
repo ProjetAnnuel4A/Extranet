@@ -1,4 +1,4 @@
-package com.esgi.extranet.quizz.controllers ;
+package com.esgi.extranet.quizz ;
 
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
@@ -6,7 +6,7 @@ import com.esgi.extranet.quizz.entities.SurveyEntity ;
 /**
  * Created by Samuel Bijou on 07/06/2017.
  */
-public class QuizzController
+public class QuizzSystem
 {
 
     public static float calculateQuestionScore(QuestionEntity question, int[] userResponses)
@@ -59,7 +59,7 @@ public class QuizzController
         return score ;
     }
 
-    public static float CalculateSurveyScore(SurveyEntity survey, int[][] userResponses)
+    public static float calculateSurveyScore(SurveyEntity survey, int[][] userResponses)
     {
         float score = 0 ;
 
@@ -69,6 +69,22 @@ public class QuizzController
         }
 
         return score ;
+    }
+
+
+    public static void calculateSurveyMark(SurveyEntity survey)
+    {
+        survey.setMark(0) ;
+
+        int questionsNumber = survey.getQuestions().size() ;
+
+        if(questionsNumber > 0)
+        {
+            for(int i = 0 ; i < questionsNumber ; i++)
+            {
+                survey.setMark(survey.getMark() + survey.getQuestions().get(i).getPoints()) ;
+            }
+        }
     }
 
 }
