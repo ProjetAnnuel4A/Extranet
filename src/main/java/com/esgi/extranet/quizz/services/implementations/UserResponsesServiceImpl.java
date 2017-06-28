@@ -97,7 +97,7 @@ public class UserResponsesServiceImpl implements UserResponsesService
 
         userResponsesRepository.save(userResponsesEntity) ;
 
-        return false ;
+        return true ;
     }
 
     @Override

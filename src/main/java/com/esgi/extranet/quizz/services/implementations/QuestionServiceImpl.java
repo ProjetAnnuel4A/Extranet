@@ -104,7 +104,7 @@ public class QuestionServiceImpl implements QuestionService
 
         questionRepository.save(questionEntity) ;
 
-        return false ;
+        return true ;
     }
 
     @Override
@@ -147,7 +147,7 @@ public class QuestionServiceImpl implements QuestionService
 
         questionRepository.save(questionEntity) ;
 
-        return false ;
+        return true ;
     }
 
     @Override

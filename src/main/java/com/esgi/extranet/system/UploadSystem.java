@@ -12,7 +12,7 @@ import java.net.Socket ;
 public class UploadSystem
 {
 
-    public void uploadToServer(String imagePath) throws IOException
+    public static void uploadToServer(String imagePath) throws IOException
     {
         Socket soc ;
         BufferedImage img = null ;
@@ -48,7 +48,7 @@ public class UploadSystem
         soc.close() ;
     }
 
-    public void receiveUpload() throws IOException
+    public static byte[] receiveUpload() throws IOException
     {
         ServerSocket server = null ;
         Socket socket ;
@@ -66,22 +66,21 @@ public class UploadSystem
         dis.close() ;
         in.close() ;
 
-        InputStream ian = new ByteArrayInputStream(data) ;
-        BufferedImage bImage = ImageIO.read(ian) ;
+        return data ;
     }
 
-    public String getImageFormat(String imagePath)
+    public static String getImageFormat(String imagePath)
     {
         String imageExtension = imagePath.substring(imagePath.lastIndexOf(".") + 1, imagePath.length()) ;
 
         return imageExtension ;
     }
 
-    public String saveImage()
+    public String saveImage(byte[] data)
     {
         String imageServerPath = "" ;
 
-        // Do Something
+        // Do something
 
         return imageServerPath ;
     }

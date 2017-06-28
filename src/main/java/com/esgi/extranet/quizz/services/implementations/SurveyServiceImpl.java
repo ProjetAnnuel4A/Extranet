@@ -106,7 +106,7 @@ public class SurveyServiceImpl implements SurveyService
 
         surveyRepository.save(surveyEntity) ;
 
-        return false ;
+        return true ;
     }
 
     @Override
