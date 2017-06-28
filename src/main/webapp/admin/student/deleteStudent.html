@@ -147,7 +147,7 @@
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
-				$.post("./students/removeStudent", { id: value.val()})
+				$.post("http://brotherhood9305.cloudapp.net:9000/students/removeStudent", { id: value.val()})
 				  .done(function( data ) {
 				    location.reload(true);
 				  });

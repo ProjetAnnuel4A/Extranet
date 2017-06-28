@@ -123,7 +123,7 @@
     </div>
 	<script>
   		function addCoursename(){
-			$.post("./courses/addCourse", { coursename: $("#coursename").val()})
+			$.post("http://brotherhood9305.cloudapp.net:9000/courses/addCourse", { coursename: $("#coursename").val()})
 				.done(function( data ) {
 				location.reload(true);
 			});

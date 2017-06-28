@@ -142,7 +142,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "./teachers/getTeacher?id=" + i, function(data){
+		$.getJSON( "http://brotherhood9305.cloudapp.net:9000/teachers/getTeacher?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);

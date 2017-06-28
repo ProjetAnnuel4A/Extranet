@@ -121,7 +121,7 @@
     </div>
 	<script>
 		var table = $("#classmates");
-		$.getJSON("./classmates/", function( data ) {
+		$.getJSON("http://brotherhood9305.cloudapp.net:9000/classmates/", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){

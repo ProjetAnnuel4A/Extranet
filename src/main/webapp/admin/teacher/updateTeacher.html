@@ -119,7 +119,7 @@
     </div>
 	<script>
 		var table = $("#teachers");
-		$.getJSON("./teachers/", function( data ) {
+		$.getJSON("http://brotherhood9305.cloudapp.net:9000/teachers/", function( data ) {
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){

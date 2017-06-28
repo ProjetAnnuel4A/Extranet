@@ -122,7 +122,7 @@
     </div>
 	<script>
   		function addClassmate(){
-			$.post("./classmates/addClassmate", { classmateName: $("#classmateName").val()})
+			$.post("http://brotherhood9305.cloudapp.net:9000/classmates/addClassmate", { classmateName: $("#classmateName").val()})
 				.done(function( data ) {
 				location.reload(true);
 			});
