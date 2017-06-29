@@ -76,13 +76,4 @@ public class UploadSystem
         return imageExtension ;
     }
 
-    public String saveImage(byte[] data)
-    {
-        String imageServerPath = "" ;
-
-        // Do something
-
-        return imageServerPath ;
-    }
-
 }

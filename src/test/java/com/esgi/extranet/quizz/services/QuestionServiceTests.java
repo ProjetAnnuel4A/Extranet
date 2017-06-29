@@ -3,8 +3,10 @@ package com.esgi.extranet.quizz.services ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.repositories.QuestionRepository ;
+import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.implementations.QuestionServiceImpl ;
 import org.junit.Assert ;
+import org.junit.Before ;
 import org.junit.Test ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
@@ -26,12 +28,32 @@ public class QuestionServiceTests
     @Autowired
     QuestionServiceImpl questionService ;
 
+    @Autowired
+    QuestionRepository questionRepository ;
+
+    @Autowired
+    ResponseRepository responseRepository ;
+
+
+    private QuestionEntity question ;
+
+
+    @Before
+    public void initialize_datas()
+    {
+        questionService = new QuestionServiceImpl(questionRepository, responseRepository) ;
+
+        ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
+        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "Test", responses, correctResponses, 0, true, "") ;
+
+        questionRepository.save(question) ;
+    }
+
 
     @Test
     public void should_add_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         QuestionEntity result = questionService.getQuestion(question.getId()) ;
 
 
@@ -52,8 +74,6 @@ public class QuestionServiceTests
     @Test
     public void should_update_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         QuestionEntity result = questionService.updateQuestion(question.getId(), "Test 2", 1, false, "test") ;
 
 
@@ -69,9 +89,6 @@ public class QuestionServiceTests
     @Test
     public void should_remove_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
-
         Assert.assertNotNull(question) ;
 
 
@@ -84,20 +101,18 @@ public class QuestionServiceTests
     @Test
     public void should_get_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
+        QuestionEntity result = questionRepository.findById(new Long(1)) ;
 
 
-        Assert.assertNotNull(question) ;
+        Assert.assertNotNull(result) ;
 
-        Assert.assertNotNull(questionService.getQuestion(question.getId())) ;
+        Assert.assertNotNull(questionService.getQuestion(result.getId())) ;
     }
 
 
     @Test
     public void should_get_response_from_a_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
@@ -118,8 +133,6 @@ public class QuestionServiceTests
     @Test
     public void should_add_response_for_a_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
@@ -134,8 +147,6 @@ public class QuestionServiceTests
     @Test
     public void should_remove_response_from_a_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
 
         boolean resultAdd = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
@@ -153,8 +164,6 @@ public class QuestionServiceTests
     @Test
     public void should_get_correct_responses_from_a_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         Long correctResponse = new Long(1) ;
 
         boolean result = questionService.addCorrectResponseForAQuestion(question.getId(), correctResponse) ;
@@ -175,8 +184,6 @@ public class QuestionServiceTests
     @Test
     public void should_add_correct_response_for_a_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         Long correctResponse = new Long(1) ;
 
         boolean result = questionService.addCorrectResponseForAQuestion(question.getId(), correctResponse) ;
@@ -191,8 +198,6 @@ public class QuestionServiceTests
     @Test
     public void should_remove_correct_response_from_a_question() throws Exception
     {
-        QuestionEntity question = questionService.addQuestion("Test", 0, true, "") ;
-
         Long correctResponse = new Long(1) ;
 
         boolean resultAdd = questionService.addCorrectResponseForAQuestion(question.getId(), correctResponse) ;

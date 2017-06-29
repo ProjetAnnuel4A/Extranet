@@ -2,12 +2,19 @@ package com.esgi.extranet.quizz.entities ;
 
 import org.junit.Assert ;
 import org.junit.Test ;
+import org.junit.runner.RunWith ;
+import org.springframework.boot.test.context.SpringBootTest ;
+import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.util.ArrayList ;
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
 /**
  * Created by Samuel Bijou on 01/05/2017.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class SurveyEntityTests
 {
 
@@ -70,8 +77,6 @@ public class SurveyEntityTests
         Assert.assertEquals(20, survey.getMark(), 0) ;
     }
 
-    // @PostConstruct ne fonctionne pas, nécessite peut-être le contexte de Spring
-    /*
     @Test
     public void should_calculate_mark_after_creation()
     {
@@ -95,6 +100,5 @@ public class SurveyEntityTests
 
         Assert.assertEquals(20, survey.getMark(), 0) ;
     }
-    */
 
 }

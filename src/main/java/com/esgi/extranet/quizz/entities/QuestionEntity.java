@@ -7,6 +7,7 @@ import javax.persistence.* ;
 import javax.validation.constraints.DecimalMin ;
 import javax.validation.constraints.NotNull ;
 import java.util.ArrayList ;
+import java.util.List;
 
 /**
  * Created by Samuel Bijou on 01/05/2017.
@@ -32,16 +33,18 @@ public class QuestionEntity
     private String description ;
 
     @OneToMany
-    @JoinColumn
+    @JoinColumn(table = "response")
     private ArrayList<ResponseEntity> responses ;
 
     @Column
     private ArrayList<Long> correctResponses ;
 
-    @DecimalMin(value = "0.0")
+    @NotNull
     @Column(nullable = false)
+    @DecimalMin(value = "0.0")
     private float points = 0 ;
 
+    @NotNull
     @Column(nullable = false)
     private boolean allOrNot = true ;
 

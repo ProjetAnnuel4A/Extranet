@@ -27,20 +27,20 @@ public class UserResponsesEntity
     private Long id ;
 
     @NotNull
-    @JoinColumn
+    @JoinColumn(table = "student", name = "id")
     private Long userId ;
 
     @NotNull
-    @JoinColumn
+    @JoinColumn(table = "survey", name = "id")
     private Long surveyId ;
 
     @NotNull
-    @JoinColumn
+    @JoinColumn(table = "question", name = "id")
     private Long questionId ;
 
     @NotNull
     @OneToMany
-    @JoinColumn
+    @JoinColumn(table = "response", name = "id")
     private ArrayList<Long> responses ;
 
 }

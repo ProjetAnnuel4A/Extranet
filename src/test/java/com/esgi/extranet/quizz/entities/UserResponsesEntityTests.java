@@ -3,15 +3,20 @@ package com.esgi.extranet.quizz.entities ;
 import com.esgi.extranet.school.entities.StudentEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
+import org.junit.runner.RunWith ;
+import org.springframework.boot.test.context.SpringBootTest ;
+import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.time.LocalDate ;
-import java.time.format.DateTimeFormatter ;
 import java.util.ArrayList ;
-import java.util.Locale ;
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
 /**
  * Created by Samuel Bijou on 28/06/2017.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class UserResponsesEntityTests
 {
 

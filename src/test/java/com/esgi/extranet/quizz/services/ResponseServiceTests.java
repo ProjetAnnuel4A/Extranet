@@ -1,9 +1,10 @@
 package com.esgi.extranet.quizz.services ;
 
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
+import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.implementations.ResponseServiceImpl ;
-import com.esgi.extranet.quizz.services.interfaces.ResponseService ;
 import org.junit.Assert ;
+import org.junit.Before ;
 import org.junit.Test ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
@@ -23,12 +24,27 @@ public class ResponseServiceTests
     @Autowired
     ResponseServiceImpl responseService ;
 
+    @Autowired
+    ResponseRepository responseRepository ;
+
+
+    private ResponseEntity response ;
+
+
+    @Before
+    public void initialize_datas()
+    {
+        responseService = new ResponseServiceImpl(responseRepository) ;
+
+        ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
+
+        responseRepository.save(response) ;
+    }
+
 
     @Test
     public void should_add_response() throws Exception
     {
-        ResponseEntity response = responseService.addResponse("Test", "") ;
-
         ResponseEntity result = responseService.getResponse(response.getId()) ;
 
 
@@ -45,8 +61,6 @@ public class ResponseServiceTests
     @Test
     public void should_update_response() throws Exception
     {
-        ResponseEntity response = responseService.addResponse("Test", "") ;
-
         ResponseEntity result = responseService.updateResponse(response.getId(), "Test 2", "") ;
 
 
@@ -60,9 +74,6 @@ public class ResponseServiceTests
     @Test
     public void should_remove_response() throws Exception
     {
-        ResponseEntity response = responseService.addResponse("Test", "") ;
-
-
         Assert.assertNotNull(response) ;
 
 
@@ -75,12 +86,12 @@ public class ResponseServiceTests
     @Test
     public void should_get_response() throws Exception
     {
-        ResponseEntity response = responseService.addResponse("Test", "") ;
+        ResponseEntity result = responseRepository.findById(new Long(1)) ;
 
 
-        Assert.assertNotNull(response) ;
+        Assert.assertNotNull(result) ;
 
-        Assert.assertNotNull(responseService.getResponse(response.getId())) ;
+        Assert.assertNotNull(responseService.getResponse(result.getId())) ;
     }
 
 }

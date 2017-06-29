@@ -35,15 +35,17 @@ public class SurveyEntity
     private String name ;
 
     @OneToMany
-    @JoinColumn
+    @JoinColumn(table = "question")
     private ArrayList<QuestionEntity> questions ;
 
-    @DecimalMin(value = "0.0")
+    @NotNull
     @Column(nullable = false)
+    @DecimalMin(value = "0.0")
     private float mark = 0 ;
 
-    @Min(value = -1)
+    @NotNull
     @Column(nullable = false)
+    @Min(value = -1)
     private int chances = 0 ; // Détermine le nombre d'essais (-1 = infini)
 
     @Column

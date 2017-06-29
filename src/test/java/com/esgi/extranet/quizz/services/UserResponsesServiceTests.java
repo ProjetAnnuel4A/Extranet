@@ -1,19 +1,19 @@
 package com.esgi.extranet.quizz.services ;
 
-import com.esgi.extranet.quizz.entities.UserResponsesEntity;
+import com.esgi.extranet.quizz.entities.UserResponsesEntity ;
 import com.esgi.extranet.quizz.repositories.UserResponsesRepository ;
-import com.esgi.extranet.quizz.services.implementations.UserResponsesServiceImpl;
-import com.esgi.extranet.quizz.services.interfaces.UserResponsesService ;
-import org.junit.Assert;
+import com.esgi.extranet.quizz.services.implementations.UserResponsesServiceImpl ;
+import org.junit.Assert ;
+import org.junit.Before ;
 import org.junit.Test ;
-import org.junit.runner.RunWith;
+import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.context.SpringBootTest ;
+import org.springframework.test.context.junit4.SpringRunner ;
 
-import java.util.ArrayList;
+import java.util.ArrayList ;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
 /**
  * Created by Samuel Bijou on 28/06/2017.
@@ -26,12 +26,28 @@ public class UserResponsesServiceTests
     @Autowired
     UserResponsesServiceImpl userResponsesService ;
 
+    @Autowired
+    UserResponsesRepository userResponsesRepository ;
+
+
+    private UserResponsesEntity userResponses ;
+
+
+    @Before
+    public void initialize_datas()
+    {
+        userResponsesService = new UserResponsesServiceImpl(userResponsesRepository) ;
+
+        ArrayList<Long> responses = new ArrayList<Long>() ;
+        UserResponsesEntity userResponses = new UserResponsesEntity(new Long(1), new Long(1), new Long(2), new Long(3), responses) ;
+
+        userResponsesRepository.save(userResponses) ;
+    }
+
 
     @Test
     public void should_add_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
-
         UserResponsesEntity result = userResponsesService.getUserResponses(userResponses.getId()) ;
 
 
@@ -50,8 +66,6 @@ public class UserResponsesServiceTests
     @Test
     public void should_update_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
-
         UserResponsesEntity result = userResponsesService.updateUserResponses(new Long(1), new Long(2), new Long(3), new Long(4)) ;
 
 
@@ -66,9 +80,6 @@ public class UserResponsesServiceTests
     @Test
     public void should_remove_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
-
-
         Assert.assertNotNull(userResponses) ;
 
 
@@ -81,20 +92,18 @@ public class UserResponsesServiceTests
     @Test
     public void should_get_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
+        UserResponsesEntity result = userResponsesRepository.findById(new Long(1)) ;
 
 
-        Assert.assertNotNull(userResponses) ;
+        Assert.assertNotNull(result) ;
 
-        Assert.assertNotNull(userResponsesService.getUserResponses(userResponses.getId())) ;
+        Assert.assertNotNull(userResponsesService.getUserResponses(result.getId())) ;
     }
 
 
     @Test
     public void should_get_responses_from_a_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
-
         Long response = new Long(1) ;
 
         boolean result = userResponsesService.addResponseForAUserResponses(userResponses.getId(), response) ;
@@ -115,8 +124,6 @@ public class UserResponsesServiceTests
     @Test
     public void should_add_response_for_a_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
-
         Long response = new Long(1) ;
 
         boolean result = userResponsesService.addResponseForAUserResponses(userResponses.getId(), response) ;
@@ -131,8 +138,6 @@ public class UserResponsesServiceTests
     @Test
     public void should_remove_response_from_a_user_responses() throws Exception
     {
-        UserResponsesEntity userResponses = userResponsesService.addUserResponses(new Long(1), new Long(2), new Long(3)) ;
-
         Long response = new Long(1) ;
 
         boolean resultAdd = userResponsesService.addResponseForAUserResponses(userResponses.getId(), response) ;
