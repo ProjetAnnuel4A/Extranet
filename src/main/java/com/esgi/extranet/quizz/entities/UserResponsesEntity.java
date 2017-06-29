@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties ;
 
 import javax.persistence.* ;
 import javax.validation.constraints.NotNull ;
-import java.util.ArrayList ;
+import java.util.List ;
 
 /**
  * Created by Samuel Bijou on 28/06/2017.
@@ -41,6 +41,6 @@ public class UserResponsesEntity
     @NotNull
     @OneToMany
     @JoinColumn(table = "response", name = "id")
-    private ArrayList<Long> responses ;
+    private List<Long> responses ;
 
 }

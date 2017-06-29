@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
 import java.sql.Date ;
-import java.util.ArrayList ;
 import java.util.List ;
 
 /**
@@ -88,7 +87,7 @@ public class SurveyServiceImpl implements SurveyService
 
 
     @Override
-    public ArrayList<QuestionEntity> getQuestionsFromASurvey(Long surveyId)
+    public List<QuestionEntity> getQuestionsFromASurvey(Long surveyId)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;
 

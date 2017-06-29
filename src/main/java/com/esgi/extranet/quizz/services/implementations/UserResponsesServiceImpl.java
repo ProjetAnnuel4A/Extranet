@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
-import java.util.ArrayList ;
 import java.util.List ;
 
 /**
@@ -80,7 +79,7 @@ public class UserResponsesServiceImpl implements UserResponsesService
 
 
     @Override
-    public ArrayList<Long> getResponsesFromAUserResponses(Long userResponsesId)
+    public List<Long> getResponsesFromAUserResponses(Long userResponsesId)
     {
         UserResponsesEntity userResponsesEntity = userResponsesRepository.findById(userResponsesId) ;
 

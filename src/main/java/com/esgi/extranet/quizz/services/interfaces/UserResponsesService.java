@@ -2,7 +2,6 @@ package com.esgi.extranet.quizz.services.interfaces ;
 
 import com.esgi.extranet.quizz.entities.UserResponsesEntity ;
 
-import java.util.ArrayList ;
 import java.util.List ;
 
 /**
@@ -18,7 +17,7 @@ public interface UserResponsesService
     boolean removeUserResponses(Long userResponsesId) ;
     UserResponsesEntity getUserResponses(Long userResponsesId) ;
 
-    ArrayList<Long> getResponsesFromAUserResponses(Long userResponsesId) ;
+    List<Long> getResponsesFromAUserResponses(Long userResponsesId) ;
     boolean addResponseForAUserResponses(Long userResponsesId, Long responsesId) ;
     boolean removeResponseFromAUserResponses(Long userResponsesId, Long responsesId) ;
 

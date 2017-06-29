@@ -6,8 +6,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties ;
 import javax.persistence.* ;
 import javax.validation.constraints.DecimalMin ;
 import javax.validation.constraints.NotNull ;
-import java.util.ArrayList ;
-import java.util.List;
+import java.util.List ;
 
 /**
  * Created by Samuel Bijou on 01/05/2017.
@@ -33,11 +32,11 @@ public class QuestionEntity
     private String description ;
 
     @OneToMany
-    @JoinColumn(table = "response")
-    private ArrayList<ResponseEntity> responses ;
+    @JoinTable(name = "response")
+    private List<ResponseEntity> responses ;
 
     @Column
-    private ArrayList<Long> correctResponses ;
+    private List<Long> correctResponses ;
 
     @NotNull
     @Column(nullable = false)

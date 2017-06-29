@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.util.ArrayList ;
+import java.util.List ;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
@@ -108,7 +109,7 @@ public class UserResponsesServiceTests
 
         boolean result = userResponsesService.addResponseForAUserResponses(userResponses.getId(), response) ;
 
-        ArrayList<Long> responses = userResponsesService.getResponsesFromAUserResponses(userResponses.getId()) ;
+        List<Long> responses = userResponsesService.getResponsesFromAUserResponses(userResponses.getId()) ;
 
 
         Assert.assertNotNull(userResponses) ;

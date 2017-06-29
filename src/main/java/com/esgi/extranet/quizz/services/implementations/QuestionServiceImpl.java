@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
-import java.util.ArrayList ;
 import java.util.List ;
 
 /**
@@ -85,7 +84,7 @@ public class QuestionServiceImpl implements QuestionService
 
 
     @Override
-    public ArrayList<ResponseEntity> getResponsesFromAQuestion(Long questionId)
+    public List<ResponseEntity> getResponsesFromAQuestion(Long questionId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
 
@@ -129,7 +128,7 @@ public class QuestionServiceImpl implements QuestionService
     }
 
     @Override
-    public ArrayList<Long> getCorrectResponsesFromAQuestion(Long questionId)
+    public List<Long> getCorrectResponsesFromAQuestion(Long questionId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
 

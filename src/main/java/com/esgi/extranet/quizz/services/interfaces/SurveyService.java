@@ -5,7 +5,6 @@ import com.esgi.extranet.quizz.entities.QuestionEntity ;
 
 import java.sql.Date ;
 import java.util.List ;
-import java.util.ArrayList ;
 
 /**
  * Created by Samuel Bijou on 27/06/2017.
@@ -20,7 +19,7 @@ public interface SurveyService
     boolean removeSurvey(Long surveyId) ;
     SurveyEntity getSurvey(Long surveyId) ;
 
-    ArrayList<QuestionEntity> getQuestionsFromASurvey(Long surveyId) ;
+    List<QuestionEntity> getQuestionsFromASurvey(Long surveyId) ;
     boolean addQuestionForASurvey(Long surveyId, Long questionId) ;
     boolean removeQuestionFromASurvey(Long surveyId, Long questionId) ;
 

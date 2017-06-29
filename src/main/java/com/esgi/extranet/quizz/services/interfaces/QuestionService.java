@@ -4,7 +4,6 @@ import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 
 import java.util.List ;
-import java.util.ArrayList ;
 
 /**
  * Created by Samuel Bijou on 27/06/2017.
@@ -19,11 +18,11 @@ public interface QuestionService
     boolean removeQuestion(Long questionId) ;
     QuestionEntity getQuestion(Long questionId) ;
 
-    ArrayList<ResponseEntity> getResponsesFromAQuestion(Long questionId) ;
+    List<ResponseEntity> getResponsesFromAQuestion(Long questionId) ;
     boolean addResponseForAQuestion(Long questionId, Long responseId) ;
     boolean removeResponseFromAQuestion(Long questionId, Long responseId) ;
 
-    ArrayList<Long> getCorrectResponsesFromAQuestion(Long questionId) ;
+    List<Long> getCorrectResponsesFromAQuestion(Long questionId) ;
     boolean addCorrectResponseForAQuestion(Long questionId, Long responseId) ;
     boolean removeCorrectResponseFromAQuestion(Long questionId, Long responseId) ;
 

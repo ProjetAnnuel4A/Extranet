@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.sql.Date ;
 import java.util.ArrayList ;
+import java.util.List ;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
@@ -124,7 +125,7 @@ public class SurveyServiceTests
 
         boolean result = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
 
-        ArrayList<QuestionEntity> questions = surveyService.getQuestionsFromASurvey(survey.getId()) ;
+        List<QuestionEntity> questions = surveyService.getQuestionsFromASurvey(survey.getId()) ;
 
 
         Assert.assertNotNull(survey) ;

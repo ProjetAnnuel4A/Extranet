@@ -9,7 +9,7 @@ import javax.validation.constraints.DecimalMin ;
 import javax.validation.constraints.Min ;
 import javax.validation.constraints.NotNull ;
 import java.sql.Date ;
-import java.util.ArrayList ;
+import java.util.List ;
 
 /**
  * Created by Samuel Bijou on 01/05/2017.
@@ -35,8 +35,8 @@ public class SurveyEntity
     private String name ;
 
     @OneToMany
-    @JoinColumn(table = "question")
-    private ArrayList<QuestionEntity> questions ;
+    @JoinTable(name = "question")
+    private List<QuestionEntity> questions ;
 
     @NotNull
     @Column(nullable = false)

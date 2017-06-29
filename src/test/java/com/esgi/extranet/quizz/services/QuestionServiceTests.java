@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.util.ArrayList ;
+import java.util.List ;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
@@ -117,7 +118,7 @@ public class QuestionServiceTests
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
-        ArrayList<ResponseEntity> responses = questionService.getResponsesFromAQuestion(question.getId()) ;
+        List<ResponseEntity> responses = questionService.getResponsesFromAQuestion(question.getId()) ;
 
 
         Assert.assertNotNull(question) ;
@@ -168,7 +169,7 @@ public class QuestionServiceTests
 
         boolean result = questionService.addCorrectResponseForAQuestion(question.getId(), correctResponse) ;
 
-        ArrayList<Long> correctResponses = questionService.getCorrectResponsesFromAQuestion(question.getId()) ;
+        List<Long> correctResponses = questionService.getCorrectResponsesFromAQuestion(question.getId()) ;
 
 
         Assert.assertNotNull(question) ;
