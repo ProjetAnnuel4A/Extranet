@@ -6,8 +6,8 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.implementations.QuestionServiceImpl ;
 import org.junit.Assert ;
-import org.junit.Before ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -27,26 +27,26 @@ public class QuestionServiceTests
 {
 
     @Autowired
-    QuestionServiceImpl questionService ;
+    public static QuestionServiceImpl questionService ;
 
     @Autowired
-    QuestionRepository questionRepository ;
+    public static QuestionRepository questionRepository ;
 
     @Autowired
-    ResponseRepository responseRepository ;
+    public static ResponseRepository responseRepository ;
 
 
-    private QuestionEntity question ;
+    private static QuestionEntity question ;
 
 
-    @Before
-    public void initialize_datas()
+    @BeforeAll
+    public static void initialize_datas()
     {
         questionService = new QuestionServiceImpl(questionRepository, responseRepository) ;
 
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 0, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 0, true, new Long(1)) ;
 
         questionRepository.save(question) ;
     }
@@ -62,29 +62,29 @@ public class QuestionServiceTests
         Assert.assertNotNull(result) ;
 
         Assert.assertEquals("QuestionTest", question.getDescription()) ;
-        Assert.assertEquals(0, question.getPoints(), 0) ;
+        Assert.assertEquals(0.0, question.getPoints(), 0) ;
         Assert.assertEquals(true, question.isAllOrNot()) ;
-        Assert.assertEquals("", question.getImagePath()) ;
+        Assert.assertEquals(new Long(1), question.getImageId()) ;
 
         Assert.assertEquals(result.getDescription(), question.getDescription()) ;
         Assert.assertEquals(result.getPoints(), question.getPoints(), 0) ;
         Assert.assertEquals(result.isAllOrNot(), question.isAllOrNot()) ;
-        Assert.assertEquals(result.getImagePath(), question.getImagePath()) ;
+        Assert.assertEquals(result.getImageId(), question.getImageId()) ;
     }
 
     @Test
     public void should_update_question() throws Exception
     {
-        QuestionEntity result = questionService.updateQuestion(question.getId(), "QuestionTest 2", 1, false, "ImagePathTest") ;
+        QuestionEntity result = questionService.updateQuestion(question.getId(), "QuestionTest 2", 1, false, new Long(2)) ;
 
 
         Assert.assertNotNull(question) ;
         Assert.assertNotNull(result) ;
 
         Assert.assertEquals("QuestionTest 2", question.getDescription()) ;
-        Assert.assertEquals(1, question.getPoints(), 0) ;
+        Assert.assertEquals(1.0, question.getPoints(), 0) ;
         Assert.assertEquals(false, question.isAllOrNot()) ;
-        Assert.assertEquals("ImagePathTest", question.getImagePath()) ;
+        Assert.assertEquals(new Long(2), question.getImageId()) ;
     }
 
     @Test
@@ -114,7 +114,7 @@ public class QuestionServiceTests
     @Test
     public void should_get_response_from_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
@@ -134,7 +134,7 @@ public class QuestionServiceTests
     @Test
     public void should_add_response_for_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
@@ -148,7 +148,7 @@ public class QuestionServiceTests
     @Test
     public void should_remove_response_from_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
 
         boolean resultAdd = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
         boolean resultRemove = questionService.removeResponseFromAQuestion(question.getId(), response.getId()) ;

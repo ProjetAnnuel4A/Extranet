@@ -2,8 +2,8 @@ package com.esgi.extranet.quizz.repositories ;
 
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import org.junit.Assert ;
-import org.junit.Before ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 /**
@@ -13,15 +13,15 @@ public class QuestionRepositoryTests
 {
 
     @Autowired
-    private QuestionRepository questionRepository ;
+    public static QuestionRepository questionRepository ;
 
-    private QuestionEntity questionEntity ;
+    private static QuestionEntity questionEntity ;
 
 
-    @Before
-    public void initialize_datas()
+    @BeforeAll
+    public static void initialize_datas()
     {
-        questionEntity = new QuestionEntity(new Long(1), "QuestionTest", null, null, 1, true, "") ;
+        questionEntity = new QuestionEntity(new Long(1), "QuestionTest", null, null, 1, true, new Long(1)) ;
 
         questionRepository.save(questionEntity) ;
     }

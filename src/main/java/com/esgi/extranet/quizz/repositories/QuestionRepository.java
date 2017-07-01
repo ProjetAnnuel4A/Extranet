@@ -14,6 +14,5 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long>
 {
 
     QuestionEntity findById(Long id) ;
-    ArrayList<QuestionEntity> findAllByIdSurvey(Long idSurvey) ;
 
 }

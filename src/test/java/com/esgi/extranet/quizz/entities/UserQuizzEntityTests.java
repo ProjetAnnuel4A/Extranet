@@ -30,13 +30,13 @@ public class UserQuizzEntityTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(4), "QuestionTest", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(4), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
 
         ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
         questions.add(question) ;
 
-        SurveyEntity survey = new SurveyEntity(new Long(3), "SurveyTest", questions, 19, 1, null, "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(3), "SurveyTest", questions, 19, 1, null, new Long(1)) ;
 
 
         UserQuizzEntity userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;

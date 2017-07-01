@@ -40,19 +40,19 @@ public class ResponseController
 
     @PostMapping("/addResponse")
     public ResponseEntity addResponse(@RequestParam(name = "description") String description,
-                                      @RequestParam(name = "imagePath") String imagePath)
+                                      @RequestParam(name = "imageId") Long imageId)
     {
 
-        return responseService.addResponse(description, imagePath) ;
+        return responseService.addResponse(description, imageId) ;
     }
 
     @PostMapping("/updateResponse")
     public ResponseEntity updateResponse(@RequestParam(name = "responseId") Long responseId,
                                          @RequestParam(name = "description") String description,
-                                         @RequestParam(name = "imagePath") String imagePath)
+                                         @RequestParam(name = "imageId") Long imageId)
     {
 
-        return responseService.updateResponse(responseId, description, imagePath) ;
+        return responseService.updateResponse(responseId, description, imageId) ;
     }
 
     @RequestMapping(value = "/removeResponse", method = RequestMethod.POST)

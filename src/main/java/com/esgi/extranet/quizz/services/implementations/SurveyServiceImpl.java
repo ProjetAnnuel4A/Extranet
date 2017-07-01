@@ -38,14 +38,14 @@ public class SurveyServiceImpl implements SurveyService
 
     @Override
     @Transactional
-    public SurveyEntity addSurvey(String name, float mark, int chances, Date deadLine, String imagePath)
+    public SurveyEntity addSurvey(String name, float mark, int chances, Date deadLine, Long imageId)
     {
         SurveyEntity surveyEntity = SurveyEntity.builder()
                 .name(name)
                 .mark(mark)
                 .chances(chances)
                 .deadLine(deadLine)
-                .imagePath(imagePath)
+                .imageId(imageId)
                 .build() ;
 
         surveyRepository.save(surveyEntity) ;
@@ -55,7 +55,7 @@ public class SurveyServiceImpl implements SurveyService
 
     @Override
     @Transactional
-    public SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date deadLine, String imagePath)
+    public SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date deadLine, Long imageId)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;
 
@@ -63,7 +63,7 @@ public class SurveyServiceImpl implements SurveyService
         surveyEntity.setMark(mark) ;
         surveyEntity.setChances(chances) ;
         surveyEntity.setDeadLine(deadLine) ;
-        surveyEntity.setImagePath(imagePath) ;
+        surveyEntity.setImageId(imageId) ;
 
         surveyRepository.save(surveyEntity) ;
 

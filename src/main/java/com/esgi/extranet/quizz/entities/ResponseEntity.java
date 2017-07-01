@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull ;
 @Getter @Setter
 @ToString
 @Entity
-@Table(name="response")
+@Table(name = "response")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ResponseEntity
 {
@@ -30,6 +30,6 @@ public class ResponseEntity
     private String description ;
 
     @Column
-    private String imagePath ;
+    private Long imageId ;
 
 }

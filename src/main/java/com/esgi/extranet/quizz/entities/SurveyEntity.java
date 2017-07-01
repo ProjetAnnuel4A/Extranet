@@ -21,7 +21,7 @@ import java.util.List ;
 @Getter @Setter
 @ToString
 @Entity
-@Table(name="survey")
+@Table(name = "survey")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SurveyEntity
 {
@@ -35,8 +35,8 @@ public class SurveyEntity
     @Column(nullable = false, unique = true)
     private String name ;
 
-    @OneToMany
-    @JoinTable(name = "question")
+    @ManyToMany
+    @JoinColumn(table = "question")
     private List<QuestionEntity> questions ;
 
     @NotNull
@@ -53,10 +53,10 @@ public class SurveyEntity
     private Date deadLine ;
 
     @Column
-    private String imagePath ;
+    private Long imageId ;
 
 
-    @PostConstruct
+    @PostConstruct // Ne fonctionne pas
     public void calculateMark()
     {
         this.mark = 0 ;
@@ -79,6 +79,11 @@ public class SurveyEntity
 
     public boolean isOpen()
     {
+        if(this.deadLine == null)
+        {
+            return true ;
+        }
+
         LocalDate today = LocalDate.now() ;
         Date todayConverted = Date.valueOf(today) ;
 

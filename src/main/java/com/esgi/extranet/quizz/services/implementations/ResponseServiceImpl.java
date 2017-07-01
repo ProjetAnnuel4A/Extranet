@@ -33,11 +33,11 @@ public class ResponseServiceImpl implements ResponseService
 
     @Override
     @Transactional
-    public ResponseEntity addResponse(String description, String imagePath)
+    public ResponseEntity addResponse(String description, Long imageId)
     {
         ResponseEntity responseEntity = ResponseEntity.builder()
                 .description(description)
-                .imagePath(imagePath)
+                .imageId(imageId)
                 .build() ;
 
         responseRepository.save(responseEntity) ;
@@ -47,12 +47,12 @@ public class ResponseServiceImpl implements ResponseService
 
     @Override
     @Transactional
-    public ResponseEntity updateResponse(Long responseId, String description, String imagePath)
+    public ResponseEntity updateResponse(Long responseId, String description, Long imageId)
     {
         ResponseEntity responseEntity = responseRepository.findById(responseId) ;
 
         responseEntity.setDescription(description) ;
-        responseEntity.setImagePath(imagePath) ;
+        responseEntity.setImageId(imageId) ;
 
         responseRepository.save(responseEntity) ;
 

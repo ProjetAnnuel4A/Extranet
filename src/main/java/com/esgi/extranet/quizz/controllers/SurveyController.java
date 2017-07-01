@@ -45,10 +45,10 @@ public class SurveyController
                                   @RequestParam(name = "mark") float mark,
                                   @RequestParam(name = "chances") int chances,
                                   @RequestParam(name = "deadLine") Date deadLine,
-                                  @RequestParam(name = "imagePath") String imagePath)
+                                  @RequestParam(name = "imageId") Long imageId)
     {
 
-        return surveyService.addSurvey(name, mark, chances, deadLine, imagePath) ;
+        return surveyService.addSurvey(name, mark, chances, deadLine, imageId) ;
     }
 
     @PostMapping("/updateSurvey")
@@ -57,10 +57,10 @@ public class SurveyController
                                      @RequestParam(name = "mark") float mark,
                                      @RequestParam(name = "chances") int chances,
                                      @RequestParam(name = "deadLine") Date deadLine,
-                                     @RequestParam(name = "imagePath") String imagePath)
+                                     @RequestParam(name = "imageId") Long imageId)
     {
 
-        return surveyService.updateSurvey(surveyId, name, mark, chances, deadLine, imagePath) ;
+        return surveyService.updateSurvey(surveyId, name, mark, chances, deadLine, imageId) ;
     }
 
     @RequestMapping(value = "/removeSurvey", method = RequestMethod.POST)

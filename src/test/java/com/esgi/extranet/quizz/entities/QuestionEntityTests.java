@@ -24,7 +24,7 @@ public class QuestionEntityTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
 
 
         Assert.assertNotNull(question) ;
@@ -32,9 +32,9 @@ public class QuestionEntityTests
         Assert.assertEquals("QuestionTest", question.getDescription()) ;
         Assert.assertEquals(responses, question.getResponses()) ;
         Assert.assertEquals(correctResponses, question.getCorrectResponses()) ;
-        Assert.assertTrue(6 == question.getPoints()) ;
+        Assert.assertEquals(6.0, question.getPoints(), 0) ;
         Assert.assertTrue(question.isAllOrNot()) ;
-        Assert.assertEquals("", question.getImagePath()) ;
+        Assert.assertEquals(new Long(1), question.getImageId()) ;
     }
 
 }

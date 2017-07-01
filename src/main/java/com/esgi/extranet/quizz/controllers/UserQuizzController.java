@@ -12,7 +12,7 @@ import java.util.List ;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value="/userResponses")
+@RequestMapping(value="/usersQuizz")
 public class UserQuizzController
 {
 
@@ -41,20 +41,22 @@ public class UserQuizzController
     @PostMapping("/addUserQuizz")
     public UserQuizzEntity addUserQuizz(@RequestParam(name = "userId") Long userId,
                                         @RequestParam(name = "surveyId") Long surveyId,
-                                        @RequestParam(name = "questionId") Long questionId)
+                                        @RequestParam(name = "questionId") Long questionId,
+                                        @RequestParam(name = "count") int count)
     {
 
-        return userQuizzService.addUserQuizz(userId, surveyId, questionId) ;
+        return userQuizzService.addUserQuizz(userId, surveyId, questionId, count) ;
     }
 
     @PostMapping("/updateUserQuizz")
     public UserQuizzEntity updateUserQuizz(@RequestParam(name = "userQuizzId") Long userQuizzId,
                                            @RequestParam(name = "userId") Long userId,
                                            @RequestParam(name = "surveyId") Long surveyId,
-                                           @RequestParam(name = "questionId") Long questionId)
+                                           @RequestParam(name = "questionId") Long questionId,
+                                           @RequestParam(name = "count") int count)
     {
 
-        return userQuizzService.updateUserQuizz(userQuizzId, userId, surveyId, questionId) ;
+        return userQuizzService.updateUserQuizz(userQuizzId, userId, surveyId, questionId, count) ;
     }
 
     @RequestMapping(value = "/removeUserQuizz", method = RequestMethod.POST)

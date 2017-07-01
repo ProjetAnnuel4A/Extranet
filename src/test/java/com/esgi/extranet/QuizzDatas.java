@@ -9,6 +9,7 @@ import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
 import com.esgi.extranet.school.entities.StudentEntity ;
+import org.springframework.beans.factory.annotation.Autowired ;
 
 import java.time.LocalDate ;
 import java.util.ArrayList ;
@@ -18,18 +19,25 @@ import java.util.ArrayList ;
  */
 public class QuizzDatas
 {
+    @Autowired
     public static ResponseRepository responseRepository ;
+
+    @Autowired
     public static QuestionRepository questionRepository ;
+
+    @Autowired
     public static SurveyRepository surveyRepository ;
+
+    @Autowired
     public static UserQuizzRepository userQuizzRepository ;
 
 
     public static void initialize_datas()
     {
-        ResponseEntity r1 = new ResponseEntity(new Long(1), "ResponseTest 1", "") ;
-        ResponseEntity r2 = new ResponseEntity(new Long(2), "ResponseTest 2", "") ;
-        ResponseEntity r3 = new ResponseEntity(new Long(3), "ResponseTest 3", "") ;
-        ResponseEntity r4 = new ResponseEntity(new Long(4), "ResponseTest 4", "") ;
+        ResponseEntity r1 = new ResponseEntity(new Long(1), "ResponseTest 1", new Long(1)) ;
+        ResponseEntity r2 = new ResponseEntity(new Long(2), "ResponseTest 2", new Long(1)) ;
+        ResponseEntity r3 = new ResponseEntity(new Long(3), "ResponseTest 3", new Long(1)) ;
+        ResponseEntity r4 = new ResponseEntity(new Long(4), "ResponseTest 4", new Long(1)) ;
 
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
 
@@ -45,9 +53,9 @@ public class QuizzDatas
         correctResponses.add(new Long (3)) ;
 
 
-        QuestionEntity q1 = new QuestionEntity(new Long(1), "QuestionTest 1", responses, correctResponses, 6, true, "") ;
-        QuestionEntity q2 = new QuestionEntity(new Long(2), "QuestionTest 2", responses, correctResponses, 8, true, "") ;
-        QuestionEntity q3 = new QuestionEntity(new Long(3), "QuestionTest 3", responses, correctResponses, 6, true, "") ;
+        QuestionEntity q1 = new QuestionEntity(new Long(1), "QuestionTest 1", responses, correctResponses, 6, true, new Long(1)) ;
+        QuestionEntity q2 = new QuestionEntity(new Long(2), "QuestionTest 2", responses, correctResponses, 8, true, new Long(1)) ;
+        QuestionEntity q3 = new QuestionEntity(new Long(3), "QuestionTest 3", responses, correctResponses, 6, true, new Long(1)) ;
 
         ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
@@ -56,7 +64,7 @@ public class QuizzDatas
         questions.add(q3) ;
 
 
-        SurveyEntity survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, new Long(1)) ;
 
 
         responseRepository.save(r1) ;

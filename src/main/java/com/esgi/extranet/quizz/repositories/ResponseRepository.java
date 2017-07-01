@@ -14,6 +14,5 @@ public interface ResponseRepository extends JpaRepository<ResponseEntity, Long>
 {
 
     ResponseEntity findById(Long id) ;
-    ArrayList<ResponseEntity> findAllByIdQuestion(Long idQuestion) ;
 
 }

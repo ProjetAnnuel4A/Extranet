@@ -13,8 +13,8 @@ public interface QuestionService
 
     List<QuestionEntity> getAll() ;
 
-    QuestionEntity addQuestion(String description, float points, boolean allOrNot, String imagePath) ;
-    QuestionEntity updateQuestion(Long questionId, String description, float points, boolean allOrNot, String imagePath) ;
+    QuestionEntity addQuestion(String description, float points, boolean allOrNot, Long imageId) ;
+    QuestionEntity updateQuestion(Long questionId, String description, float points, boolean allOrNot, Long imageId) ;
     boolean removeQuestion(Long questionId) ;
     QuestionEntity getQuestion(Long questionId) ;
 

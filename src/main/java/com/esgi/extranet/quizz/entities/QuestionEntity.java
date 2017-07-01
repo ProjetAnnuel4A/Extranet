@@ -17,7 +17,7 @@ import java.util.List ;
 @Getter @Setter
 @ToString
 @Entity
-@Table(name="question")
+@Table(name = "question")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class QuestionEntity
 {
@@ -31,11 +31,12 @@ public class QuestionEntity
     @Column(nullable = false)
     private String description ;
 
-    @OneToMany
-    @JoinTable(name = "response")
+    @ManyToMany
+    @JoinColumn(table = "response")
     private List<ResponseEntity> responses ;
 
-    @Column
+    @ManyToMany(targetEntity = ResponseEntity.class)
+    @JoinColumn(table = "response", referencedColumnName = "id")
     private List<Long> correctResponses ;
 
     @NotNull
@@ -48,6 +49,6 @@ public class QuestionEntity
     private boolean allOrNot = true ;
 
     @Column
-    private String imagePath ;
+    private Long imageId ;
 
 }

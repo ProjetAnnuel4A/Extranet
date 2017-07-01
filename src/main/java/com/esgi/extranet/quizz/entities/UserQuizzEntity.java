@@ -17,7 +17,7 @@ import java.util.List ;
 @Getter @Setter
 @ToString
 @Entity
-@Table(name="user_responses")
+@Table(name = "user_quizz")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class UserQuizzEntity
 {
@@ -28,23 +28,24 @@ public class UserQuizzEntity
     private Long id ;
 
     @NotNull
-    @JoinColumn(table = "student", name = "id")
+    @JoinColumn(table = "student", referencedColumnName = "id")
     private Long userId ;
 
     @NotNull
-    @JoinColumn(table = "survey", name = "id")
+    @JoinColumn(table = "survey", referencedColumnName = "id")
     private Long surveyId ;
 
     @NotNull
-    @JoinColumn(table = "question", name = "id")
+    @JoinColumn(table = "question", referencedColumnName = "id")
     private Long questionId ;
 
     @NotNull
-    @OneToMany
-    @JoinColumn(table = "response", name = "id")
+    @ManyToMany(targetEntity = ResponseEntity.class)
+    @JoinColumn(referencedColumnName = "id")
     private List<Long> responses ;
 
     @NotNull
+    @Column(nullable = false)
     @Min(value = 1)
     private int count = 1 ; // Nombre d'essais réalisés
 

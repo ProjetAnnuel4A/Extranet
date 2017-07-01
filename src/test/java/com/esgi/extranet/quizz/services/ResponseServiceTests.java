@@ -4,8 +4,8 @@ import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.implementations.ResponseServiceImpl ;
 import org.junit.Assert ;
-import org.junit.Before ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -22,21 +22,21 @@ public class ResponseServiceTests
 {
 
     @Autowired
-    ResponseServiceImpl responseService ;
+    public static ResponseServiceImpl responseService ;
 
     @Autowired
-    ResponseRepository responseRepository ;
+    public static ResponseRepository responseRepository ;
 
 
-    private ResponseEntity response ;
+    private static ResponseEntity response ;
 
 
-    @Before
-    public void initialize_datas()
+    @BeforeAll
+    public static void initialize_datas()
     {
         responseService = new ResponseServiceImpl(responseRepository) ;
 
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
 
         responseRepository.save(response) ;
     }
@@ -52,23 +52,23 @@ public class ResponseServiceTests
         Assert.assertNotNull(result) ;
 
         Assert.assertEquals("ResponseTest", response.getDescription()) ;
-        Assert.assertEquals("", response.getImagePath()) ;
+        Assert.assertEquals(new Long(1), response.getImageId()) ;
 
         Assert.assertEquals(result.getDescription(), response.getDescription()) ;
-        Assert.assertEquals(result.getImagePath(), response.getImagePath()) ;
+        Assert.assertEquals(result.getImageId(), response.getImageId()) ;
     }
 
     @Test
     public void should_update_response() throws Exception
     {
-        ResponseEntity result = responseService.updateResponse(response.getId(), "ResponseTest 2", "ImagePathTest") ;
+        ResponseEntity result = responseService.updateResponse(response.getId(), "ResponseTest 2", new Long(2)) ;
 
 
         Assert.assertNotNull(response) ;
         Assert.assertNotNull(result) ;
 
         Assert.assertEquals("ResponseTest 2", result.getDescription()) ;
-        Assert.assertEquals("ImagePathTest", result.getImagePath()) ;
+        Assert.assertEquals(new Long(2), result.getImageId()) ;
     }
 
     @Test

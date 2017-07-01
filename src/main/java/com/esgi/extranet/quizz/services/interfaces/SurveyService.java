@@ -14,8 +14,8 @@ public interface SurveyService
 
     List<SurveyEntity> getAll() ;
 
-    SurveyEntity addSurvey(String name, float mark, int chances, Date deadLine, String imagePath) ;
-    SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date deadLine, String imagePath) ;
+    SurveyEntity addSurvey(String name, float mark, int chances, Date deadLine, Long imageId) ;
+    SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date deadLine, Long imageId) ;
     boolean removeSurvey(Long surveyId) ;
     SurveyEntity getSurvey(Long surveyId) ;
 

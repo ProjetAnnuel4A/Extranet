@@ -6,8 +6,8 @@ import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.school.entities.StudentEntity ;
 import org.junit.Assert ;
-import org.junit.Before ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
@@ -26,42 +26,42 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class QuizzSystemTests
 {
 
-    private ResponseEntity r1 ;
-    private ResponseEntity r2 ;
-    private ResponseEntity r3 ;
-    private ResponseEntity r4 ;
+    private static ResponseEntity r1 ;
+    private static ResponseEntity r2 ;
+    private static ResponseEntity r3 ;
+    private static ResponseEntity r4 ;
 
-    private ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-
-
-    private ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+    private static ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
 
 
-    private QuestionEntity question ;
-
-    private QuestionEntity q1 ;
-    private QuestionEntity q2 ;
-    private QuestionEntity q3 ;
-
-    private ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
+    private static ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
 
-    private SurveyEntity survey ;
+    private static QuestionEntity question ;
+
+    private static QuestionEntity q1 ;
+    private static QuestionEntity q2 ;
+    private static QuestionEntity q3 ;
+
+    private static ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
 
-    private StudentEntity student ;
+    private static SurveyEntity survey ;
 
 
-    private UserQuizzEntity userQuizz ;
+    private static StudentEntity student ;
 
 
-    @Before
-    public void initialize_datas()
+    private static UserQuizzEntity userQuizz ;
+
+
+    @BeforeAll
+    public static void initialize_datas()
     {
-        r1 = new ResponseEntity(new Long(1), "ResponseTest 1", "") ;
-        r2 = new ResponseEntity(new Long(2), "ResponseTest 2", "") ;
-        r3 = new ResponseEntity(new Long(3), "ResponseTest 3", "") ;
-        r4 = new ResponseEntity(new Long(4), "ResponseTest 4", "") ;
+        r1 = new ResponseEntity(new Long(1), "ResponseTest 1", new Long(1)) ;
+        r2 = new ResponseEntity(new Long(2), "ResponseTest 2", new Long(1)) ;
+        r3 = new ResponseEntity(new Long(3), "ResponseTest 3", new Long(1)) ;
+        r4 = new ResponseEntity(new Long(4), "ResponseTest 4", new Long(1)) ;
 
         responses.add(r1) ;
         responses.add(r2) ;
@@ -73,18 +73,18 @@ public class QuizzSystemTests
         correctResponses.add(new Long (3)) ;
 
 
-        question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, "") ;
+        question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
 
-        q1 = new QuestionEntity(new Long(1), "QuestionTest 1", responses, correctResponses, 6, true, "") ;
-        q2 = new QuestionEntity(new Long(2), "QuestionTest 2", responses, correctResponses, 8, true, "") ;
-        q3 = new QuestionEntity(new Long(3), "QuestionTest 3", responses, correctResponses, 6, true, "") ;
+        q1 = new QuestionEntity(new Long(1), "QuestionTest 1", responses, correctResponses, 6, true, new Long(1)) ;
+        q2 = new QuestionEntity(new Long(2), "QuestionTest 2", responses, correctResponses, 8, true, new Long(1)) ;
+        q3 = new QuestionEntity(new Long(3), "QuestionTest 3", responses, correctResponses, 6, true, new Long(1)) ;
 
         questions.add(q1) ;
         questions.add(q2) ;
         questions.add(q3) ;
 
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, new Long(1)) ;
 
 
         LocalDate localDateTest = null ;
@@ -118,7 +118,7 @@ public class QuizzSystemTests
         userQuizz.setResponses(userResponses) ;
 
 
-        Assert.assertTrue(6 == QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+        Assert.assertEquals(6.0, QuizzSystem.calculateQuestionScore(question, userQuizz), 0) ;
     }
 
     @Test
@@ -132,7 +132,7 @@ public class QuizzSystemTests
         userQuizz.setResponses(userResponses) ;
 
 
-        Assert.assertTrue(3 == QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+        Assert.assertEquals(3.0, QuizzSystem.calculateQuestionScore(question, userQuizz), 0) ;
     }
 
     @Test
@@ -145,7 +145,7 @@ public class QuizzSystemTests
         userQuizz.setResponses(userResponses) ;
 
 
-        Assert.assertTrue(0 == QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+        Assert.assertEquals(0.0, QuizzSystem.calculateQuestionScore(question, userQuizz), 0) ;
     }
 
     @Test
@@ -167,7 +167,7 @@ public class QuizzSystemTests
         userResponses[1] = 3 ;
 
 
-        Assert.assertTrue(6 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertEquals(6.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
     }
 
     @Test
@@ -179,7 +179,7 @@ public class QuizzSystemTests
         userResponses[0] = 2 ;
 
 
-        Assert.assertTrue(3 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertEquals(3.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
     }
 
     @Test
@@ -190,47 +190,47 @@ public class QuizzSystemTests
         userResponses[1] = 4 ;
 
 
-        Assert.assertTrue(0 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
+        Assert.assertEquals(0.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
     }
 
     @Test
     public void should_calculate_survey_score_with_user_quizz()
     {
-        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+        UserQuizzEntity[] usersQuizz = new UserQuizzEntity[3] ;
 
         ArrayList<Long> userResponses = new ArrayList<Long>() ;
         userResponses.add(new Long(2)) ;
         userResponses.add(new Long(3)) ;
 
-        userQuizz[0].setResponses(userResponses) ;
-        userQuizz[1].setResponses(userResponses) ;
-        userQuizz[2].setResponses(userResponses) ;
+        usersQuizz[0].setResponses(userResponses) ;
+        usersQuizz[1].setResponses(userResponses) ;
+        usersQuizz[2].setResponses(userResponses) ;
 
 
-        Assert.assertNotNull(QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+        Assert.assertNotNull(QuizzSystem.calculateSurveyScore(survey, usersQuizz)) ;
     }
 
     @Test
     public void should_give_all_survey_points_with_user_quizz()
     {
-        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+        UserQuizzEntity[] usersQuizz = new UserQuizzEntity[3] ;
 
         ArrayList<Long> userResponses = new ArrayList<Long>() ;
         userResponses.add(new Long(2)) ;
         userResponses.add(new Long(3)) ;
 
-        userQuizz[0].setResponses(userResponses) ;
-        userQuizz[1].setResponses(userResponses) ;
-        userQuizz[2].setResponses(userResponses) ;
+        usersQuizz[0].setResponses(userResponses) ;
+        usersQuizz[1].setResponses(userResponses) ;
+        usersQuizz[2].setResponses(userResponses) ;
 
 
-        Assert.assertTrue(20 == QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+        Assert.assertEquals(20.0, QuizzSystem.calculateSurveyScore(survey, usersQuizz), 0) ;
     }
 
     @Test
     public void should_give_some_survey_points_with_user_quizz()
     {
-        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+        UserQuizzEntity[] usersQuizz = new UserQuizzEntity[3] ;
 
         ArrayList<Long> userResponses1 = new ArrayList<Long>() ;
         userResponses1.add(new Long(2)) ;
@@ -244,29 +244,29 @@ public class QuizzSystemTests
         userResponses3.add(new Long(2)) ;
         userResponses3.add(new Long(4)) ;
 
-        userQuizz[0].setResponses(userResponses1) ;
-        userQuizz[1].setResponses(userResponses2) ;
-        userQuizz[2].setResponses(userResponses3) ;
+        usersQuizz[0].setResponses(userResponses1) ;
+        usersQuizz[1].setResponses(userResponses2) ;
+        usersQuizz[2].setResponses(userResponses3) ;
 
 
-        Assert.assertTrue(6 == QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+        Assert.assertEquals(6.0, QuizzSystem.calculateSurveyScore(survey, usersQuizz), 0) ;
     }
 
     @Test
     public void should_not_give_survey_points_with_user_quizz()
     {
-        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+        UserQuizzEntity[] usersQuizz = new UserQuizzEntity[3] ;
 
         ArrayList<Long> userResponses = new ArrayList<Long>() ;
         userResponses.add(new Long(4)) ;
         userResponses.add(new Long(4)) ;
 
-        userQuizz[0].setResponses(userResponses) ;
-        userQuizz[1].setResponses(userResponses) ;
-        userQuizz[2].setResponses(userResponses) ;
+        usersQuizz[0].setResponses(userResponses) ;
+        usersQuizz[1].setResponses(userResponses) ;
+        usersQuizz[2].setResponses(userResponses) ;
 
 
-        Assert.assertTrue(0 == QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+        Assert.assertEquals(0.0, QuizzSystem.calculateSurveyScore(survey, usersQuizz), 0) ;
     }
 
     @Test
@@ -296,7 +296,7 @@ public class QuizzSystemTests
         userResponses[2][1] = 3 ;
 
 
-        Assert.assertTrue(20 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
+        Assert.assertEquals(20.0, QuizzSystem.calculateSurveyScore(survey, userResponses), 0) ;
     }
 
     @Test
@@ -311,7 +311,7 @@ public class QuizzSystemTests
         userResponses[2][1] = 4 ;
 
 
-        Assert.assertTrue(6 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
+        Assert.assertEquals(6.0, QuizzSystem.calculateSurveyScore(survey, userResponses), 0) ;
     }
 
     @Test
@@ -326,7 +326,7 @@ public class QuizzSystemTests
         userResponses[2][1] = 4 ;
 
 
-        Assert.assertTrue(0 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
+        Assert.assertEquals(0.0, QuizzSystem.calculateSurveyScore(survey, userResponses), 0) ;
     }
 
 
@@ -342,7 +342,7 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_infinite()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(30/06/2037), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(2037, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(QuizzSystem.surveyIsInfinite(survey)) ;
@@ -351,7 +351,7 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_not_infinite()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2037, 6, 30), new Long(1)) ;
 
 
         Assert.assertFalse(QuizzSystem.surveyIsInfinite(survey)) ;
@@ -360,7 +360,7 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_open()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2037, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(QuizzSystem.surveyIsOpen(survey)) ;
@@ -369,7 +369,7 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_open_without_deadline()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, new Long(1)) ;
 
 
         Assert.assertTrue(QuizzSystem.surveyIsOpen(survey)) ;
@@ -378,7 +378,7 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_not_open()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(29/06/2017), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2017, 6, 29), new Long(1)) ;
 
 
         Assert.assertFalse(QuizzSystem.surveyIsOpen(survey)) ;
@@ -389,7 +389,7 @@ public class QuizzSystemTests
     {
         userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 2, new Date(30/06/2037), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 2, new Date(2037, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
@@ -400,7 +400,7 @@ public class QuizzSystemTests
     {
         userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(30/06/2037), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(2037, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
@@ -411,7 +411,7 @@ public class QuizzSystemTests
     {
         userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2037, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
