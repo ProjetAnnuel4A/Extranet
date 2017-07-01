@@ -2,15 +2,69 @@ package com.esgi.extranet.quizz ;
 
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 
 import java.sql.Date ;
 import java.time.LocalDate ;
+import java.util.List ;
 
 /**
  * Created by Samuel Bijou on 07/06/2017.
  */
 public class QuizzSystem
 {
+
+    public static float calculateQuestionScore(QuestionEntity question, UserQuizzEntity userQuizzEntity)
+    {
+        List<Long> userResponses = userQuizzEntity.getResponses() ;
+
+        float score = 0 ;
+
+        int nbCorrectResponses = 0 ;
+
+        if(question.isAllOrNot())
+        {
+            if(userResponses.size() != question.getCorrectResponses().size())
+            {
+                return 0 ;
+            }
+        }
+
+        for(int i = 0 ; i < userResponses.size() ; i++)
+        {
+            boolean responseCorrect = false ;
+
+            for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
+            {
+                if(userResponses.get(i) == question.getCorrectResponses().get(j))
+                {
+                    responseCorrect = true ;
+
+                    nbCorrectResponses++ ;
+                }
+            }
+
+            if(!responseCorrect)
+            {
+                return 0 ;
+            }
+        }
+
+        if(question.isAllOrNot())
+        {
+            if(nbCorrectResponses == question.getCorrectResponses().size())
+            {
+                score = question.getPoints() ;
+            }
+        }
+
+        else
+        {
+            score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+        }
+
+        return score ;
+    }
 
     public static float calculateQuestionScore(QuestionEntity question, int[] userResponses)
     {
@@ -62,6 +116,18 @@ public class QuizzSystem
         return score ;
     }
 
+    public static float calculateSurveyScore(SurveyEntity survey, UserQuizzEntity[] userQuizzEntity)
+    {
+        float score = 0 ;
+
+        for(int i = 0 ; i < survey.getQuestions().size() ; i++)
+        {
+            score += calculateQuestionScore(survey.getQuestions().get(i), userQuizzEntity[i]) ;
+        }
+
+        return score ;
+    }
+
     public static float calculateSurveyScore(SurveyEntity survey, int[][] userResponses)
     {
         float score = 0 ;
@@ -90,12 +156,32 @@ public class QuizzSystem
         }
     }
 
+    public static boolean surveyIsInfinite(SurveyEntity survey)
+    {
+        return survey.getChances() == 0 ;
+    }
+
     public static boolean surveyIsOpen(SurveyEntity survey)
     {
         LocalDate today = LocalDate.now() ;
         Date todayConverted = Date.valueOf(today) ;
 
         return survey.getDeadLine().after(todayConverted) ;
+    }
+
+    public static boolean userQuizzCanAnswerSurvey(UserQuizzEntity userQuizzEntity, SurveyEntity survey)
+    {
+        boolean result = true ;
+
+        if(survey.getChances() != 0)
+        {
+            if(userQuizzEntity.getCount() >= survey.getChances())
+            {
+                result = false ;
+            }
+        }
+
+        return result ;
     }
 
 }

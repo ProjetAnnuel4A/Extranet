@@ -46,8 +46,8 @@ public class SurveyEntity
 
     @NotNull
     @Column(nullable = false)
-    @Min(value = -1)
-    private int chances = 0 ; // Détermine le nombre d'essais (-1 = infini)
+    @Min(value = 0)
+    private int chances = 1 ; // Détermine le nombre d'essais (0 = infini)
 
     @Column
     private Date deadLine ;
@@ -70,6 +70,11 @@ public class SurveyEntity
                 this.mark += this.questions.get(i).getPoints() ;
             }
         }
+    }
+
+    public boolean isInfinite()
+    {
+        return this.chances == 0 ;
     }
 
     public boolean isOpen()

@@ -39,8 +39,8 @@ public class UserQuizzServiceTests
     {
         userQuizzService = new UserQuizzServiceImpl(userQuizzRepository) ;
 
-        ArrayList<Long> responses = new ArrayList<Long>() ;
-        userQuizz = new UserQuizzEntity(new Long(1), new Long(1), new Long(2), new Long(3), responses, 1) ;
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userQuizz = new UserQuizzEntity(new Long(1), new Long(1), new Long(2), new Long(3), userResponses, 1) ;
 
         userQuizzRepository.save(userQuizz) ;
     }

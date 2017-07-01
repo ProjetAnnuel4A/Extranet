@@ -105,6 +105,24 @@ public class SurveyEntityTests
     }
 
     @Test
+    public void should_be_infinite()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(30/06/2037), "") ;
+
+
+        Assert.assertTrue(survey.isInfinite()) ;
+    }
+
+    @Test
+    public void should_not_be_infinite()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+
+
+        Assert.assertFalse(survey.isInfinite()) ;
+    }
+
+    @Test
     public void should_be_open()
     {
         survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;

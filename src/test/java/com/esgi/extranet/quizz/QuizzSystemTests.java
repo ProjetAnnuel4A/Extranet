@@ -1,9 +1,10 @@
 package com.esgi.extranet.quizz ;
 
-import com.esgi.extranet.quizz.QuizzSystem ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
+import com.esgi.extranet.school.entities.StudentEntity ;
 import org.junit.Assert ;
 import org.junit.Before ;
 import org.junit.Test ;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.sql.Date ;
+import java.time.LocalDate ;
 import java.util.ArrayList ;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
@@ -47,6 +49,12 @@ public class QuizzSystemTests
     private SurveyEntity survey ;
 
 
+    private StudentEntity student ;
+
+
+    private UserQuizzEntity userQuizz ;
+
+
     @Before
     public void initialize_datas()
     {
@@ -77,8 +85,68 @@ public class QuizzSystemTests
 
 
         survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, "") ;
+
+
+        LocalDate localDateTest = null ;
+        student = new StudentEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
+
+
+        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
     }
 
+
+    @Test
+    public void should_calculate_question_score_with_user_quizz()
+    {
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(2)) ;
+        userResponses.add(new Long(3)) ;
+
+        userQuizz.setResponses(userResponses) ;
+
+
+        Assert.assertNotNull(QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+    }
+
+    @Test
+    public void should_give_all_question_points_with_user_quizz()
+    {
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(2)) ;
+        userResponses.add(new Long(3)) ;
+
+        userQuizz.setResponses(userResponses) ;
+
+
+        Assert.assertTrue(6 == QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+    }
+
+    @Test
+    public void should_give_some_question_points_with_user_quizz()
+    {
+        question.setAllOrNot(false) ;
+
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(2)) ;
+
+        userQuizz.setResponses(userResponses) ;
+
+
+        Assert.assertTrue(3 == QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+    }
+
+    @Test
+    public void should_not_give_question_points_with_user_quizz()
+    {
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(1)) ;
+        userResponses.add(new Long(4)) ;
+
+        userQuizz.setResponses(userResponses) ;
+
+
+        Assert.assertTrue(0 == QuizzSystem.calculateQuestionScore(question, userQuizz)) ;
+    }
 
     @Test
     public void should_calculate_question_score()
@@ -123,6 +191,82 @@ public class QuizzSystemTests
 
 
         Assert.assertTrue(0 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
+    }
+
+    @Test
+    public void should_calculate_survey_score_with_user_quizz()
+    {
+        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(2)) ;
+        userResponses.add(new Long(3)) ;
+
+        userQuizz[0].setResponses(userResponses) ;
+        userQuizz[1].setResponses(userResponses) ;
+        userQuizz[2].setResponses(userResponses) ;
+
+
+        Assert.assertNotNull(QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+    }
+
+    @Test
+    public void should_give_all_survey_points_with_user_quizz()
+    {
+        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(2)) ;
+        userResponses.add(new Long(3)) ;
+
+        userQuizz[0].setResponses(userResponses) ;
+        userQuizz[1].setResponses(userResponses) ;
+        userQuizz[2].setResponses(userResponses) ;
+
+
+        Assert.assertTrue(20 == QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+    }
+
+    @Test
+    public void should_give_some_survey_points_with_user_quizz()
+    {
+        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+
+        ArrayList<Long> userResponses1 = new ArrayList<Long>() ;
+        userResponses1.add(new Long(2)) ;
+        userResponses1.add(new Long(3)) ;
+
+        ArrayList<Long> userResponses2 = new ArrayList<Long>() ;
+        userResponses2.add(new Long(1)) ;
+        userResponses2.add(new Long(3)) ;
+
+        ArrayList<Long> userResponses3 = new ArrayList<Long>() ;
+        userResponses3.add(new Long(2)) ;
+        userResponses3.add(new Long(4)) ;
+
+        userQuizz[0].setResponses(userResponses1) ;
+        userQuizz[1].setResponses(userResponses2) ;
+        userQuizz[2].setResponses(userResponses3) ;
+
+
+        Assert.assertTrue(6 == QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
+    }
+
+    @Test
+    public void should_not_give_survey_points_with_user_quizz()
+    {
+        UserQuizzEntity[] userQuizz = new UserQuizzEntity[3] ;
+
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        userResponses.add(new Long(4)) ;
+        userResponses.add(new Long(4)) ;
+
+        userQuizz[0].setResponses(userResponses) ;
+        userQuizz[1].setResponses(userResponses) ;
+        userQuizz[2].setResponses(userResponses) ;
+
+
+        Assert.assertTrue(0 == QuizzSystem.calculateSurveyScore(survey, userQuizz)) ;
     }
 
     @Test
@@ -196,6 +340,24 @@ public class QuizzSystemTests
     }
 
     @Test
+    public void should_survey_is_infinite()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(30/06/2037), "") ;
+
+
+        Assert.assertTrue(QuizzSystem.surveyIsInfinite(survey)) ;
+    }
+
+    @Test
+    public void should_survey_is_not_infinite()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+
+
+        Assert.assertFalse(QuizzSystem.surveyIsInfinite(survey)) ;
+    }
+
+    @Test
     public void should_survey_is_open()
     {
         survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
@@ -220,6 +382,39 @@ public class QuizzSystemTests
 
 
         Assert.assertFalse(QuizzSystem.surveyIsOpen(survey)) ;
+    }
+
+    @Test
+    public void should_user_quizz_can_answer_survey()
+    {
+        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 2, new Date(30/06/2037), "") ;
+
+
+        Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
+    }
+
+    @Test
+    public void should_user_quizz_can_answer_infinite_survey()
+    {
+        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(30/06/2037), "") ;
+
+
+        Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
+    }
+
+    @Test
+    public void should_user_quizz_can_not_answer_survey()
+    {
+        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+
+
+        Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
     }
 
 }
