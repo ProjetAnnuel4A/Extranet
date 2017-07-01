@@ -19,12 +19,12 @@ public class ResponseEntityTests
     @Test
     public void should_create_response()
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
 
 
         Assert.assertNotNull(response) ;
 
-        Assert.assertEquals("Test", response.getDescription()) ;
+        Assert.assertEquals("ResponseTest", response.getDescription()) ;
         Assert.assertEquals("", response.getImagePath()) ;
     }
 

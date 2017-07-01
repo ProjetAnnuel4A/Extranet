@@ -44,7 +44,7 @@ public class SurveyControllerTests
             .get("/surveys")
         .then()
             .log().all()
-        .statusCode(200).body("surveys", hasSize(1)) ;
+        .statusCode(200).body("survey", hasSize(1)) ;
     }
 
     @Test
@@ -56,7 +56,7 @@ public class SurveyControllerTests
             .post("/surveys/addSurvey")
         .then()
             .log().all()
-        .statusCode(200).body("surveys", equalTo("test")) ;
+        .statusCode(200).body("survey", equalTo("SurveyTest")) ;
     }
 
     @Test
@@ -68,7 +68,7 @@ public class SurveyControllerTests
             .post("/surveys/updateSurvey")
         .then()
             .log().all()
-        .statusCode(200).body("surveys", equalTo("test2")) ;
+        .statusCode(200).body("survey", equalTo("SurveyTest 2")) ;
     }
 
     @Test
@@ -92,7 +92,7 @@ public class SurveyControllerTests
             .get("/surveys/getSurvey")
         .then()
             .log().all()
-        .statusCode(200).body("surveys", equalTo("test")) ;
+        .statusCode(200).body("survey", equalTo("SurveyTest")) ;
     }
 
 
@@ -117,7 +117,7 @@ public class SurveyControllerTests
             .post("/surveys/addQuestionForASurvey")
         .then()
             .log().all()
-        .statusCode(200).body("questions", equalTo("test")) ;
+        .statusCode(200).body("questions", equalTo("QuestionTest")) ;
     }
 
     @Test

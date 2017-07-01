@@ -11,6 +11,7 @@ import org.junit.runner.RunWith ;
 import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
 
+import java.sql.Date ;
 import java.util.ArrayList ;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
@@ -86,6 +87,7 @@ public class QuizzSystemTests
         userResponses[0] = 2 ;
         userResponses[1] = 3 ;
 
+
         Assert.assertNotNull(QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
 
@@ -95,6 +97,7 @@ public class QuizzSystemTests
         int[] userResponses = new int[2] ;
         userResponses[0] = 2 ;
         userResponses[1] = 3 ;
+
 
         Assert.assertTrue(6 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
@@ -107,6 +110,7 @@ public class QuizzSystemTests
         int[] userResponses = new int[1] ;
         userResponses[0] = 2 ;
 
+
         Assert.assertTrue(3 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
 
@@ -116,6 +120,7 @@ public class QuizzSystemTests
         int[] userResponses = new int[2] ;
         userResponses[0] = 1 ;
         userResponses[1] = 4 ;
+
 
         Assert.assertTrue(0 == QuizzSystem.calculateQuestionScore(question, userResponses)) ;
     }
@@ -131,6 +136,7 @@ public class QuizzSystemTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 3 ;
 
+
         Assert.assertNotNull(QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
 
@@ -144,6 +150,7 @@ public class QuizzSystemTests
         userResponses[1][1] = 3 ;
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 3 ;
+
 
         Assert.assertTrue(20 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
@@ -159,6 +166,7 @@ public class QuizzSystemTests
         userResponses[2][0] = 2 ;
         userResponses[2][1] = 4 ;
 
+
         Assert.assertTrue(6 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
 
@@ -173,6 +181,7 @@ public class QuizzSystemTests
         userResponses[2][0] = 4 ;
         userResponses[2][1] = 4 ;
 
+
         Assert.assertTrue(0 == QuizzSystem.calculateSurveyScore(survey, userResponses)) ;
     }
 
@@ -182,7 +191,35 @@ public class QuizzSystemTests
     {
         QuizzSystem.calculateSurveyMark(survey) ;
 
+
         Assert.assertEquals(20, survey.getMark(), 0) ;
+    }
+
+    @Test
+    public void should_survey_is_open()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(30/06/2037), "") ;
+
+
+        Assert.assertTrue(QuizzSystem.surveyIsOpen(survey)) ;
+    }
+
+    @Test
+    public void should_survey_is_open_without_deadline()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, "") ;
+
+
+        Assert.assertTrue(QuizzSystem.surveyIsOpen(survey)) ;
+    }
+
+    @Test
+    public void should_survey_is_not_open()
+    {
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(29/06/2017), "") ;
+
+
+        Assert.assertFalse(QuizzSystem.surveyIsOpen(survey)) ;
     }
 
 }

@@ -4,6 +4,7 @@ import lombok.* ;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties ;
 
 import javax.persistence.* ;
+import javax.validation.constraints.Min ;
 import javax.validation.constraints.NotNull ;
 import java.util.List ;
 
@@ -18,7 +19,7 @@ import java.util.List ;
 @Entity
 @Table(name="user_responses")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class UserResponsesEntity
+public class UserQuizzEntity
 {
 
     @NotNull
@@ -42,5 +43,9 @@ public class UserResponsesEntity
     @OneToMany
     @JoinColumn(table = "response", name = "id")
     private List<Long> responses ;
+
+    @NotNull
+    @Min(value = 1)
+    private int count = 1 ; // Nombre d'essais réalisés
 
 }

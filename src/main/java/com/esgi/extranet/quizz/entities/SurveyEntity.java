@@ -9,6 +9,7 @@ import javax.validation.constraints.DecimalMin ;
 import javax.validation.constraints.Min ;
 import javax.validation.constraints.NotNull ;
 import java.sql.Date ;
+import java.time.LocalDate ;
 import java.util.List ;
 
 /**
@@ -31,7 +32,7 @@ public class SurveyEntity
     private Long id ;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name ;
 
     @OneToMany
@@ -69,6 +70,14 @@ public class SurveyEntity
                 this.mark += this.questions.get(i).getPoints() ;
             }
         }
+    }
+
+    public boolean isOpen()
+    {
+        LocalDate today = LocalDate.now() ;
+        Date todayConverted = Date.valueOf(today) ;
+
+        return this.deadLine.after(todayConverted) ;
     }
 
 }

@@ -19,7 +19,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class UserResponsesControllerTests
+public class UserQuizzControllerTests
 {
 
     @LocalServerPort
@@ -36,97 +36,97 @@ public class UserResponsesControllerTests
 
 
     @Test
-    public void should_get_all_user_responses()
+    public void should_get_all_user_quizz()
     {
         given()
             .log().all()
         .when()
-            .get("/userResponses")
+            .get("/usersQuizz")
         .then()
             .log().all()
-        .statusCode(200).body("userResponses", hasSize(1)) ;
+        .statusCode(200).body("userQuizz", hasSize(1)) ;
     }
 
     @Test
-    public void should_add_user_responses() throws Exception
+    public void should_add_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .post("/userResponses/addUserResponses")
+            .post("/usersQuizz/addUserQuizz")
         .then()
             .log().all()
-        .statusCode(200).body("userResponses", equalTo("test")) ;
+        .statusCode(200).body("userQuizz", equalTo("UserQuizzTest")) ;
     }
 
     @Test
-    public void should_update_user_responses() throws Exception
+    public void should_update_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .post("/userResponses/updateUserResponses")
+            .post("/usersQuizz/updateUserQuizz")
         .then()
             .log().all()
-        .statusCode(200).body("userResponses", equalTo("test2")) ;
+        .statusCode(200).body("userQuizz", equalTo("UserQuizzTest 2")) ;
     }
 
     @Test
-    public void should_remove_user_responses() throws Exception
+    public void should_remove_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .delete("/userResponses/removeUserResponses")
+            .delete("/usersQuizz/removeUserQuizz")
         .then()
             .log().all()
         .statusCode(200) ;
     }
 
     @Test
-    public void should_get_user_responses() throws Exception
+    public void should_get_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .get("/userResponses/getUserResponses")
+            .get("/usersQuizz/getUserQuizz")
         .then()
             .log().all()
-        .statusCode(200).body("userResponses", equalTo("test")) ;
+        .statusCode(200).body("userQuizz", equalTo("UserQuizzTest")) ;
     }
 
 
     @Test
-    public void should_get_responses_from_a_user_responses() throws Exception
+    public void should_get_responses_from_an_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .get("/userResponses/getResponsesFromAnUserResponses")
+            .get("/usersQuizz/getResponsesFromAnUserQuizz")
         .then()
             .log().all()
         .statusCode(200).body("responses", hasSize(1)) ;
     }
 
     @Test
-    public void should_add_response_for_a_user_responses() throws Exception
+    public void should_add_response_for_an_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .post("/userResponses/addResponseForAnUserResponses")
+            .post("/usersQuizz/addResponseForAnUserQuizz")
         .then()
             .log().all()
-        .statusCode(200).body("responses", equalTo("test")) ;
+        .statusCode(200).body("responses", equalTo("ResponseTest")) ;
     }
 
     @Test
-    public void should_remove_response_from_a_user_responses() throws Exception
+    public void should_remove_response_from_an_user_quizz() throws Exception
     {
         given()
             .log().all()
         .when()
-            .delete("/userResponses/removeResponseFromAnUserResponses")
+            .delete("/usersQuizz/removeResponseFromAnUserQuizz")
         .then()
             .log().all()
         .statusCode(200) ;

@@ -44,7 +44,7 @@ public class QuestionControllerTests
             .get("/questions")
         .then()
             .log().all()
-        .statusCode(200).body("questions", hasSize(1)) ;
+        .statusCode(200).body("question", hasSize(1)) ;
     }
 
     @Test
@@ -56,7 +56,7 @@ public class QuestionControllerTests
             .post("/questions/addQuestion")
         .then()
             .log().all()
-        .statusCode(200).body("questions", equalTo("test")) ;
+        .statusCode(200).body("question", equalTo("QuestionTest")) ;
     }
 
     @Test
@@ -68,7 +68,7 @@ public class QuestionControllerTests
             .post("/questions/updateQuestion")
         .then()
             .log().all()
-        .statusCode(200).body("questions", equalTo("test2")) ;
+        .statusCode(200).body("question", equalTo("QuestionTest 2")) ;
     }
 
     @Test
@@ -92,7 +92,7 @@ public class QuestionControllerTests
             .get("/questions/getQuestion")
         .then()
             .log().all()
-        .statusCode(200).body("questions", equalTo("test")) ;
+        .statusCode(200).body("question", equalTo("QuestionTest")) ;
     }
 
 
@@ -117,7 +117,7 @@ public class QuestionControllerTests
             .post("/questions/addResponseForAQuestion")
         .then()
             .log().all()
-        .statusCode(200).body("responses", equalTo("test")) ;
+        .statusCode(200).body("responses", equalTo("ResponseTest")) ;
     }
 
     @Test
@@ -154,7 +154,7 @@ public class QuestionControllerTests
             .post("/questions/addCorrectResponseForAQuestion")
         .then()
             .log().all()
-        .statusCode(200).body("correctResponses", equalTo("test")) ;
+        .statusCode(200).body("correctResponses", equalTo("CorrectResponseTest")) ;
     }
 
     @Test

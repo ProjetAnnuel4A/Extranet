@@ -47,7 +47,7 @@ public class SurveyServiceTests
         surveyService = new SurveyServiceImpl(surveyRepository, questionRepository) ;
 
         ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
-        SurveyEntity survey = new SurveyEntity(new Long(1), "Test", questions, 0, 0, new Date(28/06/2017), "") ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 0, 0, new Date(28/06/2017), "") ;
 
         surveyRepository.save(survey) ;
     }
@@ -62,14 +62,14 @@ public class SurveyServiceTests
         Assert.assertNotNull(survey) ;
         Assert.assertNotNull(result) ;
 
-        Assert.assertEquals("Test", survey.getName()) ;
-        Assert.assertEquals(0, survey.getChances()) ;
+        Assert.assertEquals("SurveyTest", survey.getName()) ;
+        Assert.assertEquals(0, survey.getMark(), 0) ;
         Assert.assertEquals(0, survey.getChances()) ;
         Assert.assertEquals(new Date(28/06/2017), survey.getDeadLine()) ;
         Assert.assertEquals("", survey.getImagePath()) ;
 
         Assert.assertEquals(result.getName(), survey.getName()) ;
-        Assert.assertEquals(result.getChances(), survey.getChances()) ;
+        Assert.assertEquals(result.getChances(), survey.getMark(), 0) ;
         Assert.assertEquals(result.getChances(), survey.getChances()) ;
         Assert.assertEquals(result.getDeadLine(), survey.getDeadLine()) ;
         Assert.assertEquals(result.getImagePath(), survey.getImagePath()) ;
@@ -78,17 +78,17 @@ public class SurveyServiceTests
     @Test
     public void should_update_survey() throws Exception
     {
-        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "Test 2", 1, 1, new Date(29/06/2017), "test") ;
+        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, new Date(29/06/2017), "ImagePathTest") ;
 
 
         Assert.assertNotNull(survey) ;
         Assert.assertNotNull(result) ;
 
-        Assert.assertEquals("Test 2", survey.getName()) ;
-        Assert.assertEquals(1, survey.getChances()) ;
+        Assert.assertEquals("SurveyTest 2", survey.getName()) ;
+        Assert.assertEquals(1, survey.getMark(), 0) ;
         Assert.assertEquals(1, survey.getChances()) ;
         Assert.assertEquals(new Date(29/06/2017), survey.getDeadLine()) ;
-        Assert.assertEquals("test", survey.getImagePath()) ;
+        Assert.assertEquals("ImagePathTest", survey.getImagePath()) ;
     }
 
     @Test
@@ -121,7 +121,7 @@ public class SurveyServiceTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, "") ;
 
         boolean result = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
 
@@ -144,7 +144,7 @@ public class SurveyServiceTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, "") ;
 
         boolean result = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
 
@@ -161,7 +161,7 @@ public class SurveyServiceTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "question", responses, correctResponses, 6, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, "") ;
 
         boolean resultAdd = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
         boolean resultRemove = surveyService.removeQuestionFromASurvey(survey.getId(), question.getId()) ;

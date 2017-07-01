@@ -46,7 +46,7 @@ public class QuestionServiceTests
 
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
-        QuestionEntity question = new QuestionEntity(new Long(1), "Test", responses, correctResponses, 0, true, "") ;
+        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 0, true, "") ;
 
         questionRepository.save(question) ;
     }
@@ -61,13 +61,13 @@ public class QuestionServiceTests
         Assert.assertNotNull(question) ;
         Assert.assertNotNull(result) ;
 
-        Assert.assertEquals("Test", question.getDescription()) ;
-        Assert.assertEquals(0, question.getPoints()) ;
+        Assert.assertEquals("QuestionTest", question.getDescription()) ;
+        Assert.assertEquals(0, question.getPoints(), 0) ;
         Assert.assertEquals(true, question.isAllOrNot()) ;
         Assert.assertEquals("", question.getImagePath()) ;
 
         Assert.assertEquals(result.getDescription(), question.getDescription()) ;
-        Assert.assertEquals(result.getPoints(), question.getPoints()) ;
+        Assert.assertEquals(result.getPoints(), question.getPoints(), 0) ;
         Assert.assertEquals(result.isAllOrNot(), question.isAllOrNot()) ;
         Assert.assertEquals(result.getImagePath(), question.getImagePath()) ;
     }
@@ -75,16 +75,16 @@ public class QuestionServiceTests
     @Test
     public void should_update_question() throws Exception
     {
-        QuestionEntity result = questionService.updateQuestion(question.getId(), "Test 2", 1, false, "test") ;
+        QuestionEntity result = questionService.updateQuestion(question.getId(), "QuestionTest 2", 1, false, "ImagePathTest") ;
 
 
         Assert.assertNotNull(question) ;
         Assert.assertNotNull(result) ;
 
-        Assert.assertEquals("Test 2", question.getDescription()) ;
-        Assert.assertEquals(1, question.getPoints()) ;
+        Assert.assertEquals("QuestionTest 2", question.getDescription()) ;
+        Assert.assertEquals(1, question.getPoints(), 0) ;
         Assert.assertEquals(false, question.isAllOrNot()) ;
-        Assert.assertEquals("test", question.getImagePath()) ;
+        Assert.assertEquals("ImagePathTest", question.getImagePath()) ;
     }
 
     @Test
@@ -114,7 +114,7 @@ public class QuestionServiceTests
     @Test
     public void should_get_response_from_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
@@ -134,7 +134,7 @@ public class QuestionServiceTests
     @Test
     public void should_add_response_for_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
@@ -148,7 +148,7 @@ public class QuestionServiceTests
     @Test
     public void should_remove_response_from_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
 
         boolean resultAdd = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
         boolean resultRemove = questionService.removeResponseFromAQuestion(question.getId(), response.getId()) ;

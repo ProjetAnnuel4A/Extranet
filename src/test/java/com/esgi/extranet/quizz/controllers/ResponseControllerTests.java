@@ -44,7 +44,7 @@ public class ResponseControllerTests
             .get("/responses")
         .then()
             .log().all()
-        .statusCode(200).body("responses", hasSize(1)) ;
+        .statusCode(200).body("response", hasSize(1)) ;
     }
 
     @Test
@@ -56,7 +56,7 @@ public class ResponseControllerTests
             .post("/responses/addResponse")
         .then()
             .log().all()
-        .statusCode(200).body("responses", equalTo("test")) ;
+        .statusCode(200).body("response", equalTo("ResponseTest")) ;
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ResponseControllerTests
             .post("/responses/updateResponse")
         .then()
             .log().all()
-        .statusCode(200).body("responses", equalTo("test2")) ;
+        .statusCode(200).body("response", equalTo("ResponseTest 2")) ;
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ResponseControllerTests
             .get("/responses/getResponse")
         .then()
             .log().all()
-        .statusCode(200).body("responses", equalTo("test")) ;
+        .statusCode(200).body("response", equalTo("ResponseTest")) ;
     }
 
 }

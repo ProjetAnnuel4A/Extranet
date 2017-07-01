@@ -3,11 +3,14 @@ package com.esgi.extranet ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
+import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
-import com.esgi.extranet.quizz.repositories.UserResponsesRepository ;
+import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
+import com.esgi.extranet.school.entities.StudentEntity ;
 
+import java.time.LocalDate ;
 import java.util.ArrayList ;
 
 /**
@@ -18,7 +21,7 @@ public class QuizzDatas
     public static ResponseRepository responseRepository ;
     public static QuestionRepository questionRepository ;
     public static SurveyRepository surveyRepository ;
-    public static UserResponsesRepository userResponsesRepository ;
+    public static UserQuizzRepository userQuizzRepository ;
 
 
     public static void initialize_datas()
@@ -66,6 +69,21 @@ public class QuizzDatas
         questionRepository.save(q3) ;
 
         surveyRepository.save(survey) ;
+
+
+        LocalDate localDateTest = null ;
+        StudentEntity student = new StudentEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
+
+
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+
+        userResponses.add(new Long(2)) ;
+
+
+        UserQuizzEntity userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), q1.getId(), userResponses, 1) ;
+
+
+        userQuizzRepository.save(userQuizz) ;
     }
 
 }

@@ -3,6 +3,9 @@ package com.esgi.extranet.quizz ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
 
+import java.sql.Date ;
+import java.time.LocalDate ;
+
 /**
  * Created by Samuel Bijou on 07/06/2017.
  */
@@ -85,6 +88,14 @@ public class QuizzSystem
                 survey.setMark(survey.getMark() + survey.getQuestions().get(i).getPoints()) ;
             }
         }
+    }
+
+    public static boolean surveyIsOpen(SurveyEntity survey)
+    {
+        LocalDate today = LocalDate.now() ;
+        Date todayConverted = Date.valueOf(today) ;
+
+        return survey.getDeadLine().after(todayConverted) ;
     }
 
 }

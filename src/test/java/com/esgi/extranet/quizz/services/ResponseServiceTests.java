@@ -36,7 +36,7 @@ public class ResponseServiceTests
     {
         responseService = new ResponseServiceImpl(responseRepository) ;
 
-        ResponseEntity response = new ResponseEntity(new Long(1), "Test", "") ;
+        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", "") ;
 
         responseRepository.save(response) ;
     }
@@ -51,7 +51,7 @@ public class ResponseServiceTests
         Assert.assertNotNull(response) ;
         Assert.assertNotNull(result) ;
 
-        Assert.assertEquals("Test", response.getDescription()) ;
+        Assert.assertEquals("ResponseTest", response.getDescription()) ;
         Assert.assertEquals("", response.getImagePath()) ;
 
         Assert.assertEquals(result.getDescription(), response.getDescription()) ;
@@ -61,14 +61,14 @@ public class ResponseServiceTests
     @Test
     public void should_update_response() throws Exception
     {
-        ResponseEntity result = responseService.updateResponse(response.getId(), "Test 2", "") ;
+        ResponseEntity result = responseService.updateResponse(response.getId(), "ResponseTest 2", "ImagePathTest") ;
 
 
         Assert.assertNotNull(response) ;
         Assert.assertNotNull(result) ;
 
-        Assert.assertEquals("Test2", result.getDescription()) ;
-        Assert.assertEquals("", result.getImagePath()) ;
+        Assert.assertEquals("ResponseTest 2", result.getDescription()) ;
+        Assert.assertEquals("ImagePathTest", result.getImagePath()) ;
     }
 
     @Test
