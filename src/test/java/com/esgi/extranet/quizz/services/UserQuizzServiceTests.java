@@ -4,8 +4,8 @@ import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
 import com.esgi.extranet.quizz.services.implementations.UserQuizzServiceImpl ;
 import org.junit.Assert ;
+import org.junit.BeforeClass ;
 import org.junit.Test ;
-import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -34,7 +34,7 @@ public class UserQuizzServiceTests
     private static UserQuizzEntity userQuizz ;
 
 
-    @BeforeAll
+    @BeforeClass
     public static void initialize_datas()
     {
         userQuizzService = new UserQuizzServiceImpl(userQuizzRepository) ;

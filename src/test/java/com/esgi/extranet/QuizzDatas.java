@@ -19,6 +19,7 @@ import java.util.ArrayList ;
  */
 public class QuizzDatas
 {
+
     @Autowired
     public static ResponseRepository responseRepository ;
 

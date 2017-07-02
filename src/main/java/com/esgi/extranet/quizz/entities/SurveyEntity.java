@@ -87,7 +87,7 @@ public class SurveyEntity
         LocalDate today = LocalDate.now() ;
         Date todayConverted = Date.valueOf(today) ;
 
-        return this.deadLine.after(todayConverted) ;
+        return !(todayConverted.after(this.deadLine)) ;
     }
 
 }

@@ -2,8 +2,8 @@ package com.esgi.extranet.quizz.repositories ;
 
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import org.junit.Assert ;
+import org.junit.BeforeClass ;
 import org.junit.Test ;
-import org.junit.jupiter.api.BeforeAll ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 import java.util.Optional ;
@@ -20,7 +20,7 @@ public class SurveyRepositoryTests
     private static SurveyEntity surveyEntity ;
 
 
-    @BeforeAll
+    @BeforeClass
     public static void initialize_datas()
     {
         surveyEntity = new SurveyEntity(new Long(1), "SurveyTest", null, 1, 1, null, new Long(1)) ;

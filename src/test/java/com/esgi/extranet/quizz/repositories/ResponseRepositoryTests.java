@@ -2,8 +2,8 @@ package com.esgi.extranet.quizz.repositories ;
 
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import org.junit.Assert ;
+import org.junit.BeforeClass ;
 import org.junit.Test ;
-import org.junit.jupiter.api.BeforeAll ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 /**
@@ -18,7 +18,7 @@ public class ResponseRepositoryTests
     private static ResponseEntity responseEntity ;
 
 
-    @BeforeAll
+    @BeforeClass
     public static void initialize_datas()
     {
         responseEntity = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;

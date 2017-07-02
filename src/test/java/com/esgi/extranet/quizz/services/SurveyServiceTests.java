@@ -7,8 +7,8 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
 import com.esgi.extranet.quizz.services.implementations.SurveyServiceImpl ;
 import org.junit.Assert ;
+import org.junit.BeforeClass ;
 import org.junit.Test ;
-import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -41,13 +41,13 @@ public class SurveyServiceTests
     private static SurveyEntity survey ;
 
 
-    @BeforeAll
+    @BeforeClass
     public static void initialize_datas()
     {
         surveyService = new SurveyServiceImpl(surveyRepository, questionRepository) ;
 
         ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
-        SurveyEntity survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 0, 0, new Date(2017, 6, 28), new Long(1)) ;
+        SurveyEntity survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 0, 0, new Date(117, 6, 28), new Long(1)) ;
 
         surveyRepository.save(survey) ;
     }
@@ -78,7 +78,7 @@ public class SurveyServiceTests
     @Test
     public void should_update_survey() throws Exception
     {
-        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, new Date(2017, 6, 29), new Long(2)) ;
+        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, new Date(117, 6, 29), new Long(2)) ;
 
 
         Assert.assertNotNull(survey) ;

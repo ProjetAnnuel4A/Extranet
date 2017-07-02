@@ -1,8 +1,8 @@
 package com.esgi.extranet.quizz.entities ;
 
 import org.junit.Assert ;
+import org.junit.BeforeClass ;
 import org.junit.Test ;
-import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
@@ -36,7 +36,7 @@ public class SurveyEntityTests
     private static SurveyEntity survey ;
 
 
-    @BeforeAll
+    @BeforeClass
     public static void initialize_datas()
     {
         q1 = new QuestionEntity(new Long(1), "QuestionTest 1", responses, correctResponses, 6, true, new Long(1)) ;
@@ -110,7 +110,7 @@ public class SurveyEntityTests
     @Test
     public void should_be_infinite()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(2037, 6, 30), new Long(1)) ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(137, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(survey.isInfinite()) ;
@@ -119,7 +119,7 @@ public class SurveyEntityTests
     @Test
     public void should_not_be_infinite()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2037, 6, 30), new Long(1)) ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(137, 6, 30), new Long(1)) ;
 
 
         Assert.assertFalse(survey.isInfinite()) ;
@@ -128,7 +128,7 @@ public class SurveyEntityTests
     @Test
     public void should_be_open()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2037, 6, 30), new Long(1)) ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(137, 6, 30), new Long(1)) ;
 
 
         Assert.assertTrue(survey.isOpen()) ;
@@ -146,10 +146,10 @@ public class SurveyEntityTests
     @Test
     public void should_not_be_open()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(2017, 6, 29), new Long(1)) ;
+        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(117, 4, 29), new Long(1)) ;
 
 
-        Assert.assertTrue(survey.isOpen()) ;
+        Assert.assertFalse(survey.isOpen()) ;
     }
 
 }
