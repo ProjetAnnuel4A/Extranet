@@ -52,28 +52,4 @@ public class LoginController {
             return "redirect:login/error";
         }
     }
-
-    @RequestMapping(value = "/registration", method = GET)
-    public String registration(Model model){
-        model.addAttribute("userForm", new UserEntity());
-        return "login/registrationPage";
-    }
-
-    @RequestMapping(value = "/registration", method = POST)
-    public String registration(@ModelAttribute("userForm") UserEntity userEntityForm, BindingResult bindingResult,
-                               Model model){
-        userValidator.validate(userEntityForm, bindingResult);
-        if(bindingResult.hasErrors()){
-            return "redirect:login/registration";
-        }
-        model.addAttribute("pseudo", userEntityForm.getPseudo());
-        model.addAttribute("email", userEntityForm.getEmail());
-        model.addAttribute("password", userEntityForm.getPassword());
-        userServices.createUser(userEntityForm.getPseudo(),
-                                userEntityForm.getEmail(),
-                                userEntityForm.getPassword(),
-                                Role.STUDENT);
-        securityService.autoLogin(userEntityForm.getPseudo(), userEntityForm.getPassword());
-        return "redirect:login/welcome";
-    }
 }

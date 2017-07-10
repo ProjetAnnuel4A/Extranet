@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -24,8 +22,6 @@ import static java.util.stream.Collectors.toList;
  */
 @Service
 public class UserServices {
-
-
     final UserRepository userRepository;
     final BCryptPasswordEncoder passwordEncoder;
 

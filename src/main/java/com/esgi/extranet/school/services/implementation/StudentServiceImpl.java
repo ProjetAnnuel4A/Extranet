@@ -1,10 +1,12 @@
 package com.esgi.extranet.school.services.implementation;
 
 import com.esgi.extranet.login.Role;
+import com.esgi.extranet.login.Service.UserServices;
 import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserRepository;
 import com.esgi.extranet.school.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,10 +19,14 @@ import java.util.List;
 @Service
 public class StudentServiceImpl implements StudentService{
     private final UserRepository userRepository;
+    private final UserServices userServices;
+    final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public StudentServiceImpl(UserRepository userRepository) {
+    public StudentServiceImpl(UserServices userServices, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userServices = userServices;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class StudentServiceImpl implements StudentService{
                 .firstname(firstname)
                 .lastname(lastname)
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .role(Role.STUDENT)
                 .pseudo(firstname+lastname)
                 .birthday(birthday)
@@ -43,7 +49,8 @@ public class StudentServiceImpl implements StudentService{
                 .address(address)
                 .build();
 
-        userRepository.save(studentEntity);
+        //userRepository.save(studentEntity);
+        userServices.saveUser(studentEntity);
         return studentEntity;
     }
 
@@ -55,10 +62,11 @@ public class StudentServiceImpl implements StudentService{
         studentEntity.setLastname(lastname);
         studentEntity.setBirthday(date);
         studentEntity.setEmail(email);
-        studentEntity.setPassword(password);
+        studentEntity.setPassword(passwordEncoder.encode(password));
         studentEntity.setAddress(address);
         studentEntity.setPhoto(photo);
-        userRepository.save(studentEntity);
+        userServices.saveUser(studentEntity);
+        //userRepository.save(studentEntity);
         return studentEntity;
     }
 

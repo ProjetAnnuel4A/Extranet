@@ -3,9 +3,11 @@ package com.esgi.extranet.administration.services.implementation;
 
 import com.esgi.extranet.administration.services.TeacherService;
 import com.esgi.extranet.login.Role;
+import com.esgi.extranet.login.Service.UserServices;
 import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,10 +20,14 @@ import java.util.List;
 @Service
 public class TeacherServiceImpl implements TeacherService {
     private UserRepository userRepository;
+    private UserServices userServices;
+    final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public TeacherServiceImpl(UserRepository userRepository) {
+    public TeacherServiceImpl(UserServices userServices, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userServices = userServices;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -37,14 +43,15 @@ public class TeacherServiceImpl implements TeacherService {
                 .firstname(firstname)
                 .lastname(lastname)
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .pseudo(firstname+lastname)
                 .role(Role.TEACHER)
                 .birthday(birthday)
                 .photo(photo)
                 .address(address)
                 .build();
-        userRepository.save(teacherEntity);
+        //userRepository.save(teacherEntity);
+        userServices.saveUser(teacherEntity);
         return teacherEntity;
     }
 
@@ -67,10 +74,11 @@ public class TeacherServiceImpl implements TeacherService {
         teacherEntity.setLastname(lastname);
         teacherEntity.setBirthday(date);
         teacherEntity.setEmail(email);
-        teacherEntity.setPassword(password);
+        teacherEntity.setPassword(passwordEncoder.encode(password));
         teacherEntity.setAddress(address);
         teacherEntity.setPhoto(photo);
-        userRepository.save(teacherEntity);
+        //userRepository.save(teacherEntity);
+        userServices.saveUser(teacherEntity);
         return teacherEntity;
     }
 }
