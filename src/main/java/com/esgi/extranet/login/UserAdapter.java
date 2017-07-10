@@ -5,17 +5,17 @@ package com.esgi.extranet.login;
  */
 public class UserAdapter {
 
-    public static UserDto toDto(User user){
+    public static UserDto toDto(UserEntity userEntity){
         return UserDto.builder()
-                .email(user.getEmail())
-                .pseudo(user.getPseudo())
-                .password(user.getPassword())
-                .token(user.getToken())
+                .email(userEntity.getEmail())
+                .pseudo(userEntity.getPseudo())
+                .password(userEntity.getPassword())
+                .token(userEntity.getToken())
                 .build();
     }
 
-    public static User toUser(UserDto dto){
-        return User.builder()
+    public static UserEntity toUser(UserDto dto){
+        return UserEntity.builder()
                 .pseudo(dto.getPseudo())
                 .email(dto.getEmail())
                 .password(dto.getPassword())

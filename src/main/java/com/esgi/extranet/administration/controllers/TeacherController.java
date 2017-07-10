@@ -1,18 +1,12 @@
 package com.esgi.extranet.administration.controllers;
 
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.TeacherService;
-import com.esgi.extranet.school.entities.StudentEntity;
+import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,17 +25,17 @@ public class TeacherController {
     }
 
     @GetMapping("")
-    public List<TeacherEntity> getAll(){
+    public List<UserEntity> getAll(){
         return teacherService.getAll();
     }
 
     @GetMapping("/getTeacher")
-    public TeacherEntity getTeacher(@RequestParam("id")Long id){
+    public UserEntity getTeacher(@RequestParam("id")Long id){
         return teacherService.getTeacher(id);
     }
 
     @PostMapping(value = "/addTeacher")
-    public TeacherEntity addTeacher(@RequestParam(name = "firstname") String firstname,
+    public UserEntity addTeacher(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
@@ -55,7 +49,7 @@ public class TeacherController {
     }
 
     @PostMapping("/updateTeacher")
-    public TeacherEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
+    public UserEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
                                        @RequestParam(name = "lastname") String lastname,
                                        @RequestParam(name = "email") String email,
                                        @RequestParam(name = "birthday") String birthday,

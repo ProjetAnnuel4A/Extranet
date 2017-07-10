@@ -1,5 +1,6 @@
 package com.esgi.extranet.administration.entities;
 
+import com.esgi.extranet.login.UserEntity;
 import lombok.*;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -27,5 +28,5 @@ public class CourseEntity {
 
     @ManyToMany
     @JoinColumn
-    private List<TeacherEntity> teacherEntities;
+    private List<UserEntity> teacherEntities;
 }

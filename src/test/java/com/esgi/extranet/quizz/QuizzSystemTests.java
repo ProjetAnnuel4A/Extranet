@@ -1,10 +1,10 @@
 package com.esgi.extranet.quizz ;
 
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
-import com.esgi.extranet.school.entities.StudentEntity ;
 import org.junit.Assert ;
 import org.junit.BeforeClass ;
 import org.junit.Test ;
@@ -49,7 +49,7 @@ public class QuizzSystemTests
     private static SurveyEntity survey ;
 
 
-    private static StudentEntity student ;
+    private static UserEntity student ;
 
 
     private static UserQuizzEntity userQuizz ;
@@ -88,7 +88,7 @@ public class QuizzSystemTests
 
 
         LocalDate localDateTest = null ;
-        student = new StudentEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
+        //student = new UserEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
 
 
         userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;

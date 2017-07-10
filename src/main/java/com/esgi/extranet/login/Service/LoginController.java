@@ -1,7 +1,7 @@
 package com.esgi.extranet.login.Service;
 
 import com.esgi.extranet.login.Role;
-import com.esgi.extranet.login.User;
+import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,15 +30,15 @@ public class LoginController {
 
     @GetMapping(value = "/home")
     public String home(Model model) {
-        return "homePage";
+        return "login/homePage";
     }
 
     @GetMapping(value = "/welcome")
-    public String welcome(Model model){ return "welcomePage";}
+    public String welcome(Model model){ return "login/welcomePage";}
 
     @GetMapping(value = "/login", produces = "text/html")
     public String getLoginPage(Model model){
-        return "loginPage";
+        return "login/loginPage";
     }
     @GetMapping(value = "/error")
     public String error(Model model){ return "errorPage";}
@@ -47,33 +47,33 @@ public class LoginController {
     public String login(Model model, @ModelAttribute("pseudo")String pseudo,
                         @ModelAttribute("password")String password) {
         if(userServices.verifyUser(pseudo, password) == true){
-            return "redirect:welcome";
+            return "redirect:login/welcome";
         }else{
-            return "redirect:error";
+            return "redirect:login/error";
         }
     }
 
     @RequestMapping(value = "/registration", method = GET)
     public String registration(Model model){
-        model.addAttribute("userForm", new User());
-        return "registrationPage";
+        model.addAttribute("userForm", new UserEntity());
+        return "login/registrationPage";
     }
 
     @RequestMapping(value = "/registration", method = POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult,
+    public String registration(@ModelAttribute("userForm") UserEntity userEntityForm, BindingResult bindingResult,
                                Model model){
-        userValidator.validate(userForm, bindingResult);
+        userValidator.validate(userEntityForm, bindingResult);
         if(bindingResult.hasErrors()){
-            return "redirect:registration";
+            return "redirect:login/registration";
         }
-        model.addAttribute("pseudo", userForm.getPseudo());
-        model.addAttribute("email", userForm.getEmail());
-        model.addAttribute("password", userForm.getPassword());
-        userServices.createUser(userForm.getPseudo(),
-                                userForm.getEmail(),
-                                userForm.getPassword(),
+        model.addAttribute("pseudo", userEntityForm.getPseudo());
+        model.addAttribute("email", userEntityForm.getEmail());
+        model.addAttribute("password", userEntityForm.getPassword());
+        userServices.createUser(userEntityForm.getPseudo(),
+                                userEntityForm.getEmail(),
+                                userEntityForm.getPassword(),
                                 Role.STUDENT);
-        securityService.autoLogin(userForm.getPseudo(), userForm.getPassword());
-        return "redirect:welcome";
+        securityService.autoLogin(userEntityForm.getPseudo(), userEntityForm.getPassword());
+        return "redirect:login/welcome";
     }
 }

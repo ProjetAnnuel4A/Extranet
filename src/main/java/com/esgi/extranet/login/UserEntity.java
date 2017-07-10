@@ -1,10 +1,12 @@
-package com.esgi.extranet.school.entities;
+package com.esgi.extranet.login;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
+
+import static javax.persistence.EnumType.STRING;
 
 /**
  * @author timotheearnauld
@@ -13,18 +15,22 @@ import java.util.Date;
 @Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "student")
+@Table(name = "users")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class StudentEntity {
+public class UserEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column
     private Long idClassmate;
+
+    @Column(nullable = false)
+    private String pseudo;
 
     @Column(nullable = false)
     private String firstname;
@@ -43,4 +49,15 @@ public class StudentEntity {
 
     @Column(nullable = false)
     private String address;
+
+    @Column
+    @NotNull
+    private String password;
+
+    @Column
+    @Enumerated(STRING)
+    private Role role;
+
+    @Column
+    private String token;
 }

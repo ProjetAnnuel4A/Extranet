@@ -1,40 +1,39 @@
 package com.esgi.extranet.administration.services.implementation;
 
 
-import com.esgi.extranet.administration.entities.TeacherEntity;
-import com.esgi.extranet.administration.repositories.TeacherRepository;
 import com.esgi.extranet.administration.services.TeacherService;
-import com.esgi.extranet.school.entities.StudentEntity;
+import com.esgi.extranet.login.UserEntity;
+import com.esgi.extranet.login.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author timotheearnauld
  */
 @Service
 public class TeacherServiceImpl implements TeacherService {
-    private TeacherRepository teacherRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public TeacherServiceImpl(TeacherRepository teacherRepository) {
-        this.teacherRepository = teacherRepository;
+    public TeacherServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
 
     @Override
-    public List<TeacherEntity> getAll() {
-        return teacherRepository.findAll();
+    public List<UserEntity> getAll() {
+        return userRepository.findAll();
     }
 
     @Override
     @Transactional
-    public TeacherEntity addTeacher(String firstname, String lastname, String email, LocalDate birthday, String photo, String address) {
-        TeacherEntity teacherEntity = TeacherEntity.builder()
+    public UserEntity addTeacher(String firstname, String lastname, String email, LocalDate birthday, String photo, String address) {
+        UserEntity teacherEntity = UserEntity.builder()
                 .firstname(firstname)
                 .lastname(lastname)
                 .email(email)
@@ -42,32 +41,32 @@ public class TeacherServiceImpl implements TeacherService {
                 .photo(photo)
                 .address(address)
                 .build();
-        teacherRepository.save(teacherEntity);
+        userRepository.save(teacherEntity);
         return teacherEntity;
     }
 
     @Override
     @Transactional
     public boolean removeTeacher(Long id) {
-        teacherRepository.delete(id);
-        return (teacherRepository.findById(id) == null);
+        userRepository.delete(id);
+        return (userRepository.findById(id) == null);
     }
 
     @Override
-    public TeacherEntity getTeacher(Long id) {
-        return teacherRepository.findById(id);
+    public UserEntity getTeacher(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public TeacherEntity updateTeacher(String firstname, String lastname, String email, LocalDate date, String photo, String address, Long id) {
-        TeacherEntity teacherEntity = teacherRepository.findById(id);
+    public UserEntity updateTeacher(String firstname, String lastname, String email, LocalDate date, String photo, String address, Long id) {
+        UserEntity teacherEntity = userRepository.findById(id);
         teacherEntity.setFirstname(firstname);
         teacherEntity.setLastname(lastname);
         teacherEntity.setBirthday(date);
         teacherEntity.setEmail(email);
         teacherEntity.setAddress(address);
         teacherEntity.setPhoto(photo);
-        teacherRepository.save(teacherEntity);
+        userRepository.save(teacherEntity);
         return teacherEntity;
     }
 }

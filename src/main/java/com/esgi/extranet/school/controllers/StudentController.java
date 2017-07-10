@@ -1,6 +1,6 @@
 package com.esgi.extranet.school.controllers;
 
-import com.esgi.extranet.school.entities.StudentEntity;
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.school.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +24,12 @@ public class StudentController {
     }
 
     @GetMapping("")
-    public List<StudentEntity> getAll(){
+    public List<UserEntity> getAll(){
         return studentService.getAll();
     }
 
     @GetMapping("/getStudent")
-    public StudentEntity getStudent(@RequestParam("id")Long id){
+    public UserEntity getStudent(@RequestParam("id")Long id){
         return studentService.getStudent(id);
     }
 
@@ -45,17 +45,17 @@ public class StudentController {
     }
 
     @GetMapping("/getStudentsForClassmate")
-    public List<StudentEntity>getStudentsForClassmate(@RequestParam("idClassmate")Long idClassmate){
+    public List<UserEntity>getStudentsForClassmate(@RequestParam("idClassmate")Long idClassmate){
         return studentService.getStudentsForClassmate(idClassmate);
     }
 
     @GetMapping("/getStudentsWithoutClassmate")
-    public List<StudentEntity>getStudentsWithoutClassmate(){
+    public List<UserEntity>getStudentsWithoutClassmate(){
         return studentService.getStudentsWithoutClassmate();
     }
 
     @PostMapping("/addStudent")
-    public StudentEntity addStudent(@RequestParam(name = "firstname") String firstname,
+    public UserEntity addStudent(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
@@ -69,7 +69,7 @@ public class StudentController {
     }
 
     @PostMapping("/updateStudent")
-    public StudentEntity udpateStudent(@RequestParam(name = "firstname") String firstname,
+    public UserEntity udpateStudent(@RequestParam(name = "firstname") String firstname,
                               @RequestParam(name = "lastname") String lastname,
                               @RequestParam(name = "email") String email,
                               @RequestParam(name = "birthday") String birthday,

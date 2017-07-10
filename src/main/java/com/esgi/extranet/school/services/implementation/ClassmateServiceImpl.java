@@ -1,12 +1,11 @@
 package com.esgi.extranet.school.services.implementation;
 
 import com.esgi.extranet.administration.entities.CourseEntity;
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.repositories.CourseRepository;
-import com.esgi.extranet.administration.repositories.TeacherRepository;
+import com.esgi.extranet.login.UserEntity;
+import com.esgi.extranet.login.UserRepository;
 import com.esgi.extranet.planning.services.PlanningService;
 import com.esgi.extranet.school.entities.ClassmateEntity;
-import com.esgi.extranet.school.entities.StudentEntity;
 import com.esgi.extranet.school.repositories.ClassmateRepository;
 import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +20,15 @@ import java.util.List;
 @Service
 public class ClassmateServiceImpl implements ClassmateService{
     ClassmateRepository classmateRepository;
-    TeacherRepository teacherRepository;
+    UserRepository userRepository;
     CourseRepository courseRepository;
     PlanningService planningService;
 
     @Autowired
-    public ClassmateServiceImpl(PlanningService planningService, ClassmateRepository classmateRepository, TeacherRepository teacherRepository, CourseRepository courseRepository) {
+    public ClassmateServiceImpl(PlanningService planningService, ClassmateRepository classmateRepository, UserRepository userRepository, CourseRepository courseRepository) {
         this.planningService = planningService;
         this.classmateRepository = classmateRepository;
-        this.teacherRepository = teacherRepository;
+        this.userRepository = userRepository;
         this.courseRepository = courseRepository;
     }
 
@@ -62,7 +61,7 @@ public class ClassmateServiceImpl implements ClassmateService{
     @Override
     public boolean removeTeachersFromClassmate(Long idClassmate, Long idTeacher) {
         ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
-        List<TeacherEntity> teacherEntities = classmateEntity.getTeacherEntities();
+        List<UserEntity> teacherEntities = classmateEntity.getTeacherEntities();
         for(int i = 0; i < teacherEntities.size(); i++){
             if(teacherEntities.get(i).getId().equals(idTeacher)){
                 teacherEntities.remove(i);
@@ -76,13 +75,13 @@ public class ClassmateServiceImpl implements ClassmateService{
     @Override
     public boolean addTeacherForClassmate(Long idClassmate, Long idTeacher) {
         ClassmateEntity classmateEntity = classmateRepository.findById(idClassmate);
-        classmateEntity.getTeacherEntities().add(teacherRepository.findById(idTeacher));
+        classmateEntity.getTeacherEntities().add(userRepository.findById(idTeacher));
         classmateRepository.save(classmateEntity);
         return false;
     }
 
     @Override
-    public List<TeacherEntity> getTeachersFromClassmate(Long idClassmate) {
+    public List<UserEntity> getTeachersFromClassmate(Long idClassmate) {
         return classmateRepository.findById(idClassmate).getTeacherEntities();
     }
 
@@ -92,7 +91,7 @@ public class ClassmateServiceImpl implements ClassmateService{
         List<ClassmateEntity> result = new ArrayList<>();
 
         for(ClassmateEntity classmateEntity : classmateEntities){
-            for(TeacherEntity teacherEntity : classmateEntity.getTeacherEntities()){
+            for(UserEntity teacherEntity : classmateEntity.getTeacherEntities()){
                 if(teacherEntity.getId().equals(idTeacher)) {
                     result.add(classmateEntity);
                 }

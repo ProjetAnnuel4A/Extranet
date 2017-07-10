@@ -62,37 +62,37 @@ public class UserServices {
 
     @Transactional
     public UserDto createUser(String pseudo, String email, String password, Role role) {
-        if(userRepository.findByPseudo(pseudo).isPresent()){
+        if(userRepository.findByPseudo(pseudo) != null){
             return null;
         }else {
             String token = createToken(pseudo, password);
-            User user = User.builder()
+            UserEntity userEntity = UserEntity.builder()
                     .pseudo(pseudo)
                     .email(email)
                     .password(passwordEncoder.encode(password))
                     .role(role)
                     .token(token)
                     .build();
-            userRepository.save(user);
-            System.out.println(user.getPseudo());
-            System.out.println(userRepository.findByToken(user.getToken()));
-            Long id = Long.valueOf(userRepository.findIdByPseudo(user.getPseudo()));
-            return UserAdapter.toDto(user);
+            userRepository.save(userEntity);
+            System.out.println(userEntity.getPseudo());
+            System.out.println(userRepository.findByToken(userEntity.getToken()));
+            Long id = Long.valueOf(userRepository.findIdByPseudo(userEntity.getPseudo()));
+            return UserAdapter.toDto(userEntity);
         }
     }
 
     @Transactional
-    public UserDto saveUser(User user) {
-        user.setToken(createToken(user.getPseudo(), user.getPassword()));
-        userRepository.save(user);
-        return UserAdapter.toDto(user);
+    public UserDto saveUser(UserEntity userEntity) {
+        userEntity.setToken(createToken(userEntity.getPseudo(), userEntity.getPassword()));
+        userRepository.save(userEntity);
+        return UserAdapter.toDto(userEntity);
     }
 
     @Transactional(readOnly = true)
-    public User getUserByPseudo(String pseudo) {
-        Optional<User> user = userRepository.findByPseudo(pseudo);
-        if(user.isPresent()) {
-            return user.get();
+    public UserEntity getUserByPseudo(String pseudo) {
+        UserEntity user = userRepository.findByPseudo(pseudo);
+        if(user != null) {
+            return user;
         }else{
             return null;
         }
@@ -115,10 +115,10 @@ public class UserServices {
 
     @Transactional(readOnly = true)
     public boolean verifyUser(String pseudo, String password){
-        Optional<User> user = userRepository.findByPseudo(pseudo);
-        if(!user.isPresent()) {
+        UserEntity user = userRepository.findByPseudo(pseudo);
+        if(user == null) {
             return false;
-        }else if(!passwordEncoder.matches(password, user.get().getPassword())){
+        }else if(!passwordEncoder.matches(password, user.getPassword())){
             return false;
         }
         return true;
@@ -126,9 +126,9 @@ public class UserServices {
 
     @Transactional
     public void removeUser(Long id){
-        Optional<User> u = userRepository.findById(id);
-        if(u.isPresent()){
-            userRepository.delete(u.get());
+        UserEntity u = userRepository.findById(id);
+        if(u != null){
+            userRepository.delete(u);
         }
     }
 

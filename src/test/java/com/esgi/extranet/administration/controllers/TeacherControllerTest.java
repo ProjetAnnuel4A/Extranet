@@ -1,7 +1,7 @@
 package com.esgi.extranet.administration.controllers;
 
-import com.esgi.extranet.administration.repositories.TeacherRepository;
 import com.esgi.extranet.administration.services.TeacherService;
+import com.esgi.extranet.login.UserRepository;
 import com.jayway.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
@@ -28,7 +27,7 @@ public class TeacherControllerTest {
     TeacherService teacherService;
 
     @Autowired
-    TeacherRepository teacherRepository;
+    UserRepository userRepository;
 
     @Before
     public void init(){

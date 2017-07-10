@@ -1,7 +1,6 @@
 package com.esgi.extranet.login.Service;
 
-import com.esgi.extranet.login.Role;
-import com.esgi.extranet.login.User;
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,13 +30,13 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByPseudo(s).get();
-        return new org.springframework.security.core.userdetails.User(user.getPseudo(), user.getPassword(), getAuthorities(user));
+        UserEntity userEntity = userRepository.findByPseudo(s);
+        return new org.springframework.security.core.userdetails.User(userEntity.getPseudo(), userEntity.getPassword(), getAuthorities(userEntity));
     }
 
-    private Set<GrantedAuthority> getAuthorities(User user){
+    private Set<GrantedAuthority> getAuthorities(UserEntity userEntity){
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().toString());
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(userEntity.getRole().toString());
         authorities.add(grantedAuthority);
         return authorities;
     }

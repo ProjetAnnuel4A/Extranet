@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired ;
 /**
  * Created by Samuel Bijou on 01/07/2017.
  */
-public class UserQuizzRepositoryTests
+public class UserEntityQuizzRepositoryTests
 {
 
     @Autowired

@@ -1,16 +1,14 @@
 package com.esgi.extranet.administration.services.implementation;
 
 import com.esgi.extranet.administration.entities.CourseEntity;
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.repositories.CourseRepository;
-import com.esgi.extranet.administration.repositories.TeacherRepository;
 import com.esgi.extranet.administration.services.CourseService;
-import com.esgi.extranet.administration.services.TeacherService;
+import com.esgi.extranet.login.UserEntity;
+import com.esgi.extranet.login.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,12 +17,12 @@ import java.util.List;
 @Service
 public class CourseServiceImpl implements CourseService{
     private CourseRepository courseRepository;
-    private TeacherRepository teacherRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, TeacherRepository teacherRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, UserRepository userRepository) {
         this.courseRepository = courseRepository;
-        this.teacherRepository = teacherRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -55,7 +53,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public List<TeacherEntity> getTeachersForACourse(Long courseId) {
+    public List<UserEntity> getTeachersForACourse(Long courseId) {
         CourseEntity courseEntity = courseRepository.findById(courseId);
         return courseEntity.getTeacherEntities();
     }
@@ -63,7 +61,7 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public boolean addTeacherForACourse(Long courseId, Long teacherId) {
         CourseEntity courseEntity = courseRepository.findById(courseId);
-        TeacherEntity teacherEntity = teacherRepository.findById(teacherId);
+        UserEntity teacherEntity = userRepository.findById(teacherId);
         courseEntity.getTeacherEntities().add(teacherEntity);
         courseRepository.save(courseEntity);
         return false;
@@ -72,7 +70,7 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public boolean removeTeacherFromACourse(Long courseId, Long teacherId) {
         CourseEntity courseEntity = courseRepository.findById(courseId);
-        List<TeacherEntity>teacherEntities = courseEntity.getTeacherEntities();
+        List<UserEntity>teacherEntities = courseEntity.getTeacherEntities();
 
         for(int i = 0; i < teacherEntities.size(); i++){
             if(teacherEntities.get(i).getId().equals(teacherId)){

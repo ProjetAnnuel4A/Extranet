@@ -8,7 +8,6 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
-import com.esgi.extranet.school.entities.StudentEntity ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 import java.time.LocalDate ;
@@ -81,7 +80,7 @@ public class QuizzDatas
 
 
         LocalDate localDateTest = null ;
-        StudentEntity student = new StudentEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
+        //StudentEntity student = new StudentEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
 
 
         ArrayList<Long> userResponses = new ArrayList<Long>() ;
@@ -89,10 +88,10 @@ public class QuizzDatas
         userResponses.add(new Long(2)) ;
 
 
-        UserQuizzEntity userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), q1.getId(), userResponses, 1) ;
+        /*UserQuizzEntity userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), q1.getId(), userResponses, 1) ;
 
 
-        userQuizzRepository.save(userQuizz) ;
+        userQuizzRepository.save(userQuizz) ;*/
     }
 
 }

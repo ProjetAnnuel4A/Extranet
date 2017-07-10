@@ -14,7 +14,8 @@ import java.util.List ;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @Entity
 @Table(name = "question")

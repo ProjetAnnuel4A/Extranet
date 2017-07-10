@@ -1,6 +1,6 @@
 package com.esgi.extranet.login.Service;
 
-import com.esgi.extranet.login.User;
+import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -18,22 +18,22 @@ public class UserValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass){
-        return User.class.equals(aClass);
+        return UserEntity.class.equals(aClass);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        User user = (User) target;
+        UserEntity userEntity = (UserEntity) target;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "pseudo", "NotEmpty");
-        if(user.getPseudo().length()<6 || user.getPseudo().length()>32){
+        if(userEntity.getPseudo().length()<6 || userEntity.getPseudo().length()>32){
             errors.rejectValue("pseudo", "Size.userForm.pseudo");
         }
-        if(userServices.getUserByPseudo(user.getPseudo()) != null) {
+        if(userServices.getUserByPseudo(userEntity.getPseudo()) != null) {
             errors.rejectValue("pseudo", "Duplicate.userForm.pseudo");
         }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if(user.getPassword().length()<8 || user.getPassword().length()>32){
+        if(userEntity.getPassword().length()<8 || userEntity.getPassword().length()>32){
             errors.rejectValue("password", "Size.userForm.password");
         }
     }

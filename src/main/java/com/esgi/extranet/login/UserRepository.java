@@ -12,13 +12,14 @@ import java.util.Optional;
  * @author timotheearnauld
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    List<UserEntity> findAllByIdClassmate(Long idClassmate);
 
-    Optional<User> findByPseudo(String pseudo);
+    UserEntity findByPseudo(String pseudo);
 
-    Optional<User> findById(Long id);
+    UserEntity findById(Long id);
 
-    Optional<User> findByToken(String token);
+    UserEntity findByToken(String token);
 
     @Query(nativeQuery = true,
             value = "select u.token from users u where u.pseudo = :pseudo")

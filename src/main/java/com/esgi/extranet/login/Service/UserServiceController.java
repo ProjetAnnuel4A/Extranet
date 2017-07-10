@@ -1,6 +1,6 @@
 package com.esgi.extranet.login.Service;
 
-import com.esgi.extranet.login.User;
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,36 +32,36 @@ public class UserServiceController {
     }
 
     @PostMapping
-    public UserDto insertUser(@RequestBody User user){
-        return userServices.createUser(user.getPseudo(), user.getEmail(), user.getPassword(), user.getRole());
+    public UserDto insertUser(@RequestBody UserEntity userEntity){
+        return userServices.createUser(userEntity.getPseudo(), userEntity.getEmail(), userEntity.getPassword(), userEntity.getRole());
     }
     @GetMapping("/{pseudo}")
-    public User getUserByPseudo(@PathVariable String pseudo){
-        User user = userServices.getUserByPseudo(pseudo);
-        return User.builder()
-                .id(user.getId())
-                .email(user.getEmail())
+    public UserEntity getUserByPseudo(@PathVariable String pseudo){
+        UserEntity userEntity = userServices.getUserByPseudo(pseudo);
+        return UserEntity.builder()
+                .id(userEntity.getId())
+                .email(userEntity.getEmail())
                 .build();
     }
 
     @PostMapping("/token")
-    public String verifyToken(@RequestBody User user){
-        return String.valueOf(userServices.verifyToken(user.getToken()));
+    public String verifyToken(@RequestBody UserEntity userEntity){
+        return String.valueOf(userServices.verifyToken(userEntity.getToken()));
     }
     @GetMapping("/verify")
-    public User verifyUser(@RequestParam("pseudo") String pseudo,
-                             @RequestParam("password") String password){
-        User error = User.builder()
+    public UserEntity verifyUser(@RequestParam("pseudo") String pseudo,
+                                 @RequestParam("password") String password){
+        UserEntity error = UserEntity.builder()
                 .pseudo("erreur")
                 .build();
         if(userServices.verifyUser(pseudo, password) == true){
-            User user = userServices.getUserByPseudo(pseudo);
-            if(userServices.verifyToken(user.getToken()) == false){
+            UserEntity userEntity = userServices.getUserByPseudo(pseudo);
+            if(userServices.verifyToken(userEntity.getToken()) == false){
                 return error;
             }
-            return User.builder()
-                    .id(user.getId())
-                    .token(user.getToken())
+            return UserEntity.builder()
+                    .id(userEntity.getId())
+                    .token(userEntity.getToken())
                     .build();
         }else{
             return error;
