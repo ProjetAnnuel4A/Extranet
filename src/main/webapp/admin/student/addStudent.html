@@ -88,6 +88,7 @@
                     <div class="row">
                         <input type="text" id="firstname" required name="firstname" placeholder="Prénom">
 						<input type="text" id="lastname" required name="lastname" placeholder="Nom">
+                        <input type="password" id="password" required name="password" placeholder="Password">
 						<input type="email" id="email" required name="email" placeholder="Email">
 						<input type="date" id="birthday" required name="birthday">
 						<input type="text" id="address" required name="address" placeholder="Adresse">
@@ -125,9 +126,11 @@
     </div>
 	<script>
   		function addStudent(){
-			$.post("http://brotherhood9305.cloudapp.net:9000/students/addStudent",{firstname: $("#firstname").val(),
+			//$.post("http://brotherhood9305.cloudapp.net:9000/students/addStudent",{firstname: $("#firstname").val(),
+            $.post("http://localhost:9000/students/addStudent",{firstname: $("#firstname").val(),
 																lastname: $("#lastname").val(),
 																email: $("#email").val(),
+                                                                password: $("#password").val(),
 																birthday: $("#birthday").val(),
 																address: $("#address").val(),
 																photo: $("#photo").val()})

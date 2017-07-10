@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface StudentService {
     List<UserEntity> getAll();
-    UserEntity addStudent(String firstname, String lastname, String email, LocalDate birthday, String photo, String address);
-    UserEntity updateStudent(String firstname, String lastname, String email, LocalDate date, String photo, String address, Long id);
+    UserEntity addStudent(String firstname, String lastname, String email, String password, LocalDate birthday, String photo, String address);
+    UserEntity updateStudent(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id);
     boolean removeStudent(Long id);
     UserEntity getStudent(Long id);
     boolean addClassmateForStudent(Long studentId, Long classmateId);

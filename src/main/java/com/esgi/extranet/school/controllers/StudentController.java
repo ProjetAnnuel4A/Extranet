@@ -58,6 +58,7 @@ public class StudentController {
     public UserEntity addStudent(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
+                             @RequestParam(name = "password") String password,
                              @RequestParam(name = "birthday") String birthday,
                              @RequestParam(name = "photo") String photo,
                              @RequestParam(name = "address") String address){
@@ -65,13 +66,14 @@ public class StudentController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return studentService.addStudent(firstname, lastname, email, date, photo, address);
+        return studentService.addStudent(firstname, lastname, email, password, date, photo, address);
     }
 
     @PostMapping("/updateStudent")
     public UserEntity udpateStudent(@RequestParam(name = "firstname") String firstname,
                               @RequestParam(name = "lastname") String lastname,
                               @RequestParam(name = "email") String email,
+                              @RequestParam(name = "password") String password,
                               @RequestParam(name = "birthday") String birthday,
                               @RequestParam(name = "photo") String photo,
                               @RequestParam(name = "address") String address,
@@ -80,7 +82,7 @@ public class StudentController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return studentService.updateStudent(firstname, lastname, email, date, photo, address, id);
+        return studentService.updateStudent(firstname, lastname, email, password, date, photo, address, id);
     }
 
     @RequestMapping(value = "/removeStudent", method = RequestMethod.POST)
