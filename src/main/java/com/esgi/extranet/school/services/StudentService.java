@@ -2,6 +2,7 @@ package com.esgi.extranet.school.services;
 
 import com.esgi.extranet.login.UserEntity;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 

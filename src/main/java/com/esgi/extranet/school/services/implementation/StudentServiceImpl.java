@@ -1,5 +1,6 @@
 package com.esgi.extranet.school.services.implementation;
 
+import com.esgi.extranet.login.MailClient;
 import com.esgi.extranet.login.Role;
 import com.esgi.extranet.login.Service.UserServices;
 import com.esgi.extranet.login.UserEntity;
@@ -10,6 +11,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,12 +26,14 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService{
     private final UserRepository userRepository;
     private final UserServices userServices;
+    private final MailClient mailClient;
     final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public StudentServiceImpl(UserServices userServices, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public StudentServiceImpl(UserServices userServices, UserRepository userRepository, MailClient mailClient, BCryptPasswordEncoder passwordEncoder) {
         this.userServices = userServices;
         this.userRepository = userRepository;
+        this.mailClient = mailClient;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -51,12 +59,26 @@ public class StudentServiceImpl implements StudentService{
 
         //userRepository.save(studentEntity);
         userServices.saveUser(studentEntity);
+        String object = "Création de compte étudiant - Brotherhood";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("email/email.html").getFile());
+        String message = null;
+        try {
+            message = String.join("", Files.readAllLines(Paths.get(file.getPath())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        message = message.replace("*firstname*", firstname);
+        message = message.replace("*role*", "Etudiant");
+        message = message.replace("*pseudo*", firstname+lastname);
+        message = message.replace("*password*", password);
+        mailClient.prepareAndSend(email, object, message);
         return studentEntity;
     }
 
     @Override
     @Transactional
-    public UserEntity updateStudent(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id) {
+    public UserEntity updateStudent(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id){
         UserEntity studentEntity = userRepository.findById(id);
         studentEntity.setFirstname(firstname);
         studentEntity.setLastname(lastname);

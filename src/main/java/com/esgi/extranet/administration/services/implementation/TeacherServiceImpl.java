@@ -2,6 +2,7 @@ package com.esgi.extranet.administration.services.implementation;
 
 
 import com.esgi.extranet.administration.services.TeacherService;
+import com.esgi.extranet.login.MailClient;
 import com.esgi.extranet.login.Role;
 import com.esgi.extranet.login.Service.UserServices;
 import com.esgi.extranet.login.UserEntity;
@@ -11,6 +12,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,13 +25,15 @@ import java.util.List;
 @Service
 public class TeacherServiceImpl implements TeacherService {
     private UserRepository userRepository;
+    private final MailClient mailClient;
     private UserServices userServices;
     final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public TeacherServiceImpl(UserServices userServices, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public TeacherServiceImpl(UserServices userServices, UserRepository userRepository, MailClient mailClient, BCryptPasswordEncoder passwordEncoder) {
         this.userServices = userServices;
         this.userRepository = userRepository;
+        this.mailClient = mailClient;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -52,6 +59,20 @@ public class TeacherServiceImpl implements TeacherService {
                 .build();
         //userRepository.save(teacherEntity);
         userServices.saveUser(teacherEntity);
+        String object = "Création de compte étudiant - Brotherhood";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("email/email.html").getFile());
+        String message = null;
+        try {
+            message = String.join("", Files.readAllLines(Paths.get(file.getPath())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        message = message.replace("*firstname*", firstname);
+        message = message.replace("*role*", "Enseignant");
+        message = message.replace("*pseudo*", firstname+lastname);
+        message = message.replace("*password*", password);
+        mailClient.prepareAndSend(email, object, message);
         return teacherEntity;
     }
 
