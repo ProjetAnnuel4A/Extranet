@@ -9,7 +9,7 @@ import java.util.List;
  * @author timotheearnauld
  */
 public interface TeacherService {
-    List<UserEntity> getAll();
+    List<UserEntity> getAllTeachers();
     UserEntity addTeacher(String firstname, String lastname, String email, String password, LocalDate birthday, String photo, String address);
     UserEntity updateTeacher(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id);
     boolean removeTeacher(Long id);

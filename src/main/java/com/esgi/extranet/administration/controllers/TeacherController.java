@@ -26,7 +26,7 @@ public class TeacherController {
 
     @GetMapping("")
     public List<UserEntity> getAll(){
-        return teacherService.getAll();
+        return teacherService.getAllTeachers();
     }
 
     @GetMapping("/getTeacher")

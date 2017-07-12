@@ -10,7 +10,7 @@ import java.util.List;
  * @author timotheearnauld
  */
 public interface StudentService {
-    List<UserEntity> getAll();
+    List<UserEntity> getAllStudents();
     UserEntity addStudent(String firstname, String lastname, String email, String password, LocalDate birthday, String photo, String address);
     UserEntity updateStudent(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id);
     boolean removeStudent(Long id);

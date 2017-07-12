@@ -10,7 +10,6 @@ import com.esgi.extranet.login.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +38,8 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public List<UserEntity> getAll() {
-        return userRepository.findAll();
+    public List<UserEntity> getAllTeachers() {
+        return userRepository.findAllTeachers();
     }
 
     @Override

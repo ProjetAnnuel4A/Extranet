@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
@@ -38,8 +37,8 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public List<UserEntity> getAll() {
-        return userRepository.findAll();
+    public List<UserEntity> getAllStudents() {
+        return userRepository.findAllStudents();
     }
 
     @Override
