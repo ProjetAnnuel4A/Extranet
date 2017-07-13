@@ -54,7 +54,8 @@ public class UserServiceController {
         UserEntity error = UserEntity.builder()
                 .pseudo("erreur")
                 .build();
-        if(userServices.verifyUser(pseudo, password) == true){
+        UserEntity user = userServices.verifyUser(pseudo, password);
+        if(user != null){
             UserEntity userEntity = userServices.getUserByPseudo(pseudo);
             if(userServices.verifyToken(userEntity.getToken()) == false){
                 return error;

@@ -100,7 +100,7 @@ public class UserServices {
             DecodedJWT decodedJWT = JWT.decode(token);
             String pseudo = decodedJWT.getClaim("username").asString();
             String password = decodedJWT.getClaim("password").asString();
-            if(!verifyUser(pseudo, password)){
+            if(verifyUser(pseudo, password) == null){
                 return false;
             }
         }catch(JWTDecodeException e){
@@ -110,14 +110,14 @@ public class UserServices {
     }
 
     @Transactional(readOnly = true)
-    public boolean verifyUser(String pseudo, String password){
+    public UserEntity verifyUser(String pseudo, String password){
         UserEntity user = userRepository.findByPseudo(pseudo);
         if(user == null) {
-            return false;
+            return null;
         }else if(!passwordEncoder.matches(password, user.getPassword())){
-            return false;
+            return null;
         }
-        return true;
+        return user;
     }
 
     @Transactional

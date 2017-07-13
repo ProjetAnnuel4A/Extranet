@@ -1,5 +1,6 @@
 package com.esgi.extranet.login.Service;
 
+import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,10 +36,12 @@ public class LoginController {
     @RequestMapping(value = "/home", method = POST)
     public String login(Model model, @ModelAttribute("pseudo")String pseudo,
                         @ModelAttribute("password")String password) {
-        if(userServices.verifyUser(pseudo, password) == true){
-            return "redirect:login/welcome";
-        }else{
+        UserEntity user = userServices.verifyUser(pseudo, password);
+        if(user == null){
             return "redirect:errorlogin";
+        }else{
+            System.out.println(user.getRole());
+            return "redirect:login/welcome";
         }
     }
 }
