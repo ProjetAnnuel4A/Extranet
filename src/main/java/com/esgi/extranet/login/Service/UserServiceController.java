@@ -1,10 +1,15 @@
 package com.esgi.extranet.login.Service;
 
+import com.esgi.extranet.login.MailClient;
 import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -14,13 +19,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserServiceController {
-
+    private final MailClient mailClient;
     private final UserServices userServices;
     private final SecurityService securityService;
     private final UserValidator userValidator;
 
     @Autowired
-    public UserServiceController(UserServices userServices, SecurityService securityService, UserValidator userValidator) {
+    public UserServiceController(MailClient mailClient, UserServices userServices, SecurityService securityService, UserValidator userValidator) {
+        this.mailClient = mailClient;
         this.userServices = userServices;
         this.securityService = securityService;
         this.userValidator = userValidator;
@@ -72,5 +78,41 @@ public class UserServiceController {
     @GetMapping("/delete")
     public void removeUser(@RequestParam("id") Long id){
         userServices.removeUser(id);
+    }
+
+    @PostMapping("/retrievePassword")
+    public void retrievePassword(@RequestParam("email") String email){
+        UserEntity user = userServices.retrievePassword(email);
+        String object = "Récupération de mot de passe - Brotherhood";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("email/retrievepassword.html").getFile());
+        String message = null;
+        try {
+            message = String.join("", Files.readAllLines(Paths.get(file.getPath())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        message = message.replace("*firstname*", user.getFirstname());
+        message = message.replace("*token*", user.getPassword());
+        mailClient.prepareAndSend(email, object, message);
+    }
+
+    @GetMapping("/changePassword")
+    public void changePassword(@RequestParam("token") String token){
+        UserEntity user = userServices.getUserByToken(token);
+        String newPassword = userServices.changePassword(token);
+        String object = "Nouveau mot de passe - Brotherhood";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("email/newpassword.html").getFile());
+        String message = null;
+        try {
+            message = String.join("", Files.readAllLines(Paths.get(file.getPath())));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        message = message.replace("*firstname*", user.getFirstname());
+        message = message.replace("*pseudo*", user.getPseudo());
+        message = message.replace("*password*", newPassword);
+        mailClient.prepareAndSend(user.getEmail(), object, message);
     }
 }

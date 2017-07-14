@@ -7,12 +7,15 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.esgi.extranet.login.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -26,20 +29,20 @@ public class UserServices {
     final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServices(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, DataSource dataSource, EntityManager entityManager) {
+    public UserServices(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
-    public List<UserDto> getAllUsers() {
+    List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(UserAdapter::toDto)
                 .collect(toList());
     }
 
-    public String createToken(String pseudo, String password ){
+    String createToken(String pseudo, String password ){
         String token = "";
         try {
             Algorithm algorithm = Algorithm.HMAC256("secret");
@@ -57,7 +60,7 @@ public class UserServices {
     }
 
     @Transactional
-    public UserDto createUser(String pseudo, String email, String password, Role role) {
+    UserDto createUser(String pseudo, String email, String password, Role role) {
         if(userRepository.findByPseudo(pseudo) != null){
             return null;
         }else {
@@ -85,7 +88,7 @@ public class UserServices {
     }
 
     @Transactional(readOnly = true)
-    public UserEntity getUserByPseudo(String pseudo) {
+    UserEntity getUserByPseudo(String pseudo) {
         UserEntity user = userRepository.findByPseudo(pseudo);
         if(user != null) {
             return user;
@@ -95,7 +98,7 @@ public class UserServices {
     }
 
     @Transactional(readOnly = true)
-    public boolean verifyToken(String token) {
+    boolean verifyToken(String token) {
         try{
             DecodedJWT decodedJWT = JWT.decode(token);
             String pseudo = decodedJWT.getClaim("username").asString();
@@ -110,7 +113,7 @@ public class UserServices {
     }
 
     @Transactional(readOnly = true)
-    public UserEntity verifyUser(String pseudo, String password){
+    UserEntity verifyUser(String pseudo, String password){
         UserEntity user = userRepository.findByPseudo(pseudo);
         if(user == null) {
             return null;
@@ -121,7 +124,7 @@ public class UserServices {
     }
 
     @Transactional
-    public void removeUser(Long id){
+    void removeUser(Long id){
         UserEntity u = userRepository.findById(id);
         if(u != null){
             userRepository.delete(u);
@@ -129,4 +132,24 @@ public class UserServices {
     }
 
 
+    UserEntity retrievePassword(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Transactional
+    String changePassword(String token) {
+        UserEntity user = getUserByToken(token);
+        SecureRandom random = new SecureRandom();
+        String newPassword = new BigInteger(130, random).toString(32);
+        System.out.println(token);
+        System.out.println(user);
+        System.out.println(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        saveUser(user);
+        return newPassword;
+    }
+
+    UserEntity getUserByToken(String token){
+        return userRepository.findUserByToken(token);
+    }
 }

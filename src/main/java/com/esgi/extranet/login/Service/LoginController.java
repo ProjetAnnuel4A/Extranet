@@ -40,7 +40,6 @@ public class LoginController {
         if(user == null){
             return "redirect:errorlogin";
         }else{
-            System.out.println(user.getRole());
             return "redirect:login/welcome";
         }
     }

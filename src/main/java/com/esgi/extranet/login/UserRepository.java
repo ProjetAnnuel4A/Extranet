@@ -30,6 +30,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity>findAllTeachers();
 
     @Query(nativeQuery = true,
+            value = "select * from users u where u.email = :email")
+    UserEntity findUserByEmail(@Param("email") String email);
+
+    @Query(nativeQuery = true,
+            value = "select * from users u where u.token = :token")
+    UserEntity findUserByToken(@Param("token") String token);
+
+    @Query(nativeQuery = true,
             value = "select u.token from users u where u.pseudo = :pseudo")
     String getToken(@Param("pseudo") String pseudo);
 
