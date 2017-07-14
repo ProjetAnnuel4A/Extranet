@@ -141,9 +141,6 @@ public class UserServices {
         UserEntity user = getUserByToken(token);
         SecureRandom random = new SecureRandom();
         String newPassword = new BigInteger(130, random).toString(32);
-        System.out.println(token);
-        System.out.println(user);
-        System.out.println(newPassword);
         user.setPassword(passwordEncoder.encode(newPassword));
         saveUser(user);
         return newPassword;

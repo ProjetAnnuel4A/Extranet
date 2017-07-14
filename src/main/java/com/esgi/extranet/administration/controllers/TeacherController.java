@@ -5,6 +5,8 @@ import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,7 +40,6 @@ public class TeacherController {
     public UserEntity addTeacher(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
-                             @RequestParam(name = "password") String password,
                              @RequestParam(name = "birthday") String birthday,
                              @RequestParam(name = "photo") String photo,
                              @RequestParam(name = "address") String address){
@@ -46,6 +47,8 @@ public class TeacherController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
+        SecureRandom random = new SecureRandom();
+        String password = new BigInteger(130, random).toString(32);
         return teacherService.addTeacher(firstname, lastname, email, password, date, photo, address);
     }
 
