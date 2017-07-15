@@ -42,11 +42,13 @@ public class SurveyEntity
     @NotNull
     @Column(nullable = false)
     @DecimalMin(value = "0.0")
+    @Builder.Default
     private float mark = 0 ;
 
     @NotNull
     @Column(nullable = false)
     @Min(value = 0)
+    @Builder.Default
     private int chances = 1 ; // Détermine le nombre d'essais (0 = infini)
 
     @Column

@@ -170,15 +170,20 @@ public class QuizzSystem
 
     public static boolean userQuizzCanAnswerSurvey(UserQuizzEntity userQuizzEntity, SurveyEntity survey)
     {
-        if(survey.getChances() != 0)
+        if(surveyIsOpen(survey))
         {
-            if(userQuizzEntity.getCount() >= survey.getChances())
+            if(survey.getChances() != 0)
             {
-                return false ;
+                if(userQuizzEntity.getCount() >= survey.getChances())
+                {
+                    return false ;
+                }
             }
+
+            return true ;
         }
 
-        return true ;
+        return false ;
     }
-
+    
 }

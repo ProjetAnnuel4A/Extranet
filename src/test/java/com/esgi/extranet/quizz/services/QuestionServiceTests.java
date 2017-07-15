@@ -6,8 +6,8 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.implementations.QuestionServiceImpl ;
 import org.junit.Assert ;
-import org.junit.BeforeClass ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -39,14 +39,23 @@ public class QuestionServiceTests
     private static QuestionEntity question ;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize_datas()
     {
         questionService = new QuestionServiceImpl(questionRepository, responseRepository) ;
 
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 0, true, new Long(1)) ;
+
+        QuestionEntity question = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(0)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
         questionRepository.save(question) ;
     }
@@ -114,7 +123,11 @@ public class QuestionServiceTests
     @Test
     public void should_get_response_from_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
+        ResponseEntity response = ResponseEntity.builder()
+                .id(new Long(1))
+                .description("ResponseTest")
+                .imageId(new Long(1))
+                .build() ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
@@ -134,7 +147,11 @@ public class QuestionServiceTests
     @Test
     public void should_add_response_for_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
+        ResponseEntity response = ResponseEntity.builder()
+                .id(new Long(1))
+                .description("ResponseTest")
+                .imageId(new Long(1))
+                .build() ;
 
         boolean result = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
 
@@ -148,7 +165,11 @@ public class QuestionServiceTests
     @Test
     public void should_remove_response_from_a_question() throws Exception
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
+        ResponseEntity response = ResponseEntity.builder()
+                .id(new Long(1))
+                .description("ResponseTest")
+                .imageId(new Long(1))
+                .build() ;
 
         boolean resultAdd = questionService.addResponseForAQuestion(question.getId(), response.getId()) ;
         boolean resultRemove = questionService.removeResponseFromAQuestion(question.getId(), response.getId()) ;

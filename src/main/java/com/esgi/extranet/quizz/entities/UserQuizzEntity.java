@@ -28,7 +28,7 @@ public class UserQuizzEntity
     private Long id ;
 
     @NotNull
-    @JoinColumn(table = "student", referencedColumnName = "id")
+    @JoinColumn(table = "users", referencedColumnName = "id")
     private Long userId ;
 
     @NotNull
@@ -47,6 +47,7 @@ public class UserQuizzEntity
     @NotNull
     @Column(nullable = false)
     @Min(value = 1)
+    @Builder.Default
     private int count = 1 ; // Nombre d'essais réalisés
 
 }

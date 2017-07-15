@@ -14,8 +14,7 @@ import java.util.List ;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @ToString
 @Entity
 @Table(name = "question")
@@ -43,10 +42,12 @@ public class QuestionEntity
     @NotNull
     @Column(nullable = false)
     @DecimalMin(value = "0.0")
+    @Builder.Default
     private float points = 0 ;
 
     @NotNull
     @Column(nullable = false)
+    @Builder.Default
     private boolean allOrNot = true ;
 
     @Column

@@ -2,8 +2,8 @@ package com.esgi.extranet.quizz.controllers ;
 
 import com.esgi.extranet.QuizzDatas ;
 import com.jayway.restassured.RestAssured ;
-import org.junit.BeforeClass ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.boot.context.embedded.LocalServerPort ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -26,7 +26,7 @@ public class QuestionControllerTests
     private static int localServerPort ;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize_datas()
     {
         RestAssured.port = localServerPort ;

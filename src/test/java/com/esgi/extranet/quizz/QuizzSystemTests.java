@@ -1,21 +1,24 @@
 package com.esgi.extranet.quizz ;
 
-import com.esgi.extranet.login.UserEntity;
+import com.esgi.extranet.login.UserEntity ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import org.junit.Assert ;
-import org.junit.BeforeClass ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.sql.Date ;
+import java.text.ParseException ;
+import java.text.SimpleDateFormat ;
 import java.time.LocalDate ;
 import java.util.ArrayList ;
 
+import static com.esgi.extranet.login.Role.STUDENT ;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
 /**
@@ -46,6 +49,9 @@ public class QuizzSystemTests
     private static ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
 
 
+    private static SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd") ;
+    private static Date deadLine = null ;
+
     private static SurveyEntity survey ;
 
 
@@ -55,13 +61,29 @@ public class QuizzSystemTests
     private static UserQuizzEntity userQuizz ;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize_datas()
     {
-        r1 = new ResponseEntity(new Long(1), "ResponseTest 1", new Long(1)) ;
-        r2 = new ResponseEntity(new Long(2), "ResponseTest 2", new Long(1)) ;
-        r3 = new ResponseEntity(new Long(3), "ResponseTest 3", new Long(1)) ;
-        r4 = new ResponseEntity(new Long(4), "ResponseTest 4", new Long(1)) ;
+        r1 = ResponseEntity.builder()
+                .id(new Long(1))
+                .description("ResponseTest 1")
+                .imageId(new Long(1))
+                .build() ;
+        r2 = ResponseEntity.builder()
+                .id(new Long(2))
+                .description("ResponseTest 2")
+                .imageId(new Long(1))
+                .build() ;
+        r3 = ResponseEntity.builder()
+                .id(new Long(3))
+                .description("ResponseTest 3")
+                .imageId(new Long(1))
+                .build() ;
+        r4 = ResponseEntity.builder()
+                .id(new Long(4))
+                .description("ResponseTest 4")
+                .imageId(new Long(1))
+                .build() ;
 
         responses.add(r1) ;
         responses.add(r2) ;
@@ -73,25 +95,95 @@ public class QuizzSystemTests
         correctResponses.add(new Long (3)) ;
 
 
-        question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
+        question = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
-        q1 = new QuestionEntity(new Long(1), "QuestionTest 1", responses, correctResponses, 6, true, new Long(1)) ;
-        q2 = new QuestionEntity(new Long(2), "QuestionTest 2", responses, correctResponses, 8, true, new Long(1)) ;
-        q3 = new QuestionEntity(new Long(3), "QuestionTest 3", responses, correctResponses, 6, true, new Long(1)) ;
+        q1 = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest 1")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
+        q2 = QuestionEntity.builder()
+                .id(new Long(2))
+                .description("QuestionTest 2")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(8)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
+        q3 = QuestionEntity.builder()
+                .id(new Long(3))
+                .description("QuestionTest 3")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
         questions.add(q1) ;
         questions.add(q2) ;
         questions.add(q3) ;
 
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, new Long(1)) ;
+        try
+        {
+            deadLine = (Date) simpleDate.parse("2037-06-30") ;
+        }
+
+        catch (ParseException e)
+        {
+            e.printStackTrace() ;
+        }
+
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(1)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         LocalDate localDateTest = null ;
-        //student = new UserEntity(new Long(2), new Long(1), "Testeur", "Test", "testeur@testmail.com", localDateTest, "", "") ;
+        student = UserEntity.builder()
+                .id(new Long(1))
+                .idClassmate(new Long(1))
+                .pseudo("Testeur1")
+                .firstname("Testeur")
+                .lastname("Test")
+                .email("testeur@testmail.com")
+                .birthday(localDateTest)
+                .photo(null)
+                .address("1 rue du test à Testville")
+                .password("testeur")
+                .role(STUDENT)
+                .token(null)
+                .build() ;
 
 
-        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+        userQuizz = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(student.getId())
+                .surveyId(survey.getId())
+                .questionId(question.getId())
+                .responses(correctResponses)
+                .count(1)
+                .build() ;
     }
 
 
@@ -210,9 +302,30 @@ public class QuizzSystemTests
         userResponses.add(new Long(2)) ;
         userResponses.add(new Long(3)) ;
 
-        usersQuizz[0] = new UserQuizzEntity(new Long(1), new Long(1), new Long(1), new Long(1), userResponses, 1) ;
-        usersQuizz[1] = new UserQuizzEntity(new Long(2), new Long(1), new Long(1), new Long(2), userResponses, 1) ;
-        usersQuizz[2] = new UserQuizzEntity(new Long(3), new Long(1), new Long(1), new Long(3), userResponses, 1) ;
+        usersQuizz[0] = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(1))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
+        usersQuizz[1] = UserQuizzEntity.builder()
+                .id(new Long(2))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(2))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
+        usersQuizz[2] = UserQuizzEntity.builder()
+                .id(new Long(3))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(3))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
 
         float result = QuizzSystem.calculateSurveyScore(survey, usersQuizz) ;
 
@@ -231,9 +344,30 @@ public class QuizzSystemTests
         userResponses.add(new Long(2)) ;
         userResponses.add(new Long(3)) ;
 
-        usersQuizz[0] = new UserQuizzEntity(new Long(1), new Long(1), new Long(1), new Long(1), userResponses, 1) ;
-        usersQuizz[1] = new UserQuizzEntity(new Long(2), new Long(1), new Long(1), new Long(2), userResponses, 1) ;
-        usersQuizz[2] = new UserQuizzEntity(new Long(3), new Long(1), new Long(1), new Long(3), userResponses, 1) ;
+        usersQuizz[0] = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(1))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
+        usersQuizz[1] = UserQuizzEntity.builder()
+                .id(new Long(2))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(2))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
+        usersQuizz[2] = UserQuizzEntity.builder()
+                .id(new Long(3))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(3))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
 
 
         Assert.assertEquals(20.0, QuizzSystem.calculateSurveyScore(survey, usersQuizz), 0) ;
@@ -256,9 +390,30 @@ public class QuizzSystemTests
         userResponses3.add(new Long(2)) ;
         userResponses3.add(new Long(4)) ;
 
-        usersQuizz[0] = new UserQuizzEntity(new Long(1), new Long(1), new Long(1), new Long(1), userResponses1, 1) ;
-        usersQuizz[1] = new UserQuizzEntity(new Long(2), new Long(1), new Long(1), new Long(2), userResponses2, 1) ;
-        usersQuizz[2] = new UserQuizzEntity(new Long(3), new Long(1), new Long(1), new Long(3), userResponses3, 1) ;
+        usersQuizz[0] = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(1))
+                .responses(userResponses1)
+                .count(1)
+                .build() ;
+        usersQuizz[1] = UserQuizzEntity.builder()
+                .id(new Long(2))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(2))
+                .responses(userResponses2)
+                .count(1)
+                .build() ;
+        usersQuizz[2] = UserQuizzEntity.builder()
+                .id(new Long(3))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(3))
+                .responses(userResponses3)
+                .count(1)
+                .build() ;
 
 
         Assert.assertEquals(6.0, QuizzSystem.calculateSurveyScore(survey, usersQuizz), 0) ;
@@ -273,9 +428,30 @@ public class QuizzSystemTests
         userResponses.add(new Long(4)) ;
         userResponses.add(new Long(4)) ;
 
-        usersQuizz[0] = new UserQuizzEntity(new Long(1), new Long(1), new Long(1), new Long(1), userResponses, 1) ;
-        usersQuizz[1] = new UserQuizzEntity(new Long(2), new Long(1), new Long(1), new Long(2), userResponses, 1) ;
-        usersQuizz[2] = new UserQuizzEntity(new Long(3), new Long(1), new Long(1), new Long(3), userResponses, 1) ;
+        usersQuizz[0] = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(1))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
+        usersQuizz[1] = UserQuizzEntity.builder()
+                .id(new Long(2))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(2))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
+        usersQuizz[2] = UserQuizzEntity.builder()
+                .id(new Long(3))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(3))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
 
 
         Assert.assertEquals(0.0, QuizzSystem.calculateSurveyScore(survey, usersQuizz), 0) ;
@@ -358,7 +534,15 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_infinite()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(137, 6, 30), new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(0)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertTrue(QuizzSystem.surveyIsInfinite(survey)) ;
@@ -367,7 +551,15 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_not_infinite()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(137, 6, 30), new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(1)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertFalse(QuizzSystem.surveyIsInfinite(survey)) ;
@@ -376,7 +568,15 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_open()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(137, 6, 30), new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(1)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertTrue(QuizzSystem.surveyIsOpen(survey)) ;
@@ -385,7 +585,15 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_open_without_deadline()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, null, new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(1)
+                .deadLine(null)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertTrue(QuizzSystem.surveyIsOpen(survey)) ;
@@ -394,7 +602,25 @@ public class QuizzSystemTests
     @Test
     public void should_survey_is_not_open()
     {
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(117, 4, 29), new Long(1)) ;
+        try
+        {
+            deadLine = (Date) simpleDate.parse("2017-04-29") ;
+        }
+
+        catch (ParseException e)
+        {
+            e.printStackTrace() ;
+        }
+
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(1)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertFalse(QuizzSystem.surveyIsOpen(survey)) ;
@@ -403,9 +629,24 @@ public class QuizzSystemTests
     @Test
     public void should_user_quizz_can_answer_survey()
     {
-        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+        userQuizz = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(student.getId())
+                .surveyId(survey.getId())
+                .questionId(question.getId())
+                .responses(correctResponses)
+                .count(1)
+                .build() ;
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 2, new Date(137, 6, 30), new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(2)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
@@ -414,9 +655,24 @@ public class QuizzSystemTests
     @Test
     public void should_user_quizz_can_answer_infinite_survey()
     {
-        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+        userQuizz = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(student.getId())
+                .surveyId(survey.getId())
+                .questionId(question.getId())
+                .responses(correctResponses)
+                .count(1)
+                .build() ;
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 0, new Date(137, 6, 30), new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(0)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertTrue(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;
@@ -425,9 +681,24 @@ public class QuizzSystemTests
     @Test
     public void should_user_quizz_can_not_answer_survey()
     {
-        userQuizz = new UserQuizzEntity(new Long(1), student.getId(), survey.getId(), question.getId(), correctResponses, 1) ;
+        userQuizz = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(student.getId())
+                .surveyId(survey.getId())
+                .questionId(question.getId())
+                .responses(correctResponses)
+                .count(1)
+                .build() ;
 
-        survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 19, 1, new Date(137, 6, 30), new Long(1)) ;
+        survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(19)
+                .chances(1)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertFalse(QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey)) ;

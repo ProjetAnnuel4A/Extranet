@@ -7,14 +7,16 @@ import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
 import com.esgi.extranet.quizz.services.implementations.SurveyServiceImpl ;
 import org.junit.Assert ;
-import org.junit.BeforeClass ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
 import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.sql.Date ;
+import java.text.ParseException ;
+import java.text.SimpleDateFormat ;
 import java.util.ArrayList ;
 import java.util.List ;
 
@@ -38,16 +40,38 @@ public class SurveyServiceTests
     public static QuestionRepository questionRepository ;
 
 
+    private static SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd") ;
+    private static Date deadLine = null ;
+
     private static SurveyEntity survey ;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize_datas()
     {
         surveyService = new SurveyServiceImpl(surveyRepository, questionRepository) ;
 
         ArrayList<QuestionEntity> questions = new ArrayList<QuestionEntity>() ;
-        SurveyEntity survey = new SurveyEntity(new Long(1), "SurveyTest", questions, 0, 0, new Date(117, 6, 28), new Long(1)) ;
+
+        try
+        {
+            deadLine = (Date) simpleDate.parse("2017-06-28") ;
+        }
+
+        catch (ParseException e)
+        {
+            e.printStackTrace() ;
+        }
+
+        SurveyEntity survey = SurveyEntity.builder()
+                .id(new Long(1))
+                .name("SurveyTest")
+                .questions(questions)
+                .mark(0)
+                .chances(0)
+                .deadLine(deadLine)
+                .imageId(new Long(1))
+                .build() ;
 
         surveyRepository.save(survey) ;
     }
@@ -65,7 +89,7 @@ public class SurveyServiceTests
         Assert.assertEquals("SurveyTest", survey.getName()) ;
         Assert.assertEquals(0.0, survey.getMark(), 0) ;
         Assert.assertEquals(0, survey.getChances()) ;
-        Assert.assertEquals(new Date(2017, 6, 28), survey.getDeadLine()) ;
+        Assert.assertEquals(deadLine, survey.getDeadLine()) ;
         Assert.assertEquals(new Long(1), survey.getImageId()) ;
 
         Assert.assertEquals(result.getName(), survey.getName()) ;
@@ -78,7 +102,17 @@ public class SurveyServiceTests
     @Test
     public void should_update_survey() throws Exception
     {
-        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, new Date(117, 6, 29), new Long(2)) ;
+        try
+        {
+            deadLine = (Date) simpleDate.parse("2017-06-29") ;
+        }
+
+        catch (ParseException e)
+        {
+            e.printStackTrace() ;
+        }
+
+        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, deadLine, new Long(2)) ;
 
 
         Assert.assertNotNull(survey) ;
@@ -87,7 +121,7 @@ public class SurveyServiceTests
         Assert.assertEquals("SurveyTest 2", survey.getName()) ;
         Assert.assertEquals(1.0, survey.getMark(), 0) ;
         Assert.assertEquals(1, survey.getChances()) ;
-        Assert.assertEquals(new Date(2017, 6, 29), survey.getDeadLine()) ;
+        Assert.assertEquals(deadLine, survey.getDeadLine()) ;
         Assert.assertEquals(new Long(2), survey.getImageId()) ;
     }
 
@@ -121,7 +155,15 @@ public class SurveyServiceTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
+        QuestionEntity question = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
         boolean result = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
 
@@ -144,7 +186,15 @@ public class SurveyServiceTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
+        QuestionEntity question = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
         boolean result = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
 
@@ -161,7 +211,15 @@ public class SurveyServiceTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
+        QuestionEntity question = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
         boolean resultAdd = surveyService.addQuestionForASurvey(survey.getId(), question.getId()) ;
         boolean resultRemove = surveyService.removeQuestionFromASurvey(survey.getId(), question.getId()) ;

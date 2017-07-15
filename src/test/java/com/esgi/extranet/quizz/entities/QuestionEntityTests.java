@@ -24,7 +24,15 @@ public class QuestionEntityTests
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
         ArrayList<Long> correctResponses = new ArrayList<Long>() ;
 
-        QuestionEntity question = new QuestionEntity(new Long(1), "QuestionTest", responses, correctResponses, 6, true, new Long(1)) ;
+        QuestionEntity question = QuestionEntity.builder()
+                .id(new Long(1))
+                .description("QuestionTest")
+                .responses(responses)
+                .correctResponses(correctResponses)
+                .points(6)
+                .allOrNot(true)
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertNotNull(question) ;

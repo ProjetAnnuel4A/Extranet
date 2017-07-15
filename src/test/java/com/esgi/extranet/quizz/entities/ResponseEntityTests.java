@@ -19,7 +19,11 @@ public class ResponseEntityTests
     @Test
     public void should_create_response()
     {
-        ResponseEntity response = new ResponseEntity(new Long(1), "ResponseTest", new Long(1)) ;
+        ResponseEntity response = ResponseEntity.builder()
+                .id(new Long(1))
+                .description("ResponseTest")
+                .imageId(new Long(1))
+                .build() ;
 
 
         Assert.assertNotNull(response) ;

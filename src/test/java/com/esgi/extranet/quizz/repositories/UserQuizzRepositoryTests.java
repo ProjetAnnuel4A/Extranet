@@ -2,14 +2,16 @@ package com.esgi.extranet.quizz.repositories ;
 
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import org.junit.Assert ;
-import org.junit.BeforeClass ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.springframework.beans.factory.annotation.Autowired ;
+
+import java.util.ArrayList ;
 
 /**
  * Created by Samuel Bijou on 01/07/2017.
  */
-public class UserEntityQuizzRepositoryTests
+public class UserQuizzRepositoryTests
 {
 
     @Autowired
@@ -18,10 +20,19 @@ public class UserEntityQuizzRepositoryTests
     private static UserQuizzEntity userQuizzEntity ;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize_datas()
     {
-        userQuizzEntity = new UserQuizzEntity(new Long(1), new Long(1), new Long(1), new Long(1), null, 1) ;
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+
+        userQuizzEntity = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(new Long(1))
+                .surveyId(new Long(1))
+                .questionId(new Long(1))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
 
         userQuizzRepository.save(userQuizzEntity) ;
     }

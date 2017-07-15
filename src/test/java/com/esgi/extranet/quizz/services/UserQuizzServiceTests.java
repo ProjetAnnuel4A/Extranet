@@ -4,8 +4,8 @@ import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
 import com.esgi.extranet.quizz.services.implementations.UserQuizzServiceImpl ;
 import org.junit.Assert ;
-import org.junit.BeforeClass ;
 import org.junit.Test ;
+import org.junit.jupiter.api.BeforeAll ;
 import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.boot.test.context.SpringBootTest ;
@@ -21,7 +21,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = {UserQuizzServiceImpl.class})
-public class UserEntityQuizzServiceTests
+public class UserQuizzServiceTests
 {
 
     @Autowired
@@ -34,13 +34,21 @@ public class UserEntityQuizzServiceTests
     private static UserQuizzEntity userQuizz ;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize_datas()
     {
         userQuizzService = new UserQuizzServiceImpl(userQuizzRepository) ;
 
         ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userQuizz = new UserQuizzEntity(new Long(1), new Long(1), new Long(2), new Long(3), userResponses, 1) ;
+
+        userQuizz = UserQuizzEntity.builder()
+                .id(new Long(1))
+                .userId(new Long(1))
+                .surveyId(new Long(2))
+                .questionId(new Long(3))
+                .responses(userResponses)
+                .count(1)
+                .build() ;
 
         userQuizzRepository.save(userQuizz) ;
     }
