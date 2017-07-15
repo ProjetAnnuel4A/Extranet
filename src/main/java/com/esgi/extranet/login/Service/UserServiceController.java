@@ -1,5 +1,6 @@
 package com.esgi.extranet.login.Service;
 
+import com.esgi.extranet.AdminController;
 import com.esgi.extranet.login.MailClient;
 import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserDto;
@@ -93,7 +94,7 @@ public class UserServiceController {
             e.printStackTrace();
         }
         message = message.replace("*firstname*", user.getFirstname());
-        message = message.replace("*token*", user.getPassword());
+        message = message.replace("*token*", user.getToken());
         mailClient.prepareAndSend(email, object, message);
     }
 
@@ -114,6 +115,7 @@ public class UserServiceController {
         message = message.replace("*pseudo*", user.getPseudo());
         message = message.replace("*password*", newPassword);
         mailClient.prepareAndSend(user.getEmail(), object, message);
+        AdminController.newPassword();
     }
 
     @PostMapping("/verifyToken")

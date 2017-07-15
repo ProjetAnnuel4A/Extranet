@@ -113,10 +113,8 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Modifier les informations d'un élève</h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
-	                        <table id="students"></table>
-                        </div>
+                    <div class="row" align="center">
+	                        <table class="table table-striped" id="students"></table>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -156,6 +154,8 @@
                     });
 		var table = $("#students");
 		$.getJSON("http://localhost:9000/students/", function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      table.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -165,7 +165,8 @@
 						dom + "<td>"+birthday+"</td>";
 						}
 						else{
-							dom += "<td>"+v+"</td>";
+              if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
+							   dom += "<td>"+v+"</td>";
 						}
 					}else{
 						dom += "<td><button onclick='updateStudent("+v+")'>Modifier</button></td>";
@@ -173,9 +174,10 @@
 				});
 				table.append(dom + "</tr>");
 			});
+      table.append("</tbody>");
   		});
   		function updateStudent(id){
-  			window.location.replace("informationsStudent.html?id="+id);
+  			window.location.replace("../../admin/informationsStudent/view?id="+id);
   		}
 	</script>
 <!-- jQuery -->

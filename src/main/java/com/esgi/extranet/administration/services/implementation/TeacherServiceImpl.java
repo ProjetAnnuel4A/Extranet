@@ -88,16 +88,15 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public UserEntity updateTeacher(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id) {
+    public UserEntity updateTeacher(String firstname, String lastname, String email, LocalDate date, String address, Long id) {
         UserEntity teacherEntity = userRepository.findById(id);
         teacherEntity.setFirstname(firstname);
         teacherEntity.setLastname(lastname);
         teacherEntity.setBirthday(date);
         teacherEntity.setEmail(email);
-        teacherEntity.setPassword(passwordEncoder.encode(password));
+        teacherEntity.setPassword(passwordEncoder.encode(teacherEntity.getPassword()));
         teacherEntity.setAddress(address);
-        teacherEntity.setPhoto(photo);
-        //userRepository.save(teacherEntity);
+        teacherEntity.setPhoto(teacherEntity.getPhoto());
         userServices.saveUser(teacherEntity);
         return teacherEntity;
     }

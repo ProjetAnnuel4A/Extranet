@@ -77,15 +77,15 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     @Transactional
-    public UserEntity updateStudent(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id){
+    public UserEntity updateStudent(String firstname, String lastname, String email, LocalDate date, String address, Long id){
         UserEntity studentEntity = userRepository.findById(id);
         studentEntity.setFirstname(firstname);
         studentEntity.setLastname(lastname);
         studentEntity.setBirthday(date);
         studentEntity.setEmail(email);
-        studentEntity.setPassword(passwordEncoder.encode(password));
+        studentEntity.setPassword(passwordEncoder.encode(studentEntity.getPassword()));
         studentEntity.setAddress(address);
-        studentEntity.setPhoto(photo);
+        studentEntity.setPhoto(studentEntity.getPhoto());
         userServices.saveUser(studentEntity);
         //userRepository.save(studentEntity);
         return studentEntity;
@@ -129,6 +129,6 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public List<UserEntity> getStudentsWithoutClassmate() {
-        return userRepository.findAllByIdClassmate(null);
+        return userRepository.findAllStudents();
     }
 }

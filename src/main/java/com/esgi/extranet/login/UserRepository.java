@@ -13,7 +13,9 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    List<UserEntity> findAllByIdClassmate(Long idClassmate);
+    @Query(nativeQuery = true,
+            value = "select * from users u where u.id_classmate = :idClassmate and u.role='STUDENT'")
+    List<UserEntity> findAllByIdClassmate(@Param("idClassmate") Long idClassmate);
 
     UserEntity findByPseudo(String pseudo);
 

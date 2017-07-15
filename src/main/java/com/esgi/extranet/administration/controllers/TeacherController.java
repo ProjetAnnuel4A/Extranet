@@ -41,7 +41,6 @@ public class TeacherController {
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
-                             @RequestParam(name = "photo") String photo,
                              @RequestParam(name = "address") String address){
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -49,23 +48,21 @@ public class TeacherController {
         date = LocalDate.parse(birthday, formatter);
         SecureRandom random = new SecureRandom();
         String password = new BigInteger(130, random).toString(32);
-        return teacherService.addTeacher(firstname, lastname, email, password, date, photo, address);
+        return teacherService.addTeacher(firstname, lastname, password, email, date, "", address);
     }
 
     @PostMapping("/updateTeacher")
     public UserEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
                                        @RequestParam(name = "lastname") String lastname,
                                        @RequestParam(name = "email") String email,
-                                       @RequestParam(name = "password") String password,
                                        @RequestParam(name = "birthday") String birthday,
-                                       @RequestParam(name = "photo") String photo,
                                        @RequestParam(name = "address") String address,
                                        @RequestParam(name = "id") Long id){
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return teacherService.updateTeacher(firstname, lastname, email, password, date, photo, address, id);
+        return teacherService.updateTeacher(firstname, lastname, email, date, address, id);
     }
 
     @RequestMapping(value = "/removeTeacher", method = RequestMethod.POST)

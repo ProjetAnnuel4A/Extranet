@@ -1,4 +1,4 @@
-<!DOCTYPE h<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -113,10 +113,10 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Supprimer un enseignant</h1>
-                    <div class="row">
+                    <div class="row" align="center">
                         <button onclick="deleteTeachers()">Supprimer</button>
-						<table id="teachers"></table>
-						<button onclick="deleteTeachers()">Supprimer</button>
+            						<table class="table table-striped" id="teachers"></table>
+            						<button onclick="deleteTeachers()">Supprimer</button>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -156,7 +156,9 @@
                     });
 		var table = $("#teachers");
 		$.getJSON("http://localhost:9000/teachers/", function( data ) {
-			$.each( data, function( key, val ) {
+			var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      table.append(d);
+      $.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
 					if(k != "id"){
@@ -165,6 +167,7 @@
 						dom + "<td>"+birthday+"</td>";
 						}
 						else{
+              if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
 							dom += "<td>"+v+"</td>";
 						}
 					}else{
@@ -173,6 +176,7 @@
 				});
 				table.append(dom + "</tr>");
 			});
+      table.append("</tbody>");
   		});
   		function deleteTeachers(){
   			$("#teachers > tr").each(function() {

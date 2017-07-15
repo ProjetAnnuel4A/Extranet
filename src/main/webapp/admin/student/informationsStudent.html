@@ -113,19 +113,14 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Modifier les informations d'un élève</h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
-	                        <form action="../../students/updateStudent" method="post">
-								<input hidden type="text" id="id" name="id"/>
-								<input type="text" id="firstname" required name="firstname" placeholder="Prénom">
-								<input type="text" id="lastname" required name="lastname" placeholder="Nom">
-								<input type="email" id="email" required name="email" placeholder="Email">
-								<input type="date" id="birthday" required name="birthday">
-								<input type="text" id="address" required name="address" placeholder="Adresse">
-								<input type="text" id="photo" required name="photo" placeholder="Photo">
-								<input type="submit" value="Enregistrer"/>
-							</form>
-                        </div>
+                    <div class="row" align="center">
+            								<input hidden type="text" id="id" name="id"/>
+            								<input style="margin: 2%;" type="text" id="firstname" required name="firstname" placeholder="Prénom"><br/>
+            								<input style="margin: 2%;" type="text" id="lastname" required name="lastname" placeholder="Nom"><br/>
+            								<input style="margin: 2%;" type="email" id="email" required name="email" placeholder="Email"><br/>
+            								<input style="margin: 2%;" type="date" id="birthday" required name="birthday"><br/>
+            								<input style="margin: 2%;" type="text" id="address" required name="address" placeholder="Adresse"><br/>
+            								<input onclick="updateStudent()" style="margin: 2%;" type="submit" value="Enregistrer"/><br/>
                     </div>
                  <div class="clearfix"></div>
               </div>
@@ -136,6 +131,20 @@
         </div>
         <!-- /page content -->
 	<script>
+
+    function updateStudent(){
+      $.post("http://localhost:9000/students/updateStudent", { id: $("#id").val(),
+                                                                firstname: $("#firstname").val(),
+                                                                lastname: $("#lastname").val(),
+                                                                email: $("#email").val(),
+                                                                birthday: $("#birthday").val(),
+                                                                address: $("#address").val()})
+                        .done(function( data ) 
+                        {                   
+                            window.location.replace("http://localhost:9000/admin/updateStudent/view");
+                        });
+    }
+
     function getCookie(name) {
           var value = "; " + document.cookie;
           var parts = value.split("; " + name + "=");
@@ -195,9 +204,6 @@
 				if(key == "birthday"){
 					var birthday = val.year + "-" + ("0" + val.monthValue).slice(-2) + "-" + ("0" + val.dayOfMonth).slice(-2);
 					$("#birthday").val(birthday);
-				}
-				if(key == "photo"){
-					$("#photo").val(val);
 				}
 				if(key == "address"){
 					$("#address").val(val);

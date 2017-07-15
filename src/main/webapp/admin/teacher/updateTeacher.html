@@ -113,8 +113,8 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Modifier les informations d'un enseignant</h1>
-                    <div class="row">
-                        <table id="teachers"></table>
+                    <div class="row" align="center">
+                          <table class="table table-striped" id="teachers"></table>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -154,7 +154,9 @@
                     });
 		var table = $("#teachers");
 		$.getJSON("http://localhost:9000/teachers/", function( data ) {
-			$.each( data, function( key, val ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      table.append(d);
+      $.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
 					if(k != "id"){
@@ -163,6 +165,7 @@
 						dom + "<td>"+birthday+"</td>";
 						}
 						else{
+              if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
 							dom += "<td>"+v+"</td>";
 						}
 					}else{
@@ -171,9 +174,10 @@
 				});
 				table.append(dom + "</tr>");
 			});
+      table.append("</tbody>");
   		});
   		function updateTeacher(id){
-  			window.location.replace("informationsTeacher.html?id="+id);
+  			window.location.replace("../../admin/informationsTeacher/view?id="+id);
   		}
 	</script>
 <!-- jQuery -->

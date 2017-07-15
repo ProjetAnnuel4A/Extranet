@@ -113,20 +113,18 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1 id="classmateName"></h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+                    <div class="row" align="center">
 	                        <p>
-								<button onclick="removeStudents()">Supprimer</button>
-								<table id="actual"></table>
-								<button onclick="removeStudents()">Supprimer</button>
-							</p>
+          								<button onclick="removeStudents()">Supprimer</button>
+          								<table class="table table-striped" id="actual"></table>
+          								<button onclick="removeStudents()">Supprimer</button>
+          							</p>
 
-							<p>
-								<button onclick="addStudents()">Ajouter</button>
-								<table id="students"></table>
-								<button onclick="addStudents()">Ajouter</button>
-							</p>
-                        </div>
+          							<p>
+          								<button onclick="addStudents()">Ajouter</button>
+          								<table class="table table-striped" id="students"></table>
+          								<button onclick="addStudents()">Ajouter</button>
+          							</p>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -193,6 +191,8 @@
 
 		var table = $("#students");
 		$.getJSON("http://localhost:9000/students/getStudentsWithoutClassmate", function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      table.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -203,6 +203,7 @@
 							dom + "<td>"+birthday+"</td>";
 							}
 							else{
+                if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
 								dom += "<td>"+v+"</td>";
 							}
 						}else{
@@ -212,10 +213,13 @@
 				});
 				table.append(dom + "</tr>");
 			});
+      table.append("</tbody>");
   		});
 
   		var actual = $("#actual");
 		$.getJSON("http://localhost:9000/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      actual.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -226,6 +230,7 @@
 							dom + "<td>"+birthday+"</td>";
 							}
 							else{
+                if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
 								dom += "<td>"+v+"</td>";
 							}
 						}else{
@@ -235,10 +240,11 @@
 				});
 				actual.append(dom + "</tr>");
 			});
+      actual.append("</tbody>");
   		});
 
   		function addStudents(){
-  			$("#students > tr").each(function() {
+  			$("#students > tbody > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
@@ -251,7 +257,7 @@
   		}
 
   		function removeStudents(){
-  			$("#actual > tr").each(function() {
+  			$("#actual > tbody > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){

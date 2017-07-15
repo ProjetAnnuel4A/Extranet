@@ -113,20 +113,18 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1 id="classmateName"></h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+                    <div class="row" align="center">
 	                        <p>
-								<button onclick="removeTeachers()">Supprimer</button>
-								<table id="actual"></table>
-								<button onclick="removeTeachers()">Supprimer</button>
-							</p>
+            								<button onclick="removeTeachers()">Supprimer</button>
+            								<table class="table table-striped" id="actual"></table>
+            								<button onclick="removeTeachers()">Supprimer</button>
+            							</p>
 
-							<p>
-								<button onclick="addTeachers()">Ajouter</button>
-								<table id="teachers"></table>
-								<button onclick="addTeachers()">Ajouter</button>
-							</p>
-                        </div>
+            							<p>
+            								<button onclick="addTeachers()">Ajouter</button>
+            								<table class="table table-striped" id="teachers"></table>
+            								<button onclick="addTeachers()">Ajouter</button>
+            							</p>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -192,6 +190,8 @@
 
   		var actual = $("#actual");
 		$.getJSON("http://localhost:9000/classmates/getTeachersFromClassmate?idClassmate="+i, function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      actual.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -202,6 +202,7 @@
 							dom + "<td>"+birthday+"</td>";
 							}
 							else{
+                if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
 								dom += "<td>"+v+"</td>";
 							}
 						}else{
@@ -211,10 +212,13 @@
 				});
 				actual.append(dom + "</tr>");
 			});
+      actual.append("</tbody>");
   		});
 
   		var teachers = $("#teachers");
 		$.getJSON("http://localhost:9000/teachers", function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      teachers.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -225,6 +229,7 @@
 							dom + "<td>"+birthday+"</td>";
 							}
 							else{
+                if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
 								dom += "<td>"+v+"</td>";
 							}
 						}else{
@@ -234,10 +239,12 @@
 				});
 				teachers.append(dom + "</tr>");
 			});
+      teachers.append("</tbody>");
   		});
 
   		function addTeachers(){
-  			$("#teachers > tr").each(function() {
+        console.log("test");
+  			$("#teachers > tbody > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
@@ -251,7 +258,7 @@
   		}
 
   		function removeTeachers(){
-  			$("#actual > tr").each(function() {
+  			$("#actual > tbody > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){

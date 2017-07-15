@@ -1,4 +1,4 @@
-<!DOCTYPE h<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -113,15 +113,13 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Ajouter un enseignant</h1>
-                    <div class="row">
-                        <input type="text" id="firstname" required name="firstname" placeholder="Prénom">
-						<input type="text" id="lastname" required name="lastname" placeholder="Nom">
-						<input type="email" id="email" required name="email" placeholder="Email">
-                        <input type="password" id="password" required name="password" placeholder="Password">
-						<input type="date" id="birthday" required name="birthday">
-						<input type="text" id="address" required name="address" placeholder="Adresse">
-						<input type="text" id="photo" required name="photo" placeholder="Photo">
-						<input type="submit" onclick="addTeacher()" value="Enregistrer"/>
+                    <div class="row" align="center">
+                        <input style="margin: 2%;"type="text" id="firstname" required name="firstname" placeholder="Prénom"><br/>
+            						<input style="margin: 2%;" type="text" id="lastname" required name="lastname" placeholder="Nom"><br/>
+            						<input style="margin: 2%;" type="email" id="email" required name="email" placeholder="Email"><br/>
+            						<input style="margin: 2%;" type="date" id="birthday" required name="birthday"><br/>
+            						<input style="margin: 2%;" type="text" id="address" required name="address" placeholder="Adresse"><br/>
+            						<input style="margin: 2%;" type="submit" onclick="addTeacher()" value="Enregistrer"/>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -160,14 +158,11 @@
                         }
                     });
   		function addTeacher(){
-			//$.post("http://localhost:9000/teachers/addTeacher",{firstname: $("#firstname").val(),
             $.post("http://localhost:9000/teachers/addTeacher",{firstname: $("#firstname").val(),
 																lastname: $("#lastname").val(),
 																email: $("#email").val(),
-                                                                password: $("#password").val(),
 																birthday: $("#birthday").val(),
-																address: $("#address").val(),
-																photo: $("#photo").val()})
+																address: $("#address").val()})
 				.done(function( data ) {
 				location.reload(true);
 			});

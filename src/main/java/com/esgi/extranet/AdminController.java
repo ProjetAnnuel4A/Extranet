@@ -20,6 +20,17 @@ import java.nio.file.Paths;
 public class AdminController {
 
     /**
+     * Mapping login
+     */
+
+    @GetMapping(value={"changePassword/view", ""})
+    public String changePassword(){
+        return "login/changePassword";
+    }
+
+    public static String newPassword(){return "redirect:newPassword";}
+
+    /**
      Mapping admin
      */
 

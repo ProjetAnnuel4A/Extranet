@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Brotherhood - Enseignant </title>
+    <title>Brotherhood - Etudiant </title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <!-- Bootstrap -->
@@ -113,12 +113,10 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Supprimer un élève</h1>
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+                    <div class="row" align="center">
 	                        <button onclick="deleteStudents()">Supprimer</button>
-							<table id="students"></table>
-							<button onclick="deleteStudents()">Supprimer</button>
-                        </div>
+							               <table class="table table-striped" id="students"></table>
+							             <button onclick="deleteStudents()">Supprimer</button>
                     </div>
                 <div class="clearfix"></div>
               </div>
@@ -158,6 +156,8 @@
                     });
 		var table = $("#students");
 		$.getJSON("http://localhost:9000/students/", function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
+      table.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -167,14 +167,16 @@
 						dom + "<td>"+birthday+"</td>";
 						}
 						else{
-							dom += "<td>"+v+"</td>";
+              if(k != "password" && k != "token" && k != "photo" && k != "role" && k != "idClassmate" && k != "pseudo")
+							 dom += "<td>"+v+"</td>";
 						}
 					}else{
-						dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
+						  dom += "<td><input type='checkbox' class='id' value='"+v+"'/></td>";
 					}
 				});
 				table.append(dom + "</tr>");
 			});
+      table.append("</tbody>");
   		});
   		function deleteStudents(){
   			$("#students > tr").each(function() {

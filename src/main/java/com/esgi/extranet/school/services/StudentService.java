@@ -12,7 +12,7 @@ import java.util.List;
 public interface StudentService {
     List<UserEntity> getAllStudents();
     UserEntity addStudent(String firstname, String lastname, String email, String password, LocalDate birthday, String photo, String address);
-    UserEntity updateStudent(String firstname, String lastname, String email, String password, LocalDate date, String photo, String address, Long id);
+    UserEntity updateStudent(String firstname, String lastname, String email, LocalDate date, String address, Long id);
     boolean removeStudent(Long id);
     UserEntity getStudent(Long id);
     boolean addClassmateForStudent(Long studentId, Long classmateId);
