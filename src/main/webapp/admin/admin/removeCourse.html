@@ -113,13 +113,11 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="dashboard_graph">
                     <h1>Supprimer un cours</h1>s
-                    <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+                    <div class="row" align="center">
 	                        <button onclick="deleteCourses()">Supprimer</button>
-							<table id="courses"></table>
-							<button onclick="deleteCourses()">Supprimer</button>
+							             <table class="table table-striped" id="courses"></table>
+							             <button onclick="deleteCourses()">Supprimer</button>
                         </div>
-                    </div>
                 <div class="clearfix"></div>
               </div>
             </div>
@@ -158,6 +156,8 @@
                     });
 		var table = $("#courses");
 		$.getJSON("http://localhost:9000/courses/", function( data ) {
+      var d = "<thead><tr><th>Selectionner</th><th>Nom du cours</th></tr></thead><tbody>";
+      table.append(d);
 			$.each( data, function( key, val ) {
 				var dom = "<tr>";
 				$.each(val, function(k, v){
@@ -169,9 +169,10 @@
 				});
 				table.append(dom + "</tr>");
 			});
+      table.append("</tbody>");
   		});
   		function deleteCourses(){
-  			$("#courses > tr").each(function() {
+  			$("#courses > tbody > tr").each(function() {
 			  $this = $(this);
 			  var value = $this.find("input.id");
 			  if(value.is(':checked') == true){
