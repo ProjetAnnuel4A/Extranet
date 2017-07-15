@@ -1,89 +1,117 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Brotherhood - Administration</title>
-    <meta charset="utf-8"/>
+<!DOCTYPE h<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Brotherhood - Enseignant </title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Bootstrap -->
+    <link href="../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    
+    <!-- bootstrap-progressbar -->
+    <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="../../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="style.css"/>
-<script src="script.js"></script>
-</head>
-<body class="home">
-    <div class="container-fluid display-table">
-        <div class="row display-table-row">
-            <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
-                <div class="logo">
-                </div>
-                
-                <div class="navi">
-                    <ul>
-                        <li class="active"><a href="http://localhost:9000/admin/home"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Accueil</span></a></li>
-                        <li><a href="http://localhost:9000/admin/student/view"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Elèves</span></a></li>
-                        <li><a href="http://localhost:9000/admin/teacher/view"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Enseignants</span></a></li>
-                        <li><a href="http://localhost:9000/admin/administration/view"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Administration</span></a></li>
-                    </ul>
-                </div>
+    <!-- Custom Theme Style -->
+    <link href="../../build/css/custom.min.css" rel="stylesheet">
+  </head>
+
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="http://localhost:9000/admin/home" class="site_title"><span>Brotherhood</span></a>
             </div>
-            <div class="col-md-10 col-sm-11 display-table-cell v-align">
-                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
-                <div class="row">
-                    <header>
-                        <div class="col-md-7">
-                            <nav class="navbar-default pull-left">
-                                <div class="navbar-header">
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#side-menu" aria-expanded="false">
-                                        <span class="sr-only">Toggle navigation</span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                        <span class="icon-bar"></span>
-                                    </button>
-                                </div>
-                            </nav>
-                            <div class="search hidden-xs hidden-sm">
-                                <input type="text" placeholder="Rechercher" id="search">
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="header-rightside">
-                                <ul class="list-inline header-top pull-right">
-                                    <li class="hidden-xs"><a href="#" class="add-project" data-toggle="modal" data-target="#add_project">Ajouter un fichier</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
-                                    <li>
-                                        <a href="#" class="icon-info">
-                                            <i class="fa fa-bell" aria-hidden="true"></i>
-                                            <span class="label label-primary">3</span>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="http://jskrishna.com/work/merkury/images/userEntity-pic.jpg" alt="userEntity">
-                                            <b class="caret"></b></a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <div class="navbar-content">
-                                                    <span>BananaMoon</span>
-                                                    <p class="text-muted small">
-                                                        info6@bananamoon.com
-                                                    </p>
-                                                    <div class="divider">
-                                                    </div>
-                                                    <a href="#" class="view btn-sm active">Voir le profil</a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </header>
-                </div>
-                <div class="userEntity-dashboard">
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="../../images/logo.png" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>Administrateur</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="http://localhost:9000/admin/student/view">Etudiant</a></li>
+                      <li><a href="http://localhost:9000/admin/teacher/view">Enseignant</a></li>
+                      <li><a href="http://localhost:9000/admin/administration/view">Administration</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="http://localhost:9000/home">
+                <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="../../images/logo.png" alt="">Administrateur
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="javascript:;"> Profile</a></li>
+                    <li><a href="http://localhost:9000/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="dashboard_graph">
                     <h1>Modifier les informations d'un enseignant</h1>
                     <div class="row">
                         <form action="../../teachers/updateTeacher" method="post">
@@ -97,35 +125,13 @@
 							<input type="submit" value="Enregistrer"/>
 						</form>
                     </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- Modal -->
-    <div id="add_project" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header login-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Nouveau fichier</h4>
-                </div>
-                <div class="modal-body">
-                            <input type="text" placeholder="Titre du fichier" name="name">
-                            <input type="text" placeholder="Post of Post" name="mail">
-                            <input type="text" placeholder="Auteur" name="passsword">
-                            <textarea placeholder="Description"></textarea>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" class="cancel" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="add-project" data-dismiss="modal">Sauvegarder</button>
-                </div>
+                <div class="clearfix"></div>
+              </div>
             </div>
 
+          </div>
+          <br />
         </div>
-    </div>
 	<script>
     function getCookie(name) {
           var value = "; " + document.cookie;
@@ -169,7 +175,7 @@
 		    }
 		};
 		var i = getUrlParameter('id');
-		$.getJSON( "http://brotherhood9305.cloudapp.net:9000/teachers/getTeacher?id=" + i, function(data){
+		$.getJSON( "http://localhost:9000/teachers/getTeacher?id=" + i, function(data){
 			$.each(data, function( key, val ){
 				if(key == "id"){
 					$("#id").val(val);
@@ -196,5 +202,46 @@
 			});
 		});
 	</script>
-</body>
+<!-- jQuery -->
+    <script src="../../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../../vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../../vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="../../vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="../../vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="../../vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="../../vendors/Flot/jquery.flot.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.time.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="../../vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../../vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../../vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="../../vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="../../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="../../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../vendors/moment/min/moment.min.js"></script>
+    <script src="../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../../build/js/custom.min.js"></script>
+    
+  </body>
 </html>
