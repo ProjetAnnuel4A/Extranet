@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Brotherhood - Modifier les informations</title>
+    <title>Brotherhood - Administration</title>
     <meta charset="utf-8"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- Latest compiled and minified CSS -->
@@ -24,10 +24,10 @@
                 
                 <div class="navi">
                     <ul>
-                        <li class="active"><a href="../index.html"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Accueil</span></a></li>
-                        <li><a href="../student.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Elèves</span></a></li>
-                        <li><a href="../teacher.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Enseignants</span></a></li>
-                        <li><a href="../administration.html"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Administration</span></a></li>
+                        <li class="active"><a href="http://localhost:9000/admin/home"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Accueil</span></a></li>
+                        <li><a href="http://localhost:9000/admin/student/view"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Elèves</span></a></li>
+                        <li><a href="http://localhost:9000/admin/teacher/view"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Enseignants</span></a></li>
+                        <li><a href="http://localhost:9000/admin/administration/view"><i class="fa fa-folder-open-o" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Administration</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -127,6 +127,33 @@
         </div>
     </div>
 	<script>
+    function getCookie(name) {
+          var value = "; " + document.cookie;
+          var parts = value.split("; " + name + "=");
+          if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        var urlStudent = "http://localhost:9000/student/home";
+        var urlTeacher = "http://localhost:9000/teacher/home";
+        var urlDefault = "http://localhost:9000/home";
+
+        $.post("http://localhost:9000/users/verifyToken", { token: getCookie("brotherhood")})
+                        .done(function( data ) 
+                        {                   
+                            switch(data){
+                            case "STUDENT":
+                            window.location.replace(urlStudent);
+                            break;
+                            case "TEACHER":
+                            window.location.replace(urlTeacher);
+                            break;
+                            case "ADMIN":
+                            break;
+                            default:
+                                window.location.replace(urlDefault);
+                            break;
+                        }
+                    });
 		var getUrlParameter = function getUrlParameter(sParam) {
 		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
 		        sURLVariables = sPageURL.split('&'),

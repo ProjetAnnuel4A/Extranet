@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Brotherhood - Etudiant</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<script>
+		function getCookie(name) {
+		  var value = "; " + document.cookie;
+		  var parts = value.split("; " + name + "=");
+		  if (parts.length == 2) return parts.pop().split(";").shift();
+		}
+
+		var urlTeacher = "http://localhost:9000/teacher/home";
+		var urlAdmin = "http://localhost:9000/admin/home";
+		var urlDefault = "http://localhost:9000/home";
+
+		$.post("http://localhost:9000/users/verifyToken", { token: getCookie("brotherhood")})
+						.done(function( data ) 
+						{					
+							switch(data){
+							case "STUDENT":
+							break;
+							case "TEACHER":
+								window.location.replace(urlTeacher);
+							break;
+							case "ADMIN":
+								window.location.replace(urlAdmin);
+							break;
+							default:
+								window.location.replace(urlDefault);
+							break;
+						}
+					});
+	</script>
+</body>
+</html>

@@ -22,6 +22,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     UserEntity findByToken(String token);
 
     @Query(nativeQuery = true,
+    value = "select u.role from users u where u.token = :token")
+    String findRoleForToken(@Param("token") String token);
+
+    @Query(nativeQuery = true,
             value = "select * from users u where u.role = 'STUDENT'")
     List<UserEntity>findAllStudents();
 

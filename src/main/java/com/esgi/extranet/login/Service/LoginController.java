@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -25,22 +26,29 @@ public class LoginController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping(value = "/home", produces = "text/html")
+    @GetMapping(value = {"/home", "/", ""}, produces = "text/html")
     public String getLoginPage(Model model){
         return "login/loginPage";
     }
+
 
     @GetMapping(value = "/errorlogin")
     public String error(Model model){ return "login/errorPage";}
 
     @RequestMapping(value = "/home", method = POST)
-    public String login(Model model, @ModelAttribute("pseudo")String pseudo,
+    @ResponseBody
+    public HashMap login(Model model, @ModelAttribute("pseudo")String pseudo,
                         @ModelAttribute("password")String password) {
         UserEntity user = userServices.verifyUser(pseudo, password);
-        if(user == null){
-            return "redirect:errorlogin";
+        HashMap<String, String> result = new HashMap<>();
+        if(user != null) {
+            result.put("valid", String.valueOf(user != null));
+            assert user != null;
+            result.put("role", String.valueOf(user.getRole()));
+            result.put("token", user.getToken());
         }else{
-            return "redirect:login/welcome";
+            result.put("valid", String.valueOf(false));
         }
+        return result;
     }
 }
