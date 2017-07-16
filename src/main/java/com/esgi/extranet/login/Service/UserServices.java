@@ -157,4 +157,11 @@ public class UserServices {
     UserEntity getInformations(String token) {
         return userRepository.findInformations(token);
     }
+
+    boolean changeUserPassword(Long id, String password) {
+        UserEntity user = userRepository.findById(id);
+        user.setPassword(passwordEncoder.encode(password));
+        saveUser(user);
+        return true;
+    }
 }

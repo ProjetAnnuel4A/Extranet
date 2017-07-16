@@ -126,4 +126,9 @@ public class UserServiceController {
     public UserEntity getInformations(@RequestParam("token") String token){
         return userServices.getInformations(token);
     }
+
+    @PostMapping("/changePassword")
+    public boolean changePassword(@RequestParam("id") Long id, @RequestParam("password") String password){
+        return userServices.changeUserPassword(id, password);
+    }
 }

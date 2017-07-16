@@ -18,6 +18,10 @@ import java.nio.file.Paths;
 @CrossOrigin
 @Controller
 public class MappingController {
+    @GetMapping(value={"/user/changePassword/view", ""})
+    public String changeUserPassword(){
+        return "changePassword";
+    }
 
     /**
      * Mapping login
