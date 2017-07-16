@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  */
 @CrossOrigin
 @Controller
-public class AdminController {
+public class MappingController {
 
     /**
      * Mapping login
@@ -163,6 +163,16 @@ public class AdminController {
         return "student/index";
     }
 
+    @GetMapping(value={"student/marks/view", ""})
+    public String studentmarks(){
+        return "student/marks";
+    }
+
+    @GetMapping(value={"student/planning/view", ""})
+    public String studentplanning(){
+        return "student/planning";
+    }
+
     /**
      Mapping teacher
      */
@@ -170,5 +180,15 @@ public class AdminController {
     @GetMapping(value={"teacher/home", ""})
     public String teacherhome(){
         return "teacher/index";
+    }
+
+    @GetMapping(value={"teacher/addMark/view", ""})
+    public String addMark(){
+        return "teacher/addMark";
+    }
+
+    @GetMapping(value={"teacher/manageClassmate/view", ""})
+    public String teachermanageClassmate(){
+        return "teacher/manageClassmate";
     }
 }

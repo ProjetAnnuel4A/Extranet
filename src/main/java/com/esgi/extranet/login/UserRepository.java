@@ -54,4 +54,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(nativeQuery = true,
             value = "select u.id from users u where u.pseudo=:pseudo")
     String findIdByPseudo(@Param("pseudo") String pseudo);
+
+    @Query(nativeQuery = true,
+            value = "select u.id from users u where u.token = :token")
+    int findIdForToken(@Param("token") String token);
+
+    @Query(nativeQuery = true,
+            value = "select * from users u where u.token = :token")
+    UserEntity findInformations(@Param("token") String token);
+
+    @Query(nativeQuery = true,
+            value = "select u.id_classmate from users u where u.id = :id")
+    int getClassmate(@Param("id") int id);
 }

@@ -43,4 +43,9 @@ public class MarkServiceImpl implements MarkService{
         markRepository.delete(id);
         return (markRepository.findById(id) == null);
     }
+
+    @Override
+    public List<MarkEntity> getMarkForStudent(int idStudent) {
+        return markRepository.getMarkForStudent(idStudent);
+    }
 }

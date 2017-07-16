@@ -153,4 +153,8 @@ public class UserServices {
     String getRoleForToken(String token) {
         return userRepository.findRoleForToken(token);
     }
+
+    UserEntity getInformations(String token) {
+        return userRepository.findInformations(token);
+    }
 }

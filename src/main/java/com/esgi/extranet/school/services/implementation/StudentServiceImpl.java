@@ -5,6 +5,7 @@ import com.esgi.extranet.login.Role;
 import com.esgi.extranet.login.Service.UserServices;
 import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserRepository;
+import com.esgi.extranet.school.services.ClassmateService;
 import com.esgi.extranet.school.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -130,5 +131,15 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public List<UserEntity> getStudentsWithoutClassmate() {
         return userRepository.findAllStudents();
+    }
+
+    @Override
+    public int getIdForToken(String token) {
+        return userRepository.findIdForToken(token);
+    }
+
+    @Override
+    public int getClassmateForId(int id) {
+        return userRepository.getClassmate(id);
     }
 }

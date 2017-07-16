@@ -2,6 +2,7 @@ package com.esgi.extranet.school.repositories;
 
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**

@@ -90,4 +90,15 @@ public class StudentController {
     public boolean removeStudent(@RequestParam(name = "id") Long id){
         return studentService.removeStudent(id);
     }
+
+    @RequestMapping(value = "/getIdForToken", method = RequestMethod.POST)
+    public int getIdForToken(@RequestParam(name = "token") String token){
+        return studentService.getIdForToken(token);
+    }
+
+    @RequestMapping(value = "/getClassmateFromToken", method = RequestMethod.POST)
+    public int getClassmateFromToken(@RequestParam("token") String token){
+        int id = studentService.getIdForToken(token);
+        return studentService.getClassmateForId(id);
+    }
 }

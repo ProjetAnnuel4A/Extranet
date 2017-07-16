@@ -48,11 +48,11 @@ public class TeacherController {
         date = LocalDate.parse(birthday, formatter);
         SecureRandom random = new SecureRandom();
         String password = new BigInteger(130, random).toString(32);
-        return teacherService.addTeacher(firstname, lastname, password, email, date, "", address);
+        return teacherService.addTeacher(firstname, lastname, email, password, date, "", address);
     }
 
     @PostMapping("/updateTeacher")
-    public UserEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
+    public UserEntity updateTeacher(@RequestParam(name = "firstname") String firstname,
                                        @RequestParam(name = "lastname") String lastname,
                                        @RequestParam(name = "email") String email,
                                        @RequestParam(name = "birthday") String birthday,

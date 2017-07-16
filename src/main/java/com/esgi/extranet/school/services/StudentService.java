@@ -19,4 +19,6 @@ public interface StudentService {
     boolean removeClassmateForStudent(Long studentId);
     List<UserEntity> getStudentsForClassmate(Long idClassmate);
     List<UserEntity> getStudentsWithoutClassmate();
+    int getIdForToken(String token);
+    int getClassmateForId(int id);
 }

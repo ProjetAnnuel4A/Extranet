@@ -11,4 +11,5 @@ public interface MarkService {
     List<MarkEntity> getAll();
     MarkEntity addMark(Long idStudent, Long idCourse, Float mark);
     boolean removeMark(Long id);
+    List<MarkEntity> getMarkForStudent(int idStudent);
 }

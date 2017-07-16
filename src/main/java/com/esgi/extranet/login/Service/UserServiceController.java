@@ -1,11 +1,10 @@
 package com.esgi.extranet.login.Service;
 
-import com.esgi.extranet.AdminController;
+import com.esgi.extranet.MappingController;
 import com.esgi.extranet.login.MailClient;
 import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.login.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
@@ -115,11 +114,16 @@ public class UserServiceController {
         message = message.replace("*pseudo*", user.getPseudo());
         message = message.replace("*password*", newPassword);
         mailClient.prepareAndSend(user.getEmail(), object, message);
-        AdminController.newPassword();
+        MappingController.newPassword();
     }
 
     @PostMapping("/verifyToken")
-    public String getRoleForToken(@Param("token") String token){
+    public String getRoleForToken(@RequestParam("token") String token){
         return userServices.getRoleForToken(token);
+    }
+
+    @PostMapping("/getInformations")
+    public UserEntity getInformations(@RequestParam("token") String token){
+        return userServices.getInformations(token);
     }
 }
