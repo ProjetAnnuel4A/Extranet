@@ -11,15 +11,18 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <!-- Bootstrap -->
-    <link href="/vendors/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- Custom Theme Style -->
-    <link href="/custom.min.css" rel="stylesheet">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- Font Awesome -->
+  <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <!-- bootstrap-progressbar -->
+  <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+  <!-- bootstrap-daterangepicker -->
+  <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+  <!-- Custom Theme Style -->
+  <link href="/custom.min.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -144,35 +147,35 @@
     }
   });
   $.post("http://brotherhood9305.cloudapp.net:9000/users/getInformations", {token : getCookie("brotherhood")})
-    .done(function(data){
-      var content = "";
-      $.each( data, function( key, val ) {
-        if(key == "firstname" || key == "lastname")
+  .done(function(data){
+    var content = "";
+    $.each( data, function( key, val ) {
+      if(key == "firstname" || key == "lastname")
         content += val + " ";
-        if(key == "id"){
-          idStudent = val;
-          var table = $("#marks");
-          $.getJSON("http://brotherhood9305.cloudapp.net:9000/marks/getMarkForStudent?idStudent="+idStudent, function( data ) {
-            $.each( data, function( key, val ) {
-              var dom = "<tr>";
-              $.each(val, function(k, v){
-                if(k != "id"){
-                  if(k == "mark")
-                    dom += "<td>"+v+"</td>";
-                }
-              });
-              table.append(dom + "</tr>");
+      if(key == "id"){
+        idStudent = val;
+        var table = $("#marks");
+        $.getJSON("http://brotherhood9305.cloudapp.net:9000/marks/getMarkForStudent?idStudent="+idStudent, function( data ) {
+          $.each( data, function( key, val ) {
+            var dom = "<tr>";
+            $.each(val, function(k, v){
+              if(k != "id"){
+                if(k == "mark")
+                  dom += "<td>"+v+"</td>";
+              }
             });
-            });
-        }
-      });
-      $(".firstnamelastname").append(content);
+            table.append(dom + "</tr>");
+          });
+        });
+      }
     });
+    $(".firstnamelastname").append(content);
+  });
 </script>
 <!-- jQuery -->
-    <script src="/vendors/jquery.min.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="/custom.min.js"></script>
+<script src="/vendors/jquery.min.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="/custom.min.js"></script>
 
 </body>
 </html>
