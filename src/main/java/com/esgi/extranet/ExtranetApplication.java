@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @org.springframework.context.annotation.Configuration
 @SpringBootApplication
-//@EnableAutoConfiguration(exclude = {org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class})
 @EnableAutoConfiguration
 @EnableTransactionManagement
 public class ExtranetApplication {
