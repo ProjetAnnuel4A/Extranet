@@ -5,7 +5,7 @@
     <head>
 
         <meta charset="UTF-8">
-        <title>Brotherhood - Résultats</title>
+        <title>Brotherhood - Liste des questionnaires</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     </head>
@@ -13,7 +13,7 @@
     <body>
 
         <a href="../../home">Retourner au menu principal</a>
-        <h1>Résultats</h1>
+        <h1>Liste des questionnaires</h1>
 
         <table id="surveys">
 
@@ -24,11 +24,13 @@
                 <th>Barème</th>
                 <th>Essais</th>
                 <th>Date limite</th>
-                <th>Note</th>
 
             </tr>
 
         </table>
+
+        <div id="results">
+        </div>
 
         <script>
 
@@ -50,10 +52,11 @@
                 }
             } ;
 
-            var userId = getUrlParameter('userId') || getUrlParameter('id') ;
+            var userId = getUrlParameter('id') ;
 
 
             var table = $("#surveys") ;
+            var results = $("#results") ;
 
             var surveysDone = {} ;
             var today = new Date() ;
@@ -62,7 +65,7 @@
             {
                 $.each(data, function(key, val)
                 {
-                    surveysDone[val["surveyId"]] = val["count"] ;
+                    surveysDone[val["surveyId"]] = 1 ;
                 }) ;
             }) ;
 
@@ -80,9 +83,9 @@
                         dom += "<td>" + val["chances"] + "</td>" ;
                         dom += "<td>" + val["deadLine"] + "</td>" ;
 
-                        if(val["deadLine"] >= today.getTime() && (surveysDone[val["id"]] < val["chances"] || val["chances"] == 0))
+                        if(val["deadLine"] >= today.getTime())
                         {
-                            dom += "<td><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
+                            dom += "<td><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
                         }
 
                         table.append(dom + "</tr>") ;
@@ -90,10 +93,17 @@
                 }) ;
             }) ;
 
+            results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
+
 
             function answerSurvey(userId, surveyId)
             {
-                window.location.replace("answerSurvey.html?userId=" + userId + "surveyId=" + surveyId + "&done=true") ;
+                window.location.replace("answerSurvey.html?userId=" + userId + "surveyId=" + surveyId + "&done=false") ;
+            }
+
+            function seeResults(userId)
+            {
+                window.location.replace("seeResults.html?userId=" + userId) ;
             }
 
         </script>

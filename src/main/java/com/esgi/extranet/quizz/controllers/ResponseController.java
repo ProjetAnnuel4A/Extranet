@@ -12,7 +12,7 @@ import java.util.List ;
  */
 @CrossOrigin
 @RestController
-@RequestMapping(value="/reponses")
+@RequestMapping(value="/responses")
 public class ResponseController
 {
 
