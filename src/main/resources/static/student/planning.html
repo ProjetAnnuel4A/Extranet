@@ -61,11 +61,11 @@
     var idClassmate = "";
     $.ajax({
       type: "POST",
-      url: "http://localhost:9000/students/getClassmateFromToken",
+      url: "http://brotherhood9305.cloudapp.net:9000/students/getClassmateFromToken",
       data: { token: getCookie("brotherhood") },
       success: function(data) {
         idClassmate = data;
-        $.getJSON("http://localhost:9000/planning/getCourseForClassmate?idClassmate=" + idClassmate, function( data ) {
+        $.getJSON("http://brotherhood9305.cloudapp.net:9000/planning/getCourseForClassmate?idClassmate=" + idClassmate, function( data ) {
           data_json = data;
           var year = new Date().getFullYear();
           var month = new Date().getMonth();
@@ -111,17 +111,17 @@
   </script>
 </head>
 <body>
-  <button class="button" onclick="window.location.replace('http://localhost:9000/student/home')">Retour</button>
+  <button class="button" onclick="window.location.replace('http://brotherhood9305.cloudapp.net:9000/student/home')">Retour</button>
   <h1>Calendrier</h1>
   <div id="calendar"></div>
   <script>
-    var urlTeacher = "http://localhost:9000/teacher/home";
-    var urlAdmin = "http://localhost:9000/admin/home";
-    var urlDefault = "http://localhost:9000/home";
+    var urlTeacher = "http://brotherhood9305.cloudapp.net:9000/teacher/home";
+    var urlAdmin = "http://brotherhood9305.cloudapp.net:9000/admin/home";
+    var urlDefault = "http://brotherhood9305.cloudapp.net:9000/home";
 
     $.ajax({
       type: "POST",
-      url: "http://localhost:9000/users/verifyToken",
+      url: "http://brotherhood9305.cloudapp.net:9000/users/verifyToken",
       data: { token: getCookie("brotherhood") },
       success: function(data) {
         switch(data){

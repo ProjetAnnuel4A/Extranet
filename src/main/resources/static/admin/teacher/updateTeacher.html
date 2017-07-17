@@ -36,7 +36,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="http://localhost:9000/admin/home" class="site_title"><span>Brotherhood</span></a>
+              <a href="http://brotherhood9305.cloudapp.net:9000/admin/home" class="site_title"><span>Brotherhood</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -62,9 +62,9 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="http://localhost:9000/admin/student/view">Etudiant</a></li>
-                      <li><a href="http://localhost:9000/admin/teacher/view">Enseignant</a></li>
-                      <li><a href="http://localhost:9000/admin/administration/view">Administration</a></li>
+                      <li><a href="http://brotherhood9305.cloudapp.net:9000/admin/student/view">Etudiant</a></li>
+                      <li><a href="http://brotherhood9305.cloudapp.net:9000/admin/teacher/view">Enseignant</a></li>
+                      <li><a href="http://brotherhood9305.cloudapp.net:9000/admin/administration/view">Administration</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -74,7 +74,7 @@
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="http://localhost:9000/home">
+              <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="http://brotherhood9305.cloudapp.net:9000/home">
                 <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
               </a>
             </div>
@@ -97,8 +97,8 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="http://localhost:9000/user/changePassword/view"> Profil</a></li>
-                    <li><a href="http://localhost:9000/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="http://brotherhood9305.cloudapp.net:9000/user/changePassword/view"> Profil</a></li>
+                    <li><a href="http://brotherhood9305.cloudapp.net:9000/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
               </ul>
@@ -131,11 +131,11 @@
           if (parts.length == 2) return parts.pop().split(";").shift();
         }
 
-        var urlStudent = "http://localhost:9000/student/home";
-        var urlTeacher = "http://localhost:9000/teacher/home";
-        var urlDefault = "http://localhost:9000/home";
+        var urlStudent = "http://brotherhood9305.cloudapp.net:9000/student/home";
+        var urlTeacher = "http://brotherhood9305.cloudapp.net:9000/teacher/home";
+        var urlDefault = "http://brotherhood9305.cloudapp.net:9000/home";
 
-        $.post("http://localhost:9000/users/verifyToken", { token: getCookie("brotherhood")})
+        $.post("http://brotherhood9305.cloudapp.net:9000/users/verifyToken", { token: getCookie("brotherhood")})
                         .done(function( data ) 
                         {                   
                             switch(data){
@@ -153,7 +153,7 @@
                         }
                     });
 		var table = $("#teachers");
-		$.getJSON("http://localhost:9000/teachers/", function( data ) {
+		$.getJSON("http://brotherhood9305.cloudapp.net:9000/teachers/", function( data ) {
       var d = "<thead><tr><th>Selectionner</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Adresse</th></tr></thead><tbody>";
       table.append(d);
       $.each( data, function( key, val ) {
