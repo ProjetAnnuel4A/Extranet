@@ -18,10 +18,10 @@ public interface UserQuizzService
     boolean removeUserQuizz(Long userQuizzId) ;
     List<UserQuizzEntity> getAllUsersQuizzByUserId(Long userId) ;
     UserQuizzEntity getUserQuizz(Long userQuizzId) ;
-    UserQuizzEntity getUsersQuizzByUserIdAndSurveyId(Long userId, Long surveyId) ;
+    UserQuizzEntity getUserQuizzByUserIdAndSurveyId(Long userId, Long surveyId) ;
 
-    List<UserQuizzResponsesEntity> getAllUserQuizzResponsesFromAnUserQuizz(Long userQuizzId) ;
-    boolean removeAllUserQuizzResponsesFromAnUserQuizz(Long userQuizzId) ;
+    List<UserQuizzResponsesEntity> getAllUsersQuizzResponsesFromAnUserQuizz(Long userQuizzId) ;
+    boolean removeAllUsersQuizzResponsesFromAnUserQuizz(Long userQuizzId) ;
     UserQuizzResponsesEntity getUserQuizzResponsesFromAnUserQuizz(Long userQuizzId, Long questionId) ;
     List<Long> getResponsesFromAnUserQuizz(Long userQuizzId, Long questionId) ;
     boolean addResponseForAnUserQuizz(Long userQuizzId, Long questionId, Long responsesId) ;

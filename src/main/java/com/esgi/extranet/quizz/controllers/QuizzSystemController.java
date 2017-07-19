@@ -54,7 +54,7 @@ public class QuizzSystemController
                                                              @RequestParam("surveyId") Long surveyId)
     {
         QuestionEntity question = questionService.getQuestion(questionId) ;
-        UserQuizzEntity userQuizz = userQuizzService.getUsersQuizzByUserIdAndSurveyId(userId, surveyId) ;
+        UserQuizzEntity userQuizz = userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
 
         return QuizzSystem.calculateQuestionScore(question, userQuizzService.getUserQuizzResponsesFromAnUserQuizz(userQuizz.getId(), questionId)) ;
     }
@@ -88,7 +88,7 @@ public class QuizzSystemController
                                                            @RequestParam("surveyId") Long surveyId)
     {
         SurveyEntity survey = surveyService.getSurvey(surveyId) ;
-        UserQuizzEntity userQuizz = userQuizzService.getUsersQuizzByUserIdAndSurveyId(userId, surveyId) ;
+        UserQuizzEntity userQuizz = userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
         UserQuizzResponsesEntity[] userQuizzResponses = new UserQuizzResponsesEntity[survey.getQuestions().size()] ;
 
         for(int i = 0 ; i < survey.getQuestions().size() ; i++)
@@ -97,6 +97,53 @@ public class QuizzSystemController
         }
 
         return QuizzSystem.calculateSurveyScore(survey, userQuizzResponses) ;
+    }
+
+
+    @PostMapping("/calculateSurveyMark")
+    public void calculateSurveyMark(@RequestParam("surveyId") Long surveyId)
+    {
+        SurveyEntity survey = surveyService.getSurvey(surveyId) ;
+
+        QuizzSystem.calculateSurveyMark(survey) ;
+    }
+
+
+    @PostMapping("/checkIfSurveyIsInfinite")
+    public boolean checkIfSurveyIsInfinite(@RequestParam("surveyId") Long surveyId)
+    {
+        SurveyEntity survey = surveyService.getSurvey(surveyId) ;
+
+        return QuizzSystem.surveyIsInfinite(survey) ;
+    }
+
+    @PostMapping("/checkIfSurveyIsOpen")
+    public boolean checkIfSurveyIsOpen(@RequestParam("surveyId") Long surveyId)
+    {
+        SurveyEntity survey = surveyService.getSurvey(surveyId) ;
+
+        return QuizzSystem.surveyIsOpen(survey) ;
+    }
+
+
+    @PostMapping("/checkIfUserQuizzCanAnswerSurveyWithUserQuizzId")
+    public boolean checkIfUserQuizzCanAnswerSurveyWithUserQuizzId(@RequestParam("userQuizzId") Long userQuizzId,
+                                                                @RequestParam("surveyId") Long surveyId)
+    {
+        SurveyEntity survey = surveyService.getSurvey(surveyId) ;
+        UserQuizzEntity userQuizz = userQuizzService.getUserQuizz(userQuizzId) ;
+
+        return QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey) ;
+    }
+
+    @PostMapping("/checkIfUserQuizzCanAnswerSurveyWithUserIdAndSurveyId")
+    public boolean checkIfUserQuizzCanAnswerSurveyWithUserIdAndSurveyId(@RequestParam("userId") Long userId,
+                                                                      @RequestParam("surveyId") Long surveyId)
+    {
+        SurveyEntity survey = surveyService.getSurvey(surveyId) ;
+        UserQuizzEntity userQuizz = userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
+
+        return QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey) ;
     }
 
 }

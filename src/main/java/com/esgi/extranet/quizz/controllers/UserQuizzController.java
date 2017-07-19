@@ -49,7 +49,7 @@ public class UserQuizzController
     public UserQuizzEntity getUsersQuizzByUserIdAndSurveyId(@RequestParam(name = "userId") Long userId,
                                                             @RequestParam(name = "surveyId") Long surveyId)
     {
-        return userQuizzService.getUsersQuizzByUserIdAndSurveyId(userId, surveyId) ;
+        return userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
     }
 
     @PostMapping("/addUserQuizz")
@@ -78,16 +78,23 @@ public class UserQuizzController
     }
 
 
-    @GetMapping("/getAllResponsesFromAnUserQuizz")
-    public List<UserQuizzResponsesEntity> getAllResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId)
+    @GetMapping("/getAllUserQuizzResponsesFromAnUserQuizz")
+    public List<UserQuizzResponsesEntity> getAllUserQuizzResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId)
     {
-        return userQuizzService.getAllUserQuizzResponsesFromAnUserQuizz(userQuizzId) ;
+        return userQuizzService.getAllUsersQuizzResponsesFromAnUserQuizz(userQuizzId) ;
     }
 
-    @PostMapping("/removeAllUserQuizzResponses")
-    public boolean removeAllUserQuizzResponses(@RequestParam("userQuizzId") Long userQuizzId)
+    @PostMapping("/removeAllUserQuizzResponsesFromAnUserQuizz")
+    public boolean removeAllUserQuizzResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId)
     {
-        return userQuizzService.removeAllUserQuizzResponsesFromAnUserQuizz(userQuizzId) ;
+        return userQuizzService.removeAllUsersQuizzResponsesFromAnUserQuizz(userQuizzId) ;
+    }
+
+    @GetMapping("/getUserQuizzResponsesFromAnUserQuizz")
+    public UserQuizzResponsesEntity getUserQuizzResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId,
+                                                                         @RequestParam("questionId") Long questionId)
+    {
+        return userQuizzService.getUserQuizzResponsesFromAnUserQuizz(userQuizzId, questionId) ;
     }
 
     @GetMapping("/getResponsesFromAnUserQuizz")

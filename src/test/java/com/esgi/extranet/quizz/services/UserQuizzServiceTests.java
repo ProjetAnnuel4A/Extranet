@@ -146,7 +146,7 @@ public class UserQuizzServiceTests
 
         Assert.assertNotNull(result) ;
 
-        Assert.assertNotNull(userQuizzService.getUsersQuizzByUserIdAndSurveyId(result.getUserId(), result.getSurveyId())) ;
+        Assert.assertNotNull(userQuizzService.getUserQuizzByUserIdAndSurveyId(result.getUserId(), result.getSurveyId())) ;
     }
 
 
@@ -157,7 +157,7 @@ public class UserQuizzServiceTests
 
         boolean result = userQuizzService.addResponseForAnUserQuizz(userQuizz.getId(), new Long(1), response) ;
 
-        List<UserQuizzResponsesEntity> responses = userQuizzService.getAllUserQuizzResponsesFromAnUserQuizz(userQuizz.getId()) ;
+        List<UserQuizzResponsesEntity> responses = userQuizzService.getAllUsersQuizzResponsesFromAnUserQuizz(userQuizz.getId()) ;
 
 
         Assert.assertNotNull(userQuizz) ;
@@ -178,7 +178,7 @@ public class UserQuizzServiceTests
         Long response = new Long(1) ;
 
         boolean resultAdd = userQuizzService.addResponseForAnUserQuizz(userQuizz.getId(), new Long(1), response) ;
-        boolean resultRemove = userQuizzService.removeAllUserQuizzResponsesFromAnUserQuizz(userQuizz.getId()) ;
+        boolean resultRemove = userQuizzService.removeAllUsersQuizzResponsesFromAnUserQuizz(userQuizz.getId()) ;
 
 
         Assert.assertNotNull(userQuizz) ;

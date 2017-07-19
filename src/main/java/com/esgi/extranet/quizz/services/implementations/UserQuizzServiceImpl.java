@@ -95,20 +95,20 @@ public class UserQuizzServiceImpl implements UserQuizzService
     }
 
     @Override
-    public UserQuizzEntity getUsersQuizzByUserIdAndSurveyId(Long userId, Long surveyId)
+    public UserQuizzEntity getUserQuizzByUserIdAndSurveyId(Long userId, Long surveyId)
     {
         return userQuizzRepository.findByUserIdAndSurveyId(userId, surveyId) ;
     }
 
 
     @Override
-    public List<UserQuizzResponsesEntity> getAllUserQuizzResponsesFromAnUserQuizz(Long userQuizzId)
+    public List<UserQuizzResponsesEntity> getAllUsersQuizzResponsesFromAnUserQuizz(Long userQuizzId)
     {
         return userQuizzResponsesRepository.findByUserQuizzId(userQuizzId) ;
     }
 
     @Override
-    public boolean removeAllUserQuizzResponsesFromAnUserQuizz(Long userQuizzId)
+    public boolean removeAllUsersQuizzResponsesFromAnUserQuizz(Long userQuizzId)
     {
         List<UserQuizzResponsesEntity> userQuizzResponsesEntity = userQuizzResponsesRepository.findByUserQuizzId(userQuizzId) ;
 
