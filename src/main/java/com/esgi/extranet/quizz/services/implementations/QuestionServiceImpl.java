@@ -29,6 +29,7 @@ public class QuestionServiceImpl implements QuestionService
         this.responseRepository = responseRepository ;
     }
 
+
     @Override
     public List<QuestionEntity> getAll()
     {
@@ -118,6 +119,7 @@ public class QuestionServiceImpl implements QuestionService
             if(responseEntities.get(i).getId().equals(responseId))
             {
                 responseEntities.remove(i) ;
+                questionEntity.setResponses(responseEntities) ;
                 questionRepository.save(questionEntity) ;
 
                 return true ;
@@ -161,6 +163,7 @@ public class QuestionServiceImpl implements QuestionService
             if(correctResponses.get(i).equals(responseId))
             {
                 correctResponses.remove(i) ;
+                questionEntity.setCorrectResponses(correctResponses) ;
                 questionRepository.save(questionEntity) ;
 
                 return true ;

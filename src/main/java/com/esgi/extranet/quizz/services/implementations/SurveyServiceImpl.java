@@ -30,6 +30,7 @@ public class SurveyServiceImpl implements SurveyService
         this.questionRepository = questionRepository ;
     }
 
+
     @Override
     public List<SurveyEntity> getAll()
     {
@@ -120,6 +121,7 @@ public class SurveyServiceImpl implements SurveyService
             if(questionEntities.get(i).getId().equals(questionId))
             {
                 questionEntities.remove(i) ;
+                surveyEntity.setQuestions(questionEntities) ;
                 surveyRepository.save(surveyEntity) ;
 
                 return true ;

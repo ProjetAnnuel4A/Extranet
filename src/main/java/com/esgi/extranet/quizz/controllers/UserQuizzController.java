@@ -1,6 +1,7 @@
 package com.esgi.extranet.quizz.controllers ;
 
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
+import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 import com.esgi.extranet.quizz.services.interfaces.UserQuizzService ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.web.bind.annotation.* ;
@@ -38,25 +39,30 @@ public class UserQuizzController
         return userQuizzService.getUserQuizz(userQuizzId) ;
     }
 
+    @GetMapping("/getUsersQuizzByUserIdAndSurveyId")
+    public UserQuizzEntity getUsersQuizzByUserIdAndSurveyId(@RequestParam(name = "userId") Long userId,
+                                                            @RequestParam(name = "surveyId") Long surveyId)
+    {
+        return userQuizzService.getUsersQuizzByUserIdAndSurveyId(userId, surveyId) ;
+    }
+
     @PostMapping("/addUserQuizz")
     public UserQuizzEntity addUserQuizz(@RequestParam(name = "userId") Long userId,
                                         @RequestParam(name = "surveyId") Long surveyId,
-                                        @RequestParam(name = "questionId") Long questionId,
                                         @RequestParam(name = "count") int count)
     {
 
-        return userQuizzService.addUserQuizz(userId, surveyId, questionId, count) ;
+        return userQuizzService.addUserQuizz(userId, surveyId, count) ;
     }
 
     @PostMapping("/updateUserQuizz")
     public UserQuizzEntity updateUserQuizz(@RequestParam(name = "userQuizzId") Long userQuizzId,
                                            @RequestParam(name = "userId") Long userId,
                                            @RequestParam(name = "surveyId") Long surveyId,
-                                           @RequestParam(name = "questionId") Long questionId,
                                            @RequestParam(name = "count") int count)
     {
 
-        return userQuizzService.updateUserQuizz(userQuizzId, userId, surveyId, questionId, count) ;
+        return userQuizzService.updateUserQuizz(userQuizzId, userId, surveyId, count) ;
     }
 
     @RequestMapping(value = "/removeUserQuizz", method = RequestMethod.POST)
@@ -66,24 +72,39 @@ public class UserQuizzController
     }
 
 
-    @GetMapping("/getResponsesFromAnUserQuizz")
-    public List<Long> getResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId)
+    @GetMapping("/getAllResponsesFromAnUserQuizz")
+    public List<UserQuizzResponsesEntity> getAllResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId)
     {
-        return userQuizzService.getResponsesFromAnUserQuizz(userQuizzId) ;
+        return userQuizzService.getAllResponsesFromAnUserQuizz(userQuizzId) ;
+    }
+
+    @PostMapping("/removeAllUserQuizzResponses")
+    public boolean removeAllUserQuizzResponses(@RequestParam("userQuizzId") Long userQuizzId)
+    {
+        return userQuizzService.removeAllUserQuizzResponses(userQuizzId) ;
+    }
+
+    @GetMapping("/getResponsesFromAnUserQuizz")
+    public List<Long> getResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId,
+                                                  @RequestParam("questionId") Long questionId)
+    {
+        return userQuizzService.getResponsesFromAnUserQuizz(userQuizzId, questionId) ;
     }
 
     @PostMapping("/addResponseForAnUserQuizz")
     public boolean addResponseForAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId,
+                                             @RequestParam("questionId") Long questionId,
                                              @RequestParam("responseId") Long responseId)
     {
-        return userQuizzService.addResponseForAnUserQuizz(userQuizzId, responseId) ;
+        return userQuizzService.addResponseForAnUserQuizz(userQuizzId, questionId, responseId) ;
     }
 
     @PostMapping("/removeResponseFromAnUserQuizz")
     public boolean removeResponseFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId,
+                                                 @RequestParam("questionId") Long questionId,
                                                  @RequestParam("responseId") Long responseId)
     {
-        return userQuizzService.removeResponseFromAnUserQuizz(userQuizzId, responseId) ;
+        return userQuizzService.removeResponseFromAnUserQuizz(userQuizzId, questionId, responseId) ;
     }
 
 }

@@ -12,5 +12,6 @@ public interface UserQuizzRepository extends JpaRepository<UserQuizzEntity, Long
 {
 
     UserQuizzEntity findById(Long id) ;
+    UserQuizzEntity findByUserIdAndSurveyId(Long userId, Long surveyId) ;
 
 }
