@@ -83,6 +83,12 @@ public class UserQuizzServiceImpl implements UserQuizzService
     }
 
     @Override
+    public List<UserQuizzEntity> getAllUsersQuizzByUserId(Long userId)
+    {
+        return userQuizzRepository.findAllByUserId(userId) ;
+    }
+
+    @Override
     public UserQuizzEntity getUserQuizz(Long userQuizzId)
     {
         return userQuizzRepository.findById(userQuizzId) ;

@@ -67,6 +67,8 @@ public class UserQuizzServiceTests
                 .questionId(new Long(1))
                 .responses(userResponses)
                 .build() ;
+
+        userQuizzResponsesRepository.save(userQuizzResponses) ;
     }
 
 
@@ -115,6 +117,17 @@ public class UserQuizzServiceTests
     }
 
     @Test
+    public void should_get_all_users_quizz_by_user_id() throws Exception
+    {
+        List<UserQuizzEntity> result = userQuizzRepository.findAllByUserId(new Long(1)) ;
+
+
+        Assert.assertNotNull(result) ;
+
+        Assert.assertNotNull(userQuizzService.getUserQuizz(result.get(0).getId())) ;
+    }
+
+    @Test
     public void should_get_user_quizz() throws Exception
     {
         UserQuizzEntity result = userQuizzRepository.findById(new Long(1)) ;
@@ -128,7 +141,7 @@ public class UserQuizzServiceTests
     @Test
     public void should_get_user_quizz_by_user_id_and_survey_id() throws Exception
     {
-        UserQuizzEntity result = userQuizzRepository.findById(new Long(1)) ;
+        UserQuizzEntity result = userQuizzRepository.findByUserIdAndSurveyId(new Long(1), new Long(2)) ;
 
 
         Assert.assertNotNull(result) ;

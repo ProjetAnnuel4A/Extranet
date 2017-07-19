@@ -4,13 +4,20 @@ import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
 import org.junit.jupiter.api.BeforeAll ;
+import org.junit.runner.RunWith ;
 import org.springframework.beans.factory.annotation.Autowired ;
+import org.springframework.boot.test.context.SpringBootTest ;
+import org.springframework.test.context.junit4.SpringRunner ;
 
 import java.util.Optional ;
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
 /**
  * Created by Samuel Bijou on 01/07/2017.
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class SurveyRepositoryTests
 {
 

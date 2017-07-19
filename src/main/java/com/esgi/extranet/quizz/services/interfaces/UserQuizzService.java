@@ -16,6 +16,7 @@ public interface UserQuizzService
     UserQuizzEntity addUserQuizz(Long userId, Long surveyId, int count) ;
     UserQuizzEntity updateUserQuizz(Long userQuizzId, Long userId, Long surveyId, int count) ;
     boolean removeUserQuizz(Long userQuizzId) ;
+    List<UserQuizzEntity> getAllUsersQuizzByUserId(Long userId) ;
     UserQuizzEntity getUserQuizz(Long userQuizzId) ;
     UserQuizzEntity getUsersQuizzByUserIdAndSurveyId(Long userId, Long surveyId) ;
 

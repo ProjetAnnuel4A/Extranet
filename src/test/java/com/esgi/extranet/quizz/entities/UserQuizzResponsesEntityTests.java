@@ -14,15 +14,15 @@ import static com.esgi.extranet.login.Role.STUDENT ;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT ;
 
 /**
- * Created by Samuel Bijou on 28/06/2017.
+ * Created by Samuel Bijou on 18/07/2017.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class UserQuizzEntityTests
+public class UserQuizzResponsesEntityTests
 {
 
     @Test
-    public void should_create_user_quizz()
+    public void should_create_user_quizz_responses()
     {
         LocalDate localDateTest = null ;
         UserEntity student = UserEntity.builder()
@@ -76,15 +76,22 @@ public class UserQuizzEntityTests
                 .count(1)
                 .build() ;
 
+        UserQuizzResponsesEntity userQuizzResponses = UserQuizzResponsesEntity.builder()
+                .id(new Long(1))
+                .userQuizzId(userQuizz.getId())
+                .questionId(question.getId())
+                .responses(correctResponses)
+                .build() ;
 
-        Assert.assertNotNull(userQuizz) ;
-        Assert.assertNotNull(userQuizz.getUserId()) ;
-        Assert.assertNotNull(userQuizz.getSurveyId()) ;
-        Assert.assertNotNull(userQuizz.getCount()) ;
 
-        Assert.assertEquals(new Long(2), userQuizz.getUserId()) ;
-        Assert.assertEquals(new Long(3), userQuizz.getSurveyId()) ;
-        Assert.assertEquals(1, userQuizz.getCount()) ;
+        Assert.assertNotNull(userQuizzResponses) ;
+        Assert.assertNotNull(userQuizzResponses.getUserQuizzId()) ;
+        Assert.assertNotNull(userQuizzResponses.getQuestionId()) ;
+        Assert.assertNotNull(userQuizzResponses.getResponses()) ;
+
+        Assert.assertEquals(new Long(1), userQuizzResponses.getUserQuizzId()) ;
+        Assert.assertEquals(new Long(4), userQuizzResponses.getQuestionId()) ;
+        Assert.assertEquals(correctResponses, userQuizzResponses.getResponses()) ;
     }
 
 }

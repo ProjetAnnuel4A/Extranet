@@ -1,21 +1,14 @@
 package com.esgi.extranet ;
 
-import com.esgi.extranet.login.Role ;
 import com.esgi.extranet.login.UserEntity ;
-import com.esgi.extranet.quizz.entities.QuestionEntity ;
-import com.esgi.extranet.quizz.entities.ResponseEntity ;
-import com.esgi.extranet.quizz.entities.SurveyEntity ;
-import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
-import com.esgi.extranet.quizz.repositories.QuestionRepository ;
-import com.esgi.extranet.quizz.repositories.ResponseRepository ;
-import com.esgi.extranet.quizz.repositories.SurveyRepository ;
-import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
+import com.esgi.extranet.quizz.entities.*;
+import com.esgi.extranet.quizz.repositories.* ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
 import java.time.LocalDate ;
 import java.util.ArrayList ;
 
-import static com.esgi.extranet.login.Role.STUDENT;
+import static com.esgi.extranet.login.Role.STUDENT ;
 
 /**
  * Created by Samuel Bijou on 29/06/2017.
@@ -35,9 +28,14 @@ public class QuizzDatas
     @Autowired
     public static UserQuizzRepository userQuizzRepository ;
 
+    @Autowired
+    public static UserQuizzResponsesRepository userQuizzResponsesRepository ;
+
 
     public static void initialize_datas()
     {
+        /* PARTIE SURVEY */
+
         ResponseEntity r1 = ResponseEntity.builder()
                 .id(new Long(1))
                 .description("ResponseTest 1")
@@ -131,6 +129,8 @@ public class QuizzDatas
         surveyRepository.save(survey) ;
 
 
+        /* PARTIE USER */
+
         LocalDate localDateTest = null ;
         UserEntity student = UserEntity.builder()
                 .id(new Long(1))
@@ -148,22 +148,30 @@ public class QuizzDatas
                 .build() ;
 
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-
-        userResponses.add(new Long(2)) ;
-
+        /* PARTIE USERQUIZZ */
 
         UserQuizzEntity userQuizz = UserQuizzEntity.builder()
                 .id(new Long(1))
                 .userId(student.getId())
                 .surveyId(survey.getId())
-                .questionId(q1.getId())
-                .responses(userResponses)
                 .count(1)
+                .build() ;
+
+        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+
+        userResponses.add(new Long(2)) ;
+
+        UserQuizzResponsesEntity userQuizzResponses = UserQuizzResponsesEntity.builder()
+                .id(new Long(1))
+                .userQuizzId(userQuizz.getId())
+                .questionId(q1.getId())
+                .responses(correctResponses)
                 .build() ;
 
 
         userQuizzRepository.save(userQuizz) ;
+
+        userQuizzResponsesRepository.save(userQuizzResponses) ;
     }
 
 }
