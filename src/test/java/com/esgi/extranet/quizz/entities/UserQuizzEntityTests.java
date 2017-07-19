@@ -73,23 +73,28 @@ public class UserQuizzEntityTests
                 .id(new Long(1))
                 .userId(student.getId())
                 .surveyId(survey.getId())
+                .count(1)
+                .build() ;
+
+        UserQuizzResponsesEntity userQuizzResponses = UserQuizzResponsesEntity.builder()
+                .id(new Long(1))
+                .userQuizzId(userQuizz.getId())
                 .questionId(question.getId())
                 .responses(correctResponses)
-                .count(1)
                 .build() ;
 
 
         Assert.assertNotNull(userQuizz) ;
         Assert.assertNotNull(userQuizz.getUserId()) ;
         Assert.assertNotNull(userQuizz.getSurveyId()) ;
-        Assert.assertNotNull(userQuizz.getQuestionId()) ;
-        Assert.assertNotNull(userQuizz.getResponses()) ;
+        Assert.assertNotNull(userQuizzResponses.getQuestionId()) ;
+        Assert.assertNotNull(userQuizzResponses.getResponses()) ;
         Assert.assertNotNull(userQuizz.getCount()) ;
 
         Assert.assertEquals(new Long(2), userQuizz.getUserId()) ;
         Assert.assertEquals(new Long(3), userQuizz.getSurveyId()) ;
-        Assert.assertEquals(new Long(4), userQuizz.getQuestionId()) ;
-        Assert.assertEquals(correctResponses, userQuizz.getResponses()) ;
+        Assert.assertEquals(new Long(4), userQuizzResponses.getQuestionId()) ;
+        Assert.assertEquals(correctResponses, userQuizzResponses.getResponses()) ;
         Assert.assertEquals(1, userQuizz.getCount()) ;
     }
 

@@ -3,9 +3,11 @@ package com.esgi.extranet.quizz ;
 import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
+import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 
 import java.sql.Date ;
 import java.time.LocalDate ;
+import java.util.ArrayList ;
 
 /**
  * Created by Samuel Bijou on 07/06/2017.
@@ -13,7 +15,7 @@ import java.time.LocalDate ;
 public class QuizzSystem
 {
 
-    public static float calculateQuestionScore(QuestionEntity question, UserQuizzEntity userQuizzEntity)
+    public static float calculateQuestionScore(QuestionEntity question, UserQuizzResponsesEntity userQuizzResponses)
     {
         float score = 0 ;
 
@@ -21,17 +23,17 @@ public class QuizzSystem
 
         if(question.isAllOrNot())
         {
-            if(userQuizzEntity.getResponses().size() != question.getCorrectResponses().size())
+            if(userQuizzResponses.getResponses().size() != question.getCorrectResponses().size())
             {
                 return 0 ;
             }
         }
 
-        for(int i = 0 ; i < userQuizzEntity.getResponses().size() ; i++)
+        for(int i = 0 ; i < userQuizzResponses.getResponses().size() ; i++)
         {
             boolean responseCorrect = false ;
 
-            if(question.getCorrectResponses().contains(userQuizzEntity.getResponses().get(i)))
+            if(question.getCorrectResponses().contains(userQuizzResponses.getResponses().get(i)))
             {
                 responseCorrect = true ;
 
@@ -60,7 +62,57 @@ public class QuizzSystem
         return score ;
     }
 
-    public static float calculateQuestionScore(QuestionEntity question, int[] userResponses)
+    public static float calculateQuestionScore(QuestionEntity question, ArrayList<Long> userResponses)
+    {
+        float score = 0 ;
+
+        int nbCorrectResponses = 0 ;
+
+        if(question.isAllOrNot())
+        {
+            if(userResponses.size() != question.getCorrectResponses().size())
+            {
+                return 0 ;
+            }
+        }
+
+        for(int i = 0 ; i < userResponses.size() ; i++)
+        {
+            boolean responseCorrect = false ;
+
+            for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
+            {
+                if(userResponses.get(i) == question.getCorrectResponses().get(j))
+                {
+                    responseCorrect = true ;
+
+                    nbCorrectResponses++ ;
+                }
+            }
+
+            if(!responseCorrect)
+            {
+                return 0 ;
+            }
+        }
+
+        if(question.isAllOrNot())
+        {
+            if(nbCorrectResponses == question.getCorrectResponses().size())
+            {
+                score = question.getPoints() ;
+            }
+        }
+
+        else
+        {
+            score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+        }
+
+        return score ;
+    }
+
+    public static float calculateQuestionScore(QuestionEntity question, Long[] userResponses)
     {
         float score = 0 ;
 
@@ -110,19 +162,31 @@ public class QuizzSystem
         return score ;
     }
 
-    public static float calculateSurveyScore(SurveyEntity survey, UserQuizzEntity[] userQuizzEntity)
+    public static float calculateSurveyScore(SurveyEntity survey, UserQuizzResponsesEntity[] userQuizzResponses)
     {
         float score = 0 ;
 
         for(int i = 0 ; i < survey.getQuestions().size() ; i++)
         {
-            score += calculateQuestionScore(survey.getQuestions().get(i), userQuizzEntity[i]) ;
+            score += calculateQuestionScore(survey.getQuestions().get(i), userQuizzResponses[i]) ;
         }
 
         return score ;
     }
 
-    public static float calculateSurveyScore(SurveyEntity survey, int[][] userResponses)
+    public static float calculateSurveyScore(SurveyEntity survey, ArrayList<ArrayList<Long>> userResponses)
+    {
+        float score = 0 ;
+
+        for(int i = 0 ; i < survey.getQuestions().size() ; i++)
+        {
+            score += calculateQuestionScore(survey.getQuestions().get(i), userResponses.get(i)) ;
+        }
+
+        return score ;
+    }
+
+    public static float calculateSurveyScore(SurveyEntity survey, Long[][] userResponses)
     {
         float score = 0 ;
 

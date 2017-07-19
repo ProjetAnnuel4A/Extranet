@@ -96,17 +96,14 @@ public class UserQuizzServiceImpl implements UserQuizzService
 
 
     @Override
-    public List<UserQuizzResponsesEntity> getAllResponsesFromAnUserQuizz(Long userQuizzId)
+    public List<UserQuizzResponsesEntity> getAllUserQuizzResponsesFromAnUserQuizz(Long userQuizzId)
     {
-        UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
-
         return userQuizzResponsesRepository.findByUserQuizzId(userQuizzId) ;
     }
 
     @Override
-    public boolean removeAllUserQuizzResponses(Long userQuizzId)
+    public boolean removeAllUserQuizzResponsesFromAnUserQuizz(Long userQuizzId)
     {
-        UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
         List<UserQuizzResponsesEntity> userQuizzResponsesEntity = userQuizzResponsesRepository.findByUserQuizzId(userQuizzId) ;
 
         for(int i = 0 ; i < userQuizzResponsesEntity.size() ; i++)
@@ -118,9 +115,14 @@ public class UserQuizzServiceImpl implements UserQuizzService
     }
 
     @Override
+    public UserQuizzResponsesEntity getUserQuizzResponsesFromAnUserQuizz(Long userQuizzId, Long questionId)
+    {
+        return userQuizzResponsesRepository.findByUserQuizzIdAndQuestionId(userQuizzId, questionId) ;
+    }
+
+    @Override
     public List<Long> getResponsesFromAnUserQuizz(Long userQuizzId, Long questionId)
     {
-        UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
         UserQuizzResponsesEntity userQuizzResponsesEntity = userQuizzResponsesRepository.findByUserQuizzIdAndQuestionId(userQuizzId, questionId) ;
 
         return userQuizzResponsesEntity.getResponses() ;
@@ -130,7 +132,6 @@ public class UserQuizzServiceImpl implements UserQuizzService
     @Transactional
     public boolean addResponseForAnUserQuizz(Long userQuizzId, Long questionId, Long responseId)
     {
-        UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
         UserQuizzResponsesEntity userQuizzResponsesEntity = userQuizzResponsesRepository.findByUserQuizzIdAndQuestionId(userQuizzId, questionId) ;
 
         userQuizzResponsesEntity.getResponses().add(responseId) ;
@@ -144,7 +145,6 @@ public class UserQuizzServiceImpl implements UserQuizzService
     @Transactional
     public boolean removeResponseFromAnUserQuizz(Long userQuizzId, Long questionId, Long reponseId)
     {
-        UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
         UserQuizzResponsesEntity userQuizzResponsesEntity = userQuizzResponsesRepository.findByUserQuizzIdAndQuestionId(userQuizzId, questionId) ;
         List<Long> userResponses = userQuizzResponsesEntity.getResponses() ;
 

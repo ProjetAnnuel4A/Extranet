@@ -6,8 +6,6 @@ import org.junit.Test ;
 import org.junit.jupiter.api.BeforeAll ;
 import org.springframework.beans.factory.annotation.Autowired ;
 
-import java.util.ArrayList ;
-
 /**
  * Created by Samuel Bijou on 01/07/2017.
  */
@@ -23,14 +21,10 @@ public class UserQuizzRepositoryTests
     @BeforeAll
     public static void initialize_datas()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-
         userQuizzEntity = UserQuizzEntity.builder()
                 .id(new Long(1))
                 .userId(new Long(1))
                 .surveyId(new Long(1))
-                .questionId(new Long(1))
-                .responses(userResponses)
                 .count(1)
                 .build() ;
 
