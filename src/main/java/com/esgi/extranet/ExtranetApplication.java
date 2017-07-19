@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @EnableTransactionManagement
 public class ExtranetApplication {
-    //commit pour l'intégration continue
 	public static void main(String[] args) {
 		SpringApplication.run(ExtranetApplication.class, args);
 	}

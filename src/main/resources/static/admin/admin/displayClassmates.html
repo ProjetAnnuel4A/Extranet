@@ -31,7 +31,7 @@
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="http://brotherhood9305.cloudapp.net:9000/admin/home" class="site_title"><span>Brotherhood</span></a>
+            <a href="/admin/home" class="site_title"><span>Brotherhood</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -57,9 +57,9 @@
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="http://brotherhood9305.cloudapp.net:9000/admin/student/view">Etudiant</a></li>
-                    <li><a href="http://brotherhood9305.cloudapp.net:9000/admin/teacher/view">Enseignant</a></li>
-                    <li><a href="http://brotherhood9305.cloudapp.net:9000/admin/administration/view">Administration</a></li>
+                    <li><a href="/admin/student/view">Etudiant</a></li>
+                    <li><a href="/admin/teacher/view">Enseignant</a></li>
+                    <li><a href="/admin/administration/view">Administration</a></li>
                   </ul>
                 </li>
               </ul>
@@ -69,7 +69,7 @@
 
           <!-- /menu footer buttons -->
           <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="http://brotherhood9305.cloudapp.net:9000/home">
+            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="/home">
               <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
             </a>
           </div>
@@ -92,8 +92,8 @@
                   <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                  <li><a href="http://brotherhood9305.cloudapp.net:9000/user/changePassword/view"> Profil</a></li>
-                  <li><a href="http://brotherhood9305.cloudapp.net:9000/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  <li><a href="/user/changePassword/view"> Profil</a></li>
+                  <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                 </ul>
               </li>
             </ul>
@@ -126,11 +126,11 @@
         if (parts.length == 2) return parts.pop().split(";").shift();
       }
 
-      var urlStudent = "http://brotherhood9305.cloudapp.net:9000/student/home";
-      var urlTeacher = "http://brotherhood9305.cloudapp.net:9000/teacher/home";
-      var urlDefault = "http://brotherhood9305.cloudapp.net:9000/home";
+      var urlStudent = "/student/home";
+      var urlTeacher = "/teacher/home";
+      var urlDefault = "/home";
 
-      $.post("http://brotherhood9305.cloudapp.net:9000/users/verifyToken", { token: getCookie("brotherhood")})
+      $.post("/users/verifyToken", { token: getCookie("brotherhood")})
       .done(function( data ) 
       {                   
         switch(data){
@@ -148,7 +148,7 @@
         }
       });
       var table = $("#classmates");
-      $.getJSON("http://brotherhood9305.cloudapp.net:9000/classmates/", function( data ) {
+      $.getJSON("/classmates/", function( data ) {
        $.each( data, function( key, val ) {
         var dom = "<tr>";
         $.each(val, function(k, v){
@@ -166,15 +166,15 @@
      });
 
       function manageClassmate(id){
-       window.location.replace("http://brotherhood9305.cloudapp.net:9000/admin/manageClassmate/view?id="+id);
+       window.location.replace("/admin/manageClassmate/view?id="+id);
      }
 
      function manageCourses(id){
-       window.location.replace("http://brotherhood9305.cloudapp.net:9000/admin/manageClassmateCourses/view?id="+id);
+       window.location.replace("/admin/manageClassmateCourses/view?id="+id);
      }
 
      function manageTeachers(id){
-       window.location.replace("http://brotherhood9305.cloudapp.net:9000/admin/manageTeachers/view?id="+id);
+       window.location.replace("/admin/manageTeachers/view?id="+id);
      }
    </script>
    <!-- jQuery -->
