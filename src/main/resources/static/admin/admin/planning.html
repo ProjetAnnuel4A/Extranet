@@ -108,10 +108,8 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="dashboard_graph">
               <h1>Sélectionner une classe</h1>
-              <div class="row">
-                <div class="col-md-5 col-sm-5 col-xs-12 gutter">
-                 <table id="classmates"></table>
-               </div>
+              <div class="row" align="center">
+                 <table class="table table-striped" id="classmates"></table>
              </div>
              <div class="clearfix"></div>
            </div>
@@ -132,6 +130,9 @@
       var urlTeacher = "/teacher/home";
       var urlDefault = "/home";
 
+      if(getCookie("brotherhood") == null)
+      window.location.replace(urlDefault);
+
       $.post("/users/verifyToken", { token: getCookie("brotherhood")})
       .done(function( data ) 
       {                   
@@ -151,6 +152,8 @@
       });
       var table = $("#classmates");
       $.getJSON("/classmates/", function( data ) {
+        var d = "<thead><tr><th>Selectionner</th><th>Nom de la classe</th></tr></thead><tbody>";
+        table.append(d);
        $.each( data, function( key, val ) {
         var dom = "<tr>";
         $.each(val, function(k, v){
@@ -163,6 +166,7 @@
     });
         table.append(dom + "</tr>");
       });
+       table.append("</tbody>");
      });
 
       function updatePlanning(id){

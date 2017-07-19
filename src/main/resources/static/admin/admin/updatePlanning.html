@@ -108,18 +108,16 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="dashboard_graph">
               <h1 id="classmate"></h1>
-              <div class="row">
-                <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+              <div class="row" align="center">
                   <input type="text" id="title" required name="title" placeholder="Nom du cours" />
                   Début: <input id="start" type="datetime-local" required name="start"/>
                   Fin: <input id="end" type="datetime-local" required name="end"/>
                   <button onclick="save()">Enregistrer</button>
                   <p>
                     <button onclick="removeSchedule()">Supprimer</button>
-                    <table id="actual"></table>
+                    <table class="table table-striped" id="actual"></table>
                     <button onclick="removeSchedule()">Supprimer</button>
                   </p>
-                </div>
               </div>
               <div class="clearfix"></div>
             </div>
@@ -139,6 +137,9 @@
         var urlStudent = "/student/home";
         var urlTeacher = "/teacher/home";
         var urlDefault = "/home";
+
+        if(getCookie("brotherhood") == null)
+        window.location.replace(urlDefault);
 
         $.post("/users/verifyToken", { token: getCookie("brotherhood")})
         .done(function( data ) 
@@ -175,8 +176,8 @@
 
         function save(){
          $.post("/planning/addCourse",{idClassmate: i,
-          start: $("#start").val()+":00.000+10:00",
-          end: $("#end").val()+":00.000+10:00",
+          start: $("#start").val()+":00.000+02:00",
+          end: $("#end").val()+":00.000+02:00",
           title: $("#title").val()})
          .done(function( data ) {
           location.reload(true);
@@ -185,7 +186,7 @@
 
        function removeSchedule(){
         console.log("input");
-        $("#actual > tr").each(function() {
+        $("#actual > tbody > tr").each(function() {
           $this = $(this);
           var value = $this.find("input.id");
           if(value.is(':checked') == true){
@@ -199,12 +200,14 @@
 
       $.getJSON("/planning/getCourseForClassmate?idClassmate="+i, function( data ) {
         var actual = $("#actual");
+        var d = "<thead><tr><th>Selectionner</th><th>Début</th><th>Fin</th><th>Nom du cours</th></tr></thead><tbody>";
+        actual.append(d);
         $.each( data, function( key, val ) {
           var dom = "<tr>";
           $.each(val, function(k, v){
             if(k != "id"){
               if(k != "title"){
-                var d = v.substring(0, v.indexOf(":00.000+10:00"));
+                var d = v.substring(0, v.indexOf(":00.000+02:00"));
                 dom += "<td><input type='datetime-local' class='id' value='"+d+"'/></td>";
               }else{
                 dom += "<td>"+v+"</td>";
@@ -215,6 +218,7 @@
           });
           actual.append(dom + "</tr>");
         });
+        actual.append("</tbody>");
       });
     </script>
     <!-- jQuery -->

@@ -128,6 +128,9 @@
     var urlAdmin = "/admin/home";
     var urlDefault = "/home";
 
+    if(getCookie("brotherhood") == null)
+      window.location.replace(urlDefault);
+
     $.post("/users/verifyToken", { token: getCookie("brotherhood")})
     .done(function( data ) 
     {					

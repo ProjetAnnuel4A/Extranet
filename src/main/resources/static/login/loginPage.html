@@ -80,7 +80,7 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
 	<p>
     	<input type="text" id="pseudo" modelAttribute="pseudo" name="pseudo" placeholder="Username" required="required" />
         <input type="password" id="password" modelAttribute="password" name="password" placeholder="Password" required="required" />
-        <a href=/changePassword/view" style="color:white;">Mot de passe oublié?</a><br/>
+        <a href="/changePassword/view" style="color:white;">Mot de passe oublié?</a><br/>
         <br/>
         <button onclick="login()" type="submit" class="btn btn-primary btn-block btn-large">C'est bon!</button>
         </p>
@@ -88,6 +88,8 @@ input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb
   
     <script src="login/js/index.js"></script>
     <script>
+    document.cookie = 'brotherhood=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+
     function login(){
     	var isConnected = false;
     	var role = "";
