@@ -75,13 +75,13 @@ public class UserQuizzController
     @GetMapping("/getAllResponsesFromAnUserQuizz")
     public List<UserQuizzResponsesEntity> getAllResponsesFromAnUserQuizz(@RequestParam("userQuizzId") Long userQuizzId)
     {
-        return userQuizzService.getAllResponsesFromAnUserQuizz(userQuizzId) ;
+        return userQuizzService.getAllUserQuizzResponsesFromAnUserQuizz(userQuizzId) ;
     }
 
     @PostMapping("/removeAllUserQuizzResponses")
     public boolean removeAllUserQuizzResponses(@RequestParam("userQuizzId") Long userQuizzId)
     {
-        return userQuizzService.removeAllUserQuizzResponses(userQuizzId) ;
+        return userQuizzService.removeAllUserQuizzResponsesFromAnUserQuizz(userQuizzId) ;
     }
 
     @GetMapping("/getResponsesFromAnUserQuizz")
