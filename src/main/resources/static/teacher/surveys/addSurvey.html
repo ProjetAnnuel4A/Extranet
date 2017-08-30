@@ -15,82 +15,387 @@
         <a href="../../home">Retourner au menu principal</a>
         <h1>Ajout d'un questionnaire</h1>
 
+        <br/>
+
+        <div id="survey">
+
+            <div id="surveyDetails">
+
+                <h2>Questionnaire :</h2> <span class='error'></span>
+
+                <ul>
+                    <li>Image : <input type='file' name='surveyImage' class='surveyImage' accept='image/*'/></li>
+                    <li>Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
+                    <li>Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
+                    <li>Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
+                    <li>Date limite : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/></li>
+                </ul>
+
+            </div>
+
+            <br/>
+
+            <div>
+
+                <div id="questions">
+                </div>
+
+                <br/>
+                <br/>
+
+                <input type='button' name='addQuestion' class='addQuestion' value='Ajouter une question' onclick="addQuestion()"/>
+
+            </div>
+
+        </div>
+
+        <br/>
+
         <p>
             <button onclick="saveSurvey()">Sauvegarder</button>
         </p>
 
-        <script>
+        <script type = "text/javascript">
 
-            /*
-            var getUrlParameter = function getUrlParameter(sParam)
+            $("input.surveyMark").val(parseFloat(0)) ;
+            $("input.surveyChances").val(parseInt(0)) ;
+
+            var today = new Date() ;
+            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
+
+            $("input.surveyDeadLine").attr("min", todayString) ;
+            $("input.surveyDeadLine").attr("value", todayString) ;
+
+
+            var questionNumber = 1 ;
+            var responseNumber = 1 ;
+
+            var questionCounter = 1 ;
+            var responseCounter = 1 ;
+
+
+            function verify()
             {
-                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-                    sURLVariables = sPageURL.split('&'),
-                    sParameterName,
-                    i ;
+                var isOk = true ;
 
-                for(i = 0; i < sURLVariables.length; i++)
+                if($("div.question").get().length == 0)
                 {
-                    sParameterName = sURLVariables[i].split('=') ;
+                    $("#surveyDetails").children("h2").next("span").text(" Vous devez avoir au moins une question") ;
 
-                    if(sParameterName[0] === sParam)
+                    isOk = false ;
+                }
+
+                else
+                {
+                    $("#surveyDetails").children("h2").next("span").text("") ;
+                }
+
+                var questions = $("div.question").get() ;
+
+                for(var i = 0 ; i < questions.length ; i++)
+                {
+                    if($("div.question[id='" + questions[i].id + "']").children("div.responses").children("div.response").get().length == 0)
                     {
-                        return sParameterName[1] === undefined ? true : sParameterName[1] ;
+                        $("div.question[id='" + questions[i].id + "']").children("input").next("span").text(" Vous devez avoir au moins une réponse") ;
+
+                        isOk = false ;
+                    }
+
+                    else
+                    {
+                        $("div.question[id='" + questions[i].id + "']").children("input").next("span").text("") ;
                     }
                 }
-            } ;
 
-            var surveyId = getUrlParameter('surveyId') ;
-            var table = $("#questions") ;
 
-            $.getJSON("./surveys/getQuestionsFromASurvey?surveyId=" + surveyId, function(data)
-            {
-                $.each(data, function(key, val)
+                if($("input.surveyName").val() == "")
                 {
-                    var dom = "<tr>" ;
+                    $("input.surveyName").next("span").text(" Vous devez entrer un nom") ;
 
-                    $.each(val, function(k, v)
+                    isOk = false ;
+                }
+
+                else
+                {
+                    $("input.surveyName").next("span").text("") ;
+                }
+
+                if($("input.surveyMark").val() == "")
+                {
+                    $("input.surveyMark").next("span").text(" Vous devez avoir un barême") ;
+
+                    isOk = false ;
+                }
+
+                else
+                {
+                    $("input.surveyMark").next("span").text("") ;
+                }
+
+                if($("input.surveyChances").val() == "")
+                {
+                    $("input.surveyChances").next("span").text(" Vous devez entrer le nombre d'essais") ;
+
+                    isOk = false ;
+                }
+
+                else
+                {
+                    $("input.surveyChances").next("span").text("") ;
+                }
+
+                var questionsDescription = $("input.questionDescription").get() ;
+
+                for(var i = 0 ; i < questionsDescription.length ; i++)
+                {
+                    if(questionsDescription[i].value == "")
                     {
-                        if(k != "surveyId")
-                        {
-                            if(k != "questionId")
-                            {
-                                if(k == "description")
-                                {
-                                    dom += "<td>" + v + "</td>" ;
-                                }
-                            }
+                        questionsDescription[i].nextElementSibling.textContent = " Vous devez entrer la description de la question" ;
 
-                            else
-                            {
-                                dom += "<td><input hidden type='text' class='questionId' value='" + v + "'/></td>" ;
-                            }
-                        }
-                    }) ;
+                        isOk = false ;
+                    }
 
-                    table.append(dom + "<td><input type='text' class='question' required name='question' placeholder='20.00'/></td></tr>") ;
+                    else
+                    {
+                        questionsDescription[i].nextElementSibling.textContent = "" ;
+                    }
+                }
+
+                var questionsPoints = $("input.questionPoints").get() ;
+
+                for(var i = 0 ; i < questionsPoints.length ; i++)
+                {
+                    if(questionsPoints[i].value == "")
+                    {
+                        questionsPoints[i].nextElementSibling.textContent = " Vous devez entrer le nombre de points" ;
+
+                        isOk = false ;
+                    }
+
+                    else
+                    {
+                        questionsPoints[i].nextElementSibling.textContent = "" ;
+                    }
+                }
+
+                var responsesDescription = $("input.responseDescription").get() ;
+
+                for(var i = 0 ; i < responsesDescription.length ; i++)
+                {
+                    if(responsesDescription[i].value == "")
+                    {
+                        responsesDescription[i].nextElementSibling.textContent = " Vous devez entrer la description de la réponse" ;
+
+                        isOk = false ;
+                    }
+
+                    else
+                    {
+                        responsesDescription[i].nextElementSibling.textContent = "" ;
+                    }
+                }
+
+                return isOk ;
+            }
+
+
+            function calculateMark()
+            {
+                var result = 0 ;
+
+                var questionsPoints = $("input.questionPoints").get() ;
+
+                for(var i = 0 ; i < questionsPoints.length ; i++)
+                {
+                    if(questionsPoints[i].value != "")
+                    {
+                        result += parseInt(questionsPoints[i].value) ;
+                    }
+                }
+
+                $("input.surveyMark").val(parseInt(result)) ;
+            }
+
+
+            function addQuestion()
+            {
+                $("#questions").append(function()
+                {
+                    questionNumber = $("div.question").get().length + 1 ;
+
+                    var dom = "<div class='question' id='q" + questionCounter + "'>" ;
+
+                        dom += "<h3>Question " + questionNumber + " : </h3>" ;
+
+                        dom += "<input type='button' name='removeQuestion' class='removeQuestion' value='Supprimer la question' onclick='removeQuestion(" + questionCounter + ")'/><span class='error'></span>" ;
+
+                        dom += "<ul>" ;
+
+                            dom += "<li>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*'/></li>" ;
+                            dom += "<li>Description : <input type='text' name='questionDescription' class='questionDescription' required/><span class='error'></span></li>" ;
+                            dom += "<li>Points : <input type='number' name='questionPoints' class='questionPoints' min='0' value='" + parseFloat(0) + "' step='0.1' onchange='calculateMark()' required/><span class='error'></span></li>" ;
+                            dom += "<li>Tout ou rien : <input type='checkbox' name='questionAllOrNot' class='questionAllOrNot'/></li>" ;
+
+                        dom += "</ul>" ;
+
+                        dom += "<div class='responses'></div>" ;
+
+                        dom += "<input type='button' name='addResponse' class='addResponse' value='Ajouter une réponse' onclick='addResponse(" + questionCounter + ")'/>" ;
+
+                    dom += "<br/><br/></div>" ;
+
+                    return dom ;
                 }) ;
-            }) ;
+
+                questionCounter++ ;
+            }
+
+            function removeQuestion(questionId)
+            {
+                $("div[id='q" + questionId + "']").remove() ;
+
+                var questions = $("div.question").get() ;
+
+                for(var i = 0 ; i < questions.length ; i++)
+                {
+                    $("div.question[id='" + questions[i].id + "']").children("h3").text("Question " + (i + 1) + " : ") ;
+                }
+            }
+
+            function addResponse(questionId)
+            {
+                if($("div[id='q" + questionId + "']").children("div.responses").children("div.response").length > 0)
+                {
+                    responseCounter = parseInt($("div[id='q" + questionId + "']").children("div.responses").children("div.response:last-child").children("h4").attr("class")) + 1 ;
+                }
+
+                else
+                {
+                    responseCounter = 1 ;
+                }
+
+                responseNumber = $("div[id='q" + questionId + "']").children("div.responses").children("div.response").length + 1 ;
+
+                $("div[id='q" + questionId + "']").children("div.responses").append(function()
+                {
+                    var dom = "<div class='response' id='q" + questionId + "r" + responseCounter + "'>" ;
+
+                        dom += "<h4 class='" + responseCounter + "'>Réponse " + responseNumber + " : </h4>" ;
+
+                        dom += "<input type='button' name='removeResponse' class='removeResponse' value='Supprimer la réponse' onclick='removeResponse(" + questionId + ", " + responseCounter + ")'/>" ;
+
+                        dom += "<ul>" ;
+
+                            dom += "<li>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*'/></li>" ;
+                            dom += "<li>Description : <input type='text' name='responseDescription' class='responseDescription' required/><span class='error'></span></li>" ;
+
+                            dom += "<li>Réponse correcte : <input type='checkbox' name='correctResponse' class='correctResponse'/></li>" ;
+
+                        dom += "</ul>" ;
+
+                    dom += "</div>" ;
+
+                    return dom ;
+                }) ;
+
+                responseCounter++ ;
+            }
+
+            function removeResponse(questionId, responseId)
+            {
+                $("div[id='q" + questionId + "r" + responseId + "']").remove() ;
+
+                var responses = $("div.question[id='q" + questionId + "']").children("div.responses").children("div.response").get() ;
+
+                for(var i = 0 ; i < responses.length ; i++)
+                {
+                    $("div.response[id='" + responses[i].id + "']").children("h4").text("Réponse " + (i + 1) + " : ") ;
+                }
+            }
 
             function saveSurvey()
             {
-                $("#questions > tr").each(function()
+                if(verify())
                 {
-                    $this = $(this) ;
+                    var domSurvey = $("#surveyDetails") ;
 
-                    var question = $this.find("input.questionId") ;
+                    var domQuestions = $("div.question") ;
+                    var questions = [] ;
 
-                    $.post("./questions/addQuestion",
+                    for(var i = 0 ; i < domQuestions.length ; i++)
                     {
-                        questionId: question.val()
-                    })
-                    .done(function(data)
+                        var domResponses = $("div.question[id='" + domQuestions[i].id + "']").children("div.responses").children("div.response").get() ;
+
+                        var responses = [] ;
+                        var correctResponses = [] ;
+
+                        for(var j = 0 ; j < domResponses.length ; j++)
+                        {
+                            $.post("/responses/addResponse",
+                            {
+                                description: domResponses[j].children[2].children[1].children[0].value,
+                                    imageId: domResponses[j].children[2].children[0].children[0].value
+                            }).done(function(data)
+                            {
+                                responses.add(data["id"]) ;
+
+                                if(domResponses[j].children[2].children[2].children[0].checked)
+                                {
+                                    correctResponses.add(data["id"]) ;
+                                }
+                            }) ;
+                        }
+
+                        $.post("/questions/addQuestion",
+                        {
+                            description: domQuestions[i].children[2].children[1].children[0].value,
+                            points: domQuestions[i].children[2].children[2].children[0].value,
+                            allOrNot: domQuestions[i].children[2].children[3].children[0].checked,
+                            imageId: domQuestions[i].children[2].children[0].children[0].value
+                        }).done(function(data)
+                        {
+                            for(var i = 0 ; i < responses.length ; i++)
+                            {
+                                $.post("/questions/addResponseForAQuestion",
+                                {
+                                    questionId: data["id"],
+                                    responseId: responses[i]
+                                }) ;
+                            }
+
+                            for(var i = 0 ; i < correctResponses.length ; i++)
+                            {
+                                $.post("/questions/addCorrectResponseForAQuestion",
+                                {
+                                    questionId: data["id"],
+                                    responseId: correctResponses[i]
+                                }) ;
+                            }
+
+                            questions.add(data["id"]) ;
+                        }) ;
+                    }
+
+                    $.post("/surveys/addSurvey",
                     {
-                        location.reload(true) ;
+                        nom: domSurvey.children[1].children[1].children[0].value,
+                        mark: domSurvey.children[1].children[2].children[0].value,
+                        chances: domSurvey.children[1].children[3].children[0].value,
+                        deadLine: domSurvey.children[1].children[4].children[0].value,
+                        imageId: domSurvey.children[1].children[0].children[0].value
+                    }).done(function(data)
+                    {
+                        for(var i = 0 ; i < questions.length ; i++)
+                        {
+                            $.post("/surveys/addQuestionForASurvey",
+                            {
+                                surveyId: data["id"],
+                                questionId: questions[i]
+                            }) ;
+                        }
                     }) ;
-                }) ;
+                }
             }
-            */
 
         </script>
 

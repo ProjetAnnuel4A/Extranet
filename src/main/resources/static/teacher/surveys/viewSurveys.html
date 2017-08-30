@@ -33,9 +33,9 @@
 
             var table = $("#surveys") ;
 
-            $.getJSON("./surveys", function( data )
+            $.getJSON("./surveys", function(data)
             {
-                $.each( data, function( key, val )
+                $.each(data, function(key, val)
                 {
                     var dom = "<tr>" ;
 
@@ -45,7 +45,6 @@
                     dom += "<td>" + val["chances"] + "</td>" ;
                     dom += "<td>" + val["deadLine"] + "</td>" ;
 
-                    dom += "<td><button onclick='manageSurvey(" + val["id"] + ")'>Modifier</button></td>" ;
                     dom += "<td><button onclick='deleteSurvey(" + val["id"] + ")'>Supprimer</button></td>" ;
 
                     table.append(dom + "</tr>") ;

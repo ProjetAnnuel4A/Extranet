@@ -5,7 +5,7 @@
     <head>
 
         <meta charset="UTF-8">
-        <title>Brotherhood - Liste des questionnaires</title>
+        <title>Brotherhood - Résultats</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
     </head>
@@ -13,7 +13,7 @@
     <body>
 
         <a href="../../home">Retourner au menu principal</a>
-        <h1>Liste des questionnaires</h1>
+        <h1>Résultats</h1>
 
         <table id="surveys">
 
@@ -24,15 +24,11 @@
                 <th>Barème</th>
                 <th>Essais</th>
                 <th>Date limite</th>
+                <th>Note</th>
 
             </tr>
 
         </table>
-
-        <br/>
-
-        <div id="results">
-        </div>
 
         <script>
 
@@ -54,20 +50,25 @@
                 }
             } ;
 
-            var userId = getUrlParameter('id') ;
+            var userId = getUrlParameter('userId') || getUrlParameter('id') ;
 
 
             var table = $("#surveys") ;
-            var results = $("#results") ;
 
             var surveysDone = {} ;
+            var surveysScore = {} ; // A FAIRE
             var today = new Date() ;
 
             $.getJSON("./getAllUsersQuizzByUserId?userId=" + userId, function(data)
             {
                 $.each(data, function(key, val)
                 {
-                    surveysDone[val["surveyId"]] = 1 ;
+                    surveysDone[val["surveyId"]] = val["count"] ;
+
+                    $.get("./calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + val["id"] + "&surveyId=" + val["surveyId"], function(data)
+                    {
+                        surveysScore[val["surveyId"]] = data ;
+                    }) ;
                 }) ;
             }) ;
 
@@ -75,7 +76,7 @@
             {
                 $.each(data, function(key, val)
                 {
-                    if(surveysDone[val["id"]] == null)
+                    if(surveysDone[val["id"]] != null)
                     {
                         var dom = "<tr>" ;
 
@@ -84,10 +85,11 @@
                         dom += "<td>" + val["mark"] + "</td>" ;
                         dom += "<td>" + val["chances"] + "</td>" ;
                         dom += "<td>" + val["deadLine"] + "</td>" ;
+                        dom += "<td>" + surveysScore[val["surveyId"]] + "</td>" ;
 
-                        if(val["deadLine"] >= today.getTime())
+                        if(val["deadLine"] >= today.getTime() && (surveysDone[val["id"]] < val["chances"] || val["chances"] == 0))
                         {
-                            dom += "<td><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
+                            dom += "<td><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
                         }
 
                         table.append(dom + "</tr>") ;
@@ -95,17 +97,10 @@
                 }) ;
             }) ;
 
-            results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
-
 
             function answerSurvey(userId, surveyId)
             {
-                window.location.replace("answerSurvey.html?userId=" + userId + "surveyId=" + surveyId + "&done=false") ;
-            }
-
-            function seeResults(userId)
-            {
-                window.location.replace("seeResults.html?userId=" + userId) ;
+                window.location.replace("answerSurvey.html?userId=" + userId + "surveyId=" + surveyId + "&done=true") ;
             }
 
         </script>

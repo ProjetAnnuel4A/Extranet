@@ -29,6 +29,8 @@
 
         </table>
 
+        <br/>
+
         <div id="results">
         </div>
 
@@ -61,7 +63,7 @@
             var surveysDone = {} ;
             var today = new Date() ;
 
-            $.getJSON("./getUserQuizz?id=" + userId, function(data)
+            $.getJSON("./getAllUsersQuizzByUserId?userId=" + userId, function(data)
             {
                 $.each(data, function(key, val)
                 {
@@ -73,7 +75,7 @@
             {
                 $.each(data, function(key, val)
                 {
-                    if(surveysDone[val["id"]] != null)
+                    if(surveysDone[val["id"]] == null)
                     {
                         var dom = "<tr>" ;
 

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Brotherhood - Répondre au questionnaire</title>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    </head>
+
+    <body>
+
+        <a href="../../home">Retourner au menu principal</a>
+        <h1>Répondre au questionnaire</h1>
+
+        <div id="surveyPresentation">
+        </div>
+
+        <table id="survey">
+        </table>
+
+        <br/>
+        <br/>
+
+        <div id="confirm">
+        </div>
+
+        <script>
+
+            var getUrlParameter = function getUrlParameter(sParam)
+            {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i ;
+
+                for(i = 0 ; i < sURLVariables.length ; i++)
+                {
+                    sParameterName = sURLVariables[i].split('=') ;
+
+                    if(sParameterName[0] === sParam)
+                    {
+                        return sParameterName[1] === undefined ? true : sParameterName[1] ;
+                    }
+                }
+            } ;
+
+            var userId = getUrlParameter('userId') ;
+            var surveyId = getUrlParameter('surveyId') ;
+
+
+            var surveyPresentation = $("#surveyPresentation") ;
+            var table = $("#survey") ;
+            var confirmation = $("#confirm") ;
+
+            var surveyDatas = {} ;
+            var surveyQuestions = new Array() ;
+            var questionsResponses = {} ;
+
+            $.getJSON("./getSurvey?id=" + surveyId, function(data)
+            {
+                surveyDatas = data ;
+            }) ;
+
+            $.getJSON("./getQuestionsFromASurvey?id=" + surveyId, function(data)
+            {
+                surveyQuestions = data ;
+
+                $.each(data, function(key, val)
+                {
+                    $.getJSON("./getResponsesFromAQuestion?id=" + val["id"], function(data)
+                    {
+                        questionsResponses[val["id"]] = data ;
+                    }) ;
+                }) ;
+            }) ;
+
+            var surveyDetails = "<h2>" + surveyDatas["name"] + "</h2> <div id='image' value=" + surveyDatas["imageId"] + "></div>" + surveyDatas["imageId"] + "</td>" ;
+            surveyDetails += "<table><tr>" ;
+            surveyDetails += "<td>" + surveyDatas["mark"] + "</td>" ;
+            surveyDetails += "<td>" + surveyDatas["chances"] + "</td>" ;
+            surveyDetails += "<td>" + surveyDatas["deadLine"] + "</td>" ;
+            surveyDetails += "</tr></table>" ;
+
+            surveyPresentation.append(surveyDetails) ;
+
+            $.each(surveyQuestions, function(key, val)
+            {
+                var qDom = "<div class='question' value=" + val["questionId"] + "><tr>" ;
+
+                qDom += "<td class='questionImage' value=" + val["imageId"] + ">" + val["imageId"] + "</td>" ;
+                qDom += "<td>" + val["description"] + "</td>" ;
+                qDom += "<td>" + val["points"] + "</td>" ;
+
+                if(val["allOrNot"] == true)
+                {
+                    qDom += "<td>*</td>" ;
+                }
+
+                qDom += "</tr>" ;
+
+                table.append(qDom) ;
+
+                for(var responses in questionsResponses[val["id"]])
+                {
+                    var rDom = "<tr>" ;
+
+                    rDom += "<td> <div class='responseImage' value=" + responses["imageId"] + "></div>" + responses["description"] + "<input type='checkbox' class='response' value=" + responses["id"] + "/> </td>" ;
+
+                    table.append(rDom + "</tr>") ;
+                }
+
+                table.append("</div>") ;
+            }) ;
+
+            confirmation.append("<button onclick='confirm(" + userId + ", " + surveyId + ")'>Confirmer</button>") ;
+
+
+            function confirm(userId, surveyId)
+            {
+                var questionsResponses = {} ;
+
+                $(".question").each(function(data)
+                {
+                    var responses = [] ;
+
+                    $(".response:checked=true<.question:" + data["value"]).each(function(data)
+                    {
+                        questionsResponses[data["value"]] = responses.push(data["value"]) ;
+                    }) ;
+                }) ;
+
+                var userQuizzId = 0 ;
+
+                var done = getUrlParameter('done') ;
+
+                if(done)
+                {
+                    var usersQuizz = {} ;
+                    var count ;
+
+                    $.getJSON("./getUsersQuizzByUserIdAndSurveyId?userId=" + userId + "&surveyId=" + surveyId, function(data)
+                    {
+                        usersQuizz = data ;
+
+                        userQuizzId = usersQuizz["id"] ;
+
+                        $.post("./removeAllUserQuizzResponses?userQuizzId=" + usersQuizz["id"]) ;
+                    }) ;
+
+                    $.post("./updateUserQuizz?id=" + usersQuizz["id"] + "&userId=" + usersQuizz["userId"] + "&surveyId=" + usersQuizz["surveyId"] + "&count=" + usersQuizz[count]++) ;
+                }
+
+                else
+                {
+                    $.post("./addUserQuizz?userId=" + userId + "&surveyId=" + surveyId + "&count=1", function(data)
+                    {
+                        userQuizzId = data["id"] ;
+                    }) ;
+                }
+
+                for(var question in questionsResponses)
+                {
+                    $.post("./addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + question, function(data)
+                    {
+                        for(var responses in question)
+                        {
+                            for(var response in responses)
+                            {
+                                $.post("./addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + data["id"] + "&questionId=" + question + "&responseId=" + response) ;
+                            }
+                        }
+                    }) ;
+                }
+
+                /* A TESTER AVANT DE FAIRE LE CHANGEMENT DE LOCATION */
+                // window.location.replace("seeResults.html") ;
+            }
+
+        </script>
+
+    </body>
+
+</html>
