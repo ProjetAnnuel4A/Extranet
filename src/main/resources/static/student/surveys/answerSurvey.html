@@ -26,7 +26,7 @@
 
     <body>
 
-        <a href="../../home">Retourner au menu principal</a>
+        <a href="/student/home">Retourner au menu principal</a>
         <h1>Répondre au questionnaire</h1>
 
         <div id="surveyPresentation">
@@ -189,8 +189,7 @@
                     }) ;
                 }
 
-                /* A TESTER AVANT DE FAIRE LE CHANGEMENT DE LOCATION */
-                // window.location.replace("seeResults.html") ;
+                window.location.replace("/student/seeResults?userId=" + userId) ;
             }
 
         </script>

@@ -2,6 +2,8 @@ package com.esgi.extranet.quizz.repositories ;
 
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import org.springframework.data.jpa.repository.JpaRepository ;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository ;
 
 import java.util.List ;
@@ -14,7 +16,12 @@ public interface UserQuizzRepository extends JpaRepository<UserQuizzEntity, Long
 {
 
     UserQuizzEntity findById(Long id) ;
-    List<UserQuizzEntity> findAllByUserId(Long userId) ;
-    UserQuizzEntity findByUserIdAndSurveyId(Long userId, Long surveyId) ;
+    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.surveyId = :surveyId")
+    List<UserQuizzEntity> findAllBySurveyId(@Param("surveyId") Long surveyId) ;
+    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.userId = :userId")
+    List<UserQuizzEntity> findAllByUserId(@Param("userId") Long userId) ;
+    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.userId = :userId and uq.surveyId = surveyId")
+    UserQuizzEntity findByUserIdAndSurveyId(@Param("userId") Long userId,
+                                            @Param("surveyId") Long surveyId) ;
 
 }

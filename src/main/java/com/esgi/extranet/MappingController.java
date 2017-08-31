@@ -177,6 +177,21 @@ public class MappingController {
         return "student/planning";
     }
 
+    @GetMapping(value={"student/surveys/answerSurvey/view", ""})
+    public String studentAnswerSurvey(){
+        return "student/surveys/answerSurvey";
+    }
+
+    @GetMapping(value={"student/surveys/seeResults/view", ""})
+    public String studentSeeResults(){
+        return "student/surveys/seeResults";
+    }
+
+    @GetMapping(value={"student/surveys/viewSurveys/view", ""})
+    public String studentViewSurvey(){
+        return "student/surveys/viewSurveys";
+    }
+
     /**
      Mapping teacher
      */
@@ -194,5 +209,20 @@ public class MappingController {
     @GetMapping(value={"teacher/manageClassmate/view", ""})
     public String teachermanageClassmate(){
         return "teacher/manageClassmate";
+    }
+
+    @GetMapping(value={"teacher/surveys/addSurvey/view", ""})
+    public String teacherAddSurvey(){
+        return "teacher/surveys/addSurvey";
+    }
+
+    @GetMapping(value={"teacher/surveys/viewSurveys/view", ""})
+    public String teacherViewSurvey(){
+        return "teacher/surveys/viewSurveys";
+    }
+
+    @GetMapping(value={"teacher/surveys/deleteSurvey/view", ""})
+    public String teacherDeleteSurvey(){
+        return "teacher/surveys/deleteSurvey";
     }
 }

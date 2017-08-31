@@ -22,7 +22,6 @@ import java.util.List ;
 public class QuestionEntity
 {
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;

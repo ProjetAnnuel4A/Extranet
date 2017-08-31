@@ -33,6 +33,12 @@ public class UserQuizzController
         return userQuizzService.getAll() ;
     }
 
+    @GetMapping("/getAllUsersQuizzBySurveyId")
+    public List<UserQuizzEntity> getAllUsersQuizzBySurveyId(@RequestParam("surveyId") Long surveyId)
+    {
+        return userQuizzService.getAllUsersQuizzBySurveyId(surveyId) ;
+    }
+
     @GetMapping("/getAllUsersQuizzByUserId")
     public List<UserQuizzEntity> getAllUsersQuizzByUserId(@RequestParam("userId") Long userId)
     {

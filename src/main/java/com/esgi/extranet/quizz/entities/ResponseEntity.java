@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull ;
 public class ResponseEntity
 {
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;

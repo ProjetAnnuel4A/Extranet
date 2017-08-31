@@ -8,23 +8,39 @@
         <title>Brotherhood - Ajout d'un questionnaire</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- Font Awesome -->
+        <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- bootstrap-progressbar -->
+        <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <!-- bootstrap-daterangepicker -->
+        <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Custom Theme Style -->
+        <link href="/custom.min.css" rel="stylesheet">
+
     </head>
 
-    <body>
+    <body class="nav-md">
 
-        <a href="../../home">Retourner au menu principal</a>
-        <h1>Ajout d'un questionnaire</h1>
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="/student/home" class="site_title"><span>Retourner au menu principal</span></a>
+        </div>
+        <h1 class="fa fa-home">Ajout d'un questionnaire</h1>
 
         <br/>
 
-        <div id="survey">
+        <div id="survey" class="container body">
 
-            <div id="surveyDetails">
+            <div id="surveyDetails" class="main_container" class="profile clearfix">
 
                 <h2>Questionnaire :</h2> <span class='error'></span>
 
                 <ul>
-                    <li>Image : <input type='file' name='surveyImage' class='surveyImage' accept='image/*'/></li>
+                    <li>Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
                     <li>Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
                     <li>Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
                     <li>Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
@@ -74,7 +90,7 @@
             var responseCounter = 1 ;
 
 
-            function verify()
+            function verifyNumberOfQuestions()
             {
                 var isOk = true ;
 
@@ -89,6 +105,13 @@
                 {
                     $("#surveyDetails").children("h2").next("span").text("") ;
                 }
+
+                return isOk ;
+            }
+
+            function verifyNumberOfResponsesFromQuestions()
+            {
+                var isOk = true ;
 
                 var questions = $("div.question").get() ;
 
@@ -107,6 +130,12 @@
                     }
                 }
 
+                return isOk ;
+            }
+
+            function verifySurveyDetails()
+            {
+                var isOk = true ;
 
                 if($("input.surveyName").val() == "")
                 {
@@ -144,6 +173,13 @@
                     $("input.surveyChances").next("span").text("") ;
                 }
 
+                return isOk ;
+            }
+
+            function verifyQuestionsDetails()
+            {
+                var isOk = true ;
+
                 var questionsDescription = $("input.questionDescription").get() ;
 
                 for(var i = 0 ; i < questionsDescription.length ; i++)
@@ -178,6 +214,13 @@
                     }
                 }
 
+                return isOk ;
+            }
+
+            function verifyResponsesDetails()
+            {
+                var isOk = true ;
+
                 var responsesDescription = $("input.responseDescription").get() ;
 
                 for(var i = 0 ; i < responsesDescription.length ; i++)
@@ -192,6 +235,21 @@
                     else
                     {
                         responsesDescription[i].nextElementSibling.textContent = "" ;
+                    }
+                }
+
+                return isOk ;
+            }
+
+            function verifyAll()
+            {
+                var isOk = false ;
+
+                if(verifyNumberOfQuestions == true && verifyNumberOfResponsesFromQuestions == true)
+                {
+                    if(verifySurveyDetails == true && verifyQuestionsDetails == true && verifyResponsesDetails == true)
+                    {
+                        isOk = true ;
                     }
                 }
 
@@ -315,7 +373,7 @@
 
             function saveSurvey()
             {
-                if(verify())
+                if(verifyAll())
                 {
                     var domSurvey = $("#surveyDetails") ;
 
@@ -395,6 +453,8 @@
                         }
                     }) ;
                 }
+
+                window.location.replace("/teacher/viewSurveys") ;
             }
 
         </script>

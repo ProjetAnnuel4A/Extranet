@@ -41,10 +41,10 @@ public class UserEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate birthday;
 
-    @Column(nullable = false)
+    @Column
     private String photo;
 
     @Column(nullable = false)

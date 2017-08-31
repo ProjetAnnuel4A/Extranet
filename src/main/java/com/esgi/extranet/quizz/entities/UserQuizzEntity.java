@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull ;
 public class UserQuizzEntity
 {
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id ;
