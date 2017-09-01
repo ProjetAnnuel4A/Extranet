@@ -11,23 +11,18 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
   <!-- Bootstrap -->
-  <link href="../../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <!-- Font Awesome -->
-  <link href="../../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-  <!-- NProgress -->
-  <link href="../../vendors/nprogress/nprogress.css" rel="stylesheet">
-  <!-- iCheck -->
-  <link href="../../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-  
+  <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <!-- bootstrap-progressbar -->
-  <link href="../../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-  <!-- JQVMap -->
-  <link href="../../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+  <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
   <!-- bootstrap-daterangepicker -->
-  <link href="../../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
+  <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
   <!-- Custom Theme Style -->
-  <link href="../../build/css/custom.min.css" rel="stylesheet">
+  <link href="/custom.min.css" rel="stylesheet">
 </head>
 
 <body class="nav-md">
@@ -36,7 +31,7 @@
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="http://localhost:9000/student/home" class="site_title"><span>Brotherhood</span></a>
+            <a href="/student/home" class="site_title"><span>Brotherhood</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -44,7 +39,7 @@
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../../images/logo.png" alt="..." class="img-circle profile_img">
+              <img src="/images/logo.png" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -62,7 +57,9 @@
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="http://localhost:9000/teacher/manageClassmate/view">Ajouter une note</a></li>
+                    <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
+                    <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                    <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
                   </ul>
                 </li>
               </ul>
@@ -72,7 +69,7 @@
 
           <!-- /menu footer buttons -->
           <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="http://localhost:9000/home">
+            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="/home">
               <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
             </a>
           </div>
@@ -91,12 +88,12 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../../images/logo.png" alt=""><span class="firstnamelastname"></span>
+                  <img src="/images/logo.png" alt=""><span class="firstnamelastname"></span>
                   <span class=" fa fa-angle-down"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                  <li><a href="http://localhost:9000/user/changePassword/view"> Profil</a></li>
-                  <li><a href="http://localhost:9000/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  <li><a href="/user/changePassword/view"> Profil</a></li>
+                  <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                 </ul>
               </li>
             </ul>
@@ -131,11 +128,14 @@
     if (parts.length == 2) return parts.pop().split(";").shift();
   }
 
-  var urlStudent = "http://localhost:9000/student/home";
-  var urlAdmin = "http://localhost:9000/admin/home";
-  var urlDefault = "http://localhost:9000/home";
+  var urlStudent = "/student/home";
+  var urlAdmin = "/admin/home";
+  var urlDefault = "/home";
 
-  $.post("http://localhost:9000/users/verifyToken", { token: getCookie("brotherhood")})
+  if(getCookie("brotherhood") == null)
+      window.location.replace(urlDefault);
+
+  $.post("/users/verifyToken", { token: getCookie("brotherhood")})
   .done(function( data ) 
   {					
    switch(data){
@@ -168,7 +168,7 @@
   };
   var i = getUrlParameter('id');
   var table = $("#students");
-  $.getJSON("http://localhost:9000/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
+  $.getJSON("/students/getStudentsForClassmate?idClassmate="+i, function( data ) {
    $.each( data, function( key, val ) {
     var dom = "<tr>";
     $.each(val, function(k, v){
@@ -191,7 +191,7 @@
     var mark = $this.find("input.mark");
     var student = $this.find("input.id");
     var course = "0";
-    $.post("http://localhost:9000/marks/addMark", { idStudent: student.val(),
+    $.post("/marks/addMark", { idStudent: student.val(),
       idCourse: course,
       mark: mark.val()})
     .done(function( data ) {
@@ -200,7 +200,7 @@
   });
  }
 
- $.post("http://localhost:9000/users/getInformations", {token : getCookie("brotherhood")})
+ $.post("/users/getInformations", {token : getCookie("brotherhood")})
  .done(function(data){
    var content = "";
    $.each( data, function( key, val ) {
@@ -211,45 +211,9 @@
  });
 </script>
 <!-- jQuery -->
-<script src="../../vendors/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="../../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="../../vendors/fastclick/lib/fastclick.js"></script>
-<!-- NProgress -->
-<script src="../../vendors/nprogress/nprogress.js"></script>
-<!-- Chart.js -->
-<script src="../../vendors/Chart.js/dist/Chart.min.js"></script>
-<!-- gauge.js -->
-<script src="../../vendors/gauge.js/dist/gauge.min.js"></script>
-<!-- bootstrap-progressbar -->
-<script src="../../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-<!-- iCheck -->
-<script src="../../vendors/iCheck/icheck.min.js"></script>
-<!-- Skycons -->
-<script src="../../vendors/skycons/skycons.js"></script>
-<!-- Flot -->
-<script src="../../vendors/Flot/jquery.flot.js"></script>
-<script src="../../vendors/Flot/jquery.flot.pie.js"></script>
-<script src="../../vendors/Flot/jquery.flot.time.js"></script>
-<script src="../../vendors/Flot/jquery.flot.stack.js"></script>
-<script src="../../vendors/Flot/jquery.flot.resize.js"></script>
-<!-- Flot plugins -->
-<script src="../../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-<script src="../../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-<script src="../../vendors/flot.curvedlines/curvedLines.js"></script>
-<!-- DateJS -->
-<script src="../../vendors/DateJS/build/date.js"></script>
-<!-- JQVMap -->
-<script src="../../vendors/jqvmap/dist/jquery.vmap.js"></script>
-<script src="../../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-<script src="../../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-<!-- bootstrap-daterangepicker -->
-<script src="../../vendors/moment/min/moment.min.js"></script>
-<script src="../../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
 <!-- Custom Theme Scripts -->
-<script src="../../build/js/custom.min.js"></script>
+<script src="/custom.min.js"></script>
 
 </body>
 </html>

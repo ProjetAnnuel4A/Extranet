@@ -118,18 +118,18 @@
 
                                     <br/>
 
-                                    <div id="survey" class="container body">
+                                    <div id="survey">
 
-                                        <div id="surveyDetails" class="main_container" class="profile clearfix">
+                                        <div id="surveyDetails" style="margin-left:50px">
 
                                             <h2>Questionnaire :</h2> <span class='error'></span>
 
-                                            <ul>
-                                                <li>Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
-                                                <li>Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
-                                                <li>Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
-                                                <li>Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
-                                                <li>Date limite : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/></li>
+                                            <ul class="container">
+                                                <li class="row">Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
+                                                <li class="row">Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
+                                                <li class="row">Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
+                                                <li class="row">Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
+                                                <li class="row">Date limite : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/></li>
                                             </ul>
 
                                         </div>
@@ -138,18 +138,19 @@
 
                                         <div>
 
-                                            <div id="questions">
+                                            <div id="questions" class="container" style="margin-left:100px">
                                             </div>
 
                                             <br/>
                                             <br/>
 
-                                            <input type='button' name='addQuestion' class='addQuestion' value='Ajouter une question' onclick="addQuestion()"/>
+                                            <input type="button" name="addQuestion" class="addQuestion" value="Ajouter une question" onclick="addQuestion()" style="margin-left:100px"/>
 
                                         </div>
 
                                     </div>
 
+                                    <br/>
                                     <br/>
 
                                     <p>
@@ -176,6 +177,59 @@
 
             $("input.surveyDeadLine").attr("min", todayString) ;
             $("input.surveyDeadLine").attr("value", todayString) ;
+
+
+            function getCookie(name)
+            {
+                var value = "; " + document.cookie ;
+                var parts = value.split("; " + name + "=") ;
+
+                if (parts.length == 2) return parts.pop().split(";").shift() ;
+            }
+
+            var urlStudent = "/student/home" ;
+            var urlAdmin = "/admin/home" ;
+            var urlDefault = "/home" ;
+
+            if(getCookie("brotherhood") == null)
+                window.location.replace(urlDefault) ;
+
+            $.post("/users/verifyToken",
+                {
+                    token: getCookie("brotherhood")
+                }).done(function(data)
+            {
+                switch(data)
+                {
+                    case "STUDENT":
+                        window.location.replace(urlStudent) ;
+                        break ;
+                    case "TEACHER":
+                        break ;
+                    case "ADMIN":
+                        window.location.replace(urlAdmin) ;
+                        break ;
+                    default:
+                        window.location.replace(urlDefault) ;
+                        break ;
+                }
+            }) ;
+
+            $.post("/users/getInformations",
+                {
+                    token : getCookie("brotherhood")
+                }).done(function(data)
+            {
+                var content = "" ;
+
+                $.each(data, function(key, val)
+                {
+                    if(key == "firstname" || key == "lastname")
+                        content += val + " " ;
+                }) ;
+
+                $(".firstnamelastname").append(content) ;
+            }) ;
 
 
             var questionNumber = 1 ;
@@ -376,26 +430,29 @@
                 {
                     questionNumber = $("div.question").get().length + 1 ;
 
-                    var dom = "<div class='question' id='q" + questionCounter + "'>" ;
+                    var dom = "<div class='question' class='container' id='q" + questionCounter + "'>" ;
 
                         dom += "<h3>Question " + questionNumber + " : </h3>" ;
 
                         dom += "<input type='button' name='removeQuestion' class='removeQuestion' value='Supprimer la question' onclick='removeQuestion(" + questionCounter + ")'/><span class='error'></span>" ;
 
-                        dom += "<ul>" ;
+                        dom += "<ul class='container'>" ;
 
-                            dom += "<li>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*'/></li>" ;
-                            dom += "<li>Description : <input type='text' name='questionDescription' class='questionDescription' required/><span class='error'></span></li>" ;
-                            dom += "<li>Points : <input type='number' name='questionPoints' class='questionPoints' min='0' value='" + parseFloat(0) + "' step='0.1' onchange='calculateMark()' required/><span class='error'></span></li>" ;
-                            dom += "<li>Tout ou rien : <input type='checkbox' name='questionAllOrNot' class='questionAllOrNot'/></li>" ;
+                            dom += "<li class='row'>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*'/></li>" ;
+                            dom += "<li class='row'>Description : <input type='text' name='questionDescription' class='questionDescription' required/><span class='error'></span></li>" ;
+                            dom += "<li class='row'>Points : <input type='number' name='questionPoints' class='questionPoints' min='0' value='" + parseFloat(0) + "' step='0.1' onchange='calculateMark()' required/><span class='error'></span></li>" ;
+                            dom += "<li class='row'>Tout ou rien : <input type='checkbox' name='questionAllOrNot' class='questionAllOrNot'/></li>" ;
 
                         dom += "</ul>" ;
 
-                        dom += "<div class='responses'></div>" ;
+                        dom += "<br/>" ;
 
-                        dom += "<input type='button' name='addResponse' class='addResponse' value='Ajouter une réponse' onclick='addResponse(" + questionCounter + ")'/>" ;
+                        dom += "<div class='responses' style='margin-left:150px'></div>" ;
 
-                    dom += "<br/><br/></div>" ;
+                        dom += "<input type='button' name='addResponse' class='addResponse' value='Ajouter une réponse' onclick='addResponse(" + questionCounter + ")' style='margin-left:150px'/>" ;
+
+                    dom += "<br/><br/></div>" +
+                        "" ;
 
                     return dom ;
                 }) ;
@@ -431,22 +488,22 @@
 
                 $("div[id='q" + questionId + "']").children("div.responses").append(function()
                 {
-                    var dom = "<div class='response' id='q" + questionId + "r" + responseCounter + "'>" ;
+                    var dom = "<div class='response' class='container' id='q" + questionId + "r" + responseCounter + "'>" ;
 
                         dom += "<h4 class='" + responseCounter + "'>Réponse " + responseNumber + " : </h4>" ;
 
                         dom += "<input type='button' name='removeResponse' class='removeResponse' value='Supprimer la réponse' onclick='removeResponse(" + questionId + ", " + responseCounter + ")'/>" ;
 
-                        dom += "<ul>" ;
+                        dom += "<ul class='container'>" ;
 
-                            dom += "<li>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*'/></li>" ;
-                            dom += "<li>Description : <input type='text' name='responseDescription' class='responseDescription' required/><span class='error'></span></li>" ;
+                            dom += "<li class='row'>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*'/></li>" ;
+                            dom += "<li class='row'>Description : <input type='text' name='responseDescription' class='responseDescription' required/><span class='error'></span></li>" ;
 
-                            dom += "<li>Réponse correcte : <input type='checkbox' name='correctResponse' class='correctResponse'/></li>" ;
+                            dom += "<li class='row'>Réponse correcte : <input type='checkbox' name='correctResponse' class='correctResponse'/></li>" ;
 
                         dom += "</ul>" ;
 
-                    dom += "</div>" ;
+                    dom += "<br/></div>" ;
 
                     return dom ;
                 }) ;
@@ -582,6 +639,10 @@
             }
 
         </script>
+        <!-- jQuery -->
+
+        <!-- Custom Theme Scripts -->
+        <script src="/custom.min.js"></script>
 
     </body>
 

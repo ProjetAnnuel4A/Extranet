@@ -59,6 +59,8 @@
                                         <ul class="nav child_menu">
                                             <li><a href="/student/marks/view">Consulter vos notes</a></li>
                                             <li><a href="/student/planning/view">Consulter votre planning</a></li>
+                                            <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                                            <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -93,8 +95,6 @@
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                                         <li><a href="/user/changePassword/view"> Profil</a></li>
                                         <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
-                                        <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                        <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -203,7 +203,7 @@
                 }) ;
 
                 $(".firstnamelastname").append(content) ;
-            });
+            }) ;
 
 
             function getUsersQuizz(userId)
@@ -253,9 +253,17 @@
                             dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
                             dom += "<td class='col'>" + val["name"] + "</td>" ;
                             dom += "<td class='col'>" + val["mark"] + "</td>" ;
-                            dom += "<td class='col'>" + val["chances"] + "</td>" ;
+
+                            var chances = val["chances"] ;
+
+                            if(chances == 0)
+                            {
+                                chances = "infinis" ;
+                            }
+
+                            dom += "<td class='col'>" + chances + "</td>" ;
                             dom += "<td class='col'>" + val["deadLine"] + "</td>" ;
-                            dom += "<td class='col'>" + surveysScore[val["surveyId"]] + "</td>" ;
+                            dom += "<td class='col'>" + surveysScore[val["id"]] + "</td>" ;
 
                             if(val["deadLine"] >= todayString && (surveysDone[val["id"]] < val["chances"] || val["chances"] == 0))
                             {
@@ -275,6 +283,10 @@
             }
 
         </script>
+        <!-- jQuery -->
+
+        <!-- Custom Theme Scripts -->
+        <script src="/custom.min.js"></script>
 
     </body>
 
