@@ -5,6 +5,7 @@ import com.esgi.extranet.quizz.entities.ResponseEntity ;
 import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.ResponseRepository ;
 import com.esgi.extranet.quizz.services.interfaces.QuestionService ;
+import com.esgi.extranet.quizz.services.interfaces.ResponseService;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.stereotype.Service ;
 
@@ -20,6 +21,8 @@ public class QuestionServiceImpl implements QuestionService
 
     private QuestionRepository questionRepository ;
     private ResponseRepository responseRepository ;
+
+    private ResponseServiceImpl responseService ;
 
 
     @Autowired
@@ -72,6 +75,15 @@ public class QuestionServiceImpl implements QuestionService
     @Transactional
     public boolean removeQuestion(Long questionId)
     {
+        QuestionEntity questionEntity = questionRepository.findById(questionId) ;
+
+        List<ResponseEntity> responses = questionEntity.getResponses() ;
+
+        for(int i = 0 ; i < responses.size() ; i++)
+        {
+            responseService.removeResponse(responses.get(i).getId()) ;
+        }
+
         questionRepository.delete(questionId) ;
 
         return (questionRepository.findById(questionId) == null) ;
@@ -139,12 +151,12 @@ public class QuestionServiceImpl implements QuestionService
 
     @Override
     @Transactional
-    public boolean addCorrectResponseForAQuestion(Long questionId, Long responseId)
+    public boolean addCorrectResponseForAQuestion(Long questionId, Long correctResponseId)
     {
 
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
 
-        questionEntity.getCorrectResponses().add(responseId) ;
+        questionEntity.getCorrectResponses().add(correctResponseId) ;
 
         questionRepository.save(questionEntity) ;
 
@@ -153,14 +165,14 @@ public class QuestionServiceImpl implements QuestionService
 
     @Override
     @Transactional
-    public boolean removeCorrectResponseFromAQuestion(Long questionId, Long responseId)
+    public boolean removeCorrectResponseFromAQuestion(Long questionId, Long correctResponseId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
         List<Long> correctResponses = questionEntity.getCorrectResponses() ;
 
         for(int i = 0 ; i < correctResponses.size() ; i++)
         {
-            if(correctResponses.get(i).equals(responseId))
+            if(correctResponses.get(i).equals(correctResponseId))
             {
                 correctResponses.remove(i) ;
                 questionEntity.setCorrectResponses(correctResponses) ;

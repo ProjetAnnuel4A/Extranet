@@ -23,7 +23,7 @@ public interface QuestionService
     boolean removeResponseFromAQuestion(Long questionId, Long responseId) ;
 
     List<Long> getCorrectResponsesFromAQuestion(Long questionId) ;
-    boolean addCorrectResponseForAQuestion(Long questionId, Long responseId) ;
-    boolean removeCorrectResponseFromAQuestion(Long questionId, Long responseId) ;
+    boolean addCorrectResponseForAQuestion(Long questionId, Long correctResponseId) ;
+    boolean removeCorrectResponseFromAQuestion(Long questionId, Long correctResponseId) ;
 
 }

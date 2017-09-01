@@ -18,7 +18,7 @@ public interface UserQuizzResponsesRepository extends JpaRepository<UserQuizzRes
 
     UserQuizzResponsesEntity findById(Long id) ;
     List<UserQuizzResponsesEntity> findByUserQuizzId(Long userQuizzId) ;
-    @Query(nativeQuery = true, value = "select * from user_quizz_responses uqr where uqr.userQuizzId = :userQuizzId and uqr.questionId = questionId")
+    @Query(nativeQuery = true, value = "select * from user_quizz_responses uqr where uqr.user_quizz_id = :userQuizzId and uqr.question_id = :questionId")
     UserQuizzResponsesEntity findByUserQuizzIdAndQuestionId(@Param("userQuizzId") Long userQuizzId,
                                                             @Param("questionId") Long questionId) ;
 

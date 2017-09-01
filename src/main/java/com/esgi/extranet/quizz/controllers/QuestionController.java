@@ -98,14 +98,14 @@ public class QuestionController
     public boolean addCorrectResponseForAQuestion(@RequestParam("questionId") Long questionId,
                                                   @RequestParam("correctResponseId") Long correctResponseId)
     {
-        return questionService.addResponseForAQuestion(questionId, correctResponseId) ;
+        return questionService.addCorrectResponseForAQuestion(questionId, correctResponseId) ;
     }
 
     @PostMapping("/removeCorrectResponseFromAQuestion")
     public boolean removeCorrectResponseFromAQuestion(@RequestParam("questionId") Long questionId,
                                                       @RequestParam("correctResponseId") Long correctResponseId)
     {
-        return questionService.removeResponseFromAQuestion(questionId, correctResponseId) ;
+        return questionService.removeCorrectResponseFromAQuestion(questionId, correctResponseId) ;
     }
 
 }

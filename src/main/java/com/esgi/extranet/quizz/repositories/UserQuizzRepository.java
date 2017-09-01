@@ -16,11 +16,11 @@ public interface UserQuizzRepository extends JpaRepository<UserQuizzEntity, Long
 {
 
     UserQuizzEntity findById(Long id) ;
-    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.surveyId = :surveyId")
+    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.survey_id = :surveyId")
     List<UserQuizzEntity> findAllBySurveyId(@Param("surveyId") Long surveyId) ;
-    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.userId = :userId")
+    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.user_id = :userId")
     List<UserQuizzEntity> findAllByUserId(@Param("userId") Long userId) ;
-    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.userId = :userId and uq.surveyId = surveyId")
+    @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.user_id = :userId and uq.survey_id = :surveyId")
     UserQuizzEntity findByUserIdAndSurveyId(@Param("userId") Long userId,
                                             @Param("surveyId") Long surveyId) ;
 

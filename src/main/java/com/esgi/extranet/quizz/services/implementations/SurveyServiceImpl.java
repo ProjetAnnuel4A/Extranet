@@ -4,6 +4,7 @@ import com.esgi.extranet.quizz.entities.QuestionEntity ;
 import com.esgi.extranet.quizz.entities.SurveyEntity ;
 import com.esgi.extranet.quizz.repositories.QuestionRepository ;
 import com.esgi.extranet.quizz.repositories.SurveyRepository ;
+import com.esgi.extranet.quizz.services.interfaces.QuestionService;
 import com.esgi.extranet.quizz.services.interfaces.SurveyService ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.stereotype.Service ;
@@ -21,6 +22,8 @@ public class SurveyServiceImpl implements SurveyService
 
     private SurveyRepository surveyRepository ;
     private QuestionRepository questionRepository ;
+
+    private QuestionServiceImpl questionService ;
 
 
     @Autowired
@@ -75,6 +78,15 @@ public class SurveyServiceImpl implements SurveyService
     @Transactional
     public boolean removeSurvey(Long surveyId)
     {
+        SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;
+
+        List<QuestionEntity> questions = surveyEntity.getQuestions() ;
+
+        for(int i = 0 ; i < questions.size() ; i++)
+        {
+            questionService.removeQuestion(questions.get(i).getId()) ;
+        }
+
         surveyRepository.delete(surveyId) ;
 
         return (surveyRepository.findById(surveyId) == null) ;

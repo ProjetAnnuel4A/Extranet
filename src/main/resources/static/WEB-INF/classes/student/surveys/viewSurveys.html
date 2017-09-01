@@ -4,7 +4,12 @@
 
     <head>
 
-        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>Brotherhood - Liste des questionnaires</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
@@ -24,102 +29,259 @@
 
     </head>
 
-    <body>
+    <body class="nav-md">
 
-        <a href="../../home">Retourner au menu principal</a>
-        <h1>Liste des questionnaires</h1>
+        <div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="/admin/home" class="site_title"><span>Brotherhood</span></a>
+                        </div>
 
-        <table id="surveys">
+                        <div class="clearfix"></div>
 
-            <tr>
+                        <!-- menu profile quick info -->
+                        <div class="profile clearfix">
+                            <div class="profile_pic">
+                                <img src="/images/logo.png" alt="..." class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Welcome,</span>
+                                <h2 class="firstnamelastname"></h2>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
 
-                <th>Image</th>
-                <th>Nom</th>
-                <th>Barème</th>
-                <th>Essais</th>
-                <th>Date limite</th>
+                        <br />
 
-            </tr>
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <h3>General</h3>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/student/marks/view">Consulter vos notes</a></li>
+                                            <li><a href="/student/planning/view">Consulter votre planning</a></li>
+                                            <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                                            <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /sidebar menu -->
 
-        </table>
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="/home">
+                                <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
 
-        <br/>
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
 
-        <div id="results">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="/images/logo.png" alt=""><span class="firstnamelastname"></span>
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li><a href="/user/changePassword/view"> Profil</a></li>
+                                        <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
+
+                <!-- page content -->
+                <div class="right_col" role="main">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph">
+                                <h1>Liste des questionnaires</h1>
+
+                                <p>
+                                    <table id="surveys" class='container'>
+
+                                        <tr class='row'>
+
+                                            <th class='col'>Image</th>
+                                            <th class='col'>Nom</th>
+                                            <th class='col'>Barème</th>
+                                            <th class='col'>Essais</th>
+                                            <th class='col'>Date limite</th>
+
+                                        </tr>
+
+                                    </table>
+
+                                    <br/>
+
+                                    <div id="results">
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <!-- /page content -->
+            </div>
         </div>
 
         <script>
 
-            var getUrlParameter = function getUrlParameter(sParam)
-            {
-                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-                    sURLVariables = sPageURL.split('&'),
-                    sParameterName,
-                    i ;
-
-                for(i = 0 ; i < sURLVariables.length ; i++)
-                {
-                    sParameterName = sURLVariables[i].split('=') ;
-
-                    if(sParameterName[0] === sParam)
-                    {
-                        return sParameterName[1] === undefined ? true : sParameterName[1] ;
-                    }
-                }
-            } ;
-
-            var userId = getUrlParameter('id') ;
-
+            var userId ;
 
             var table = $("#surveys") ;
             var results = $("#results") ;
 
             var surveysDone = {} ;
             var today = new Date() ;
+            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
 
-            $.getJSON("./getAllUsersQuizzByUserId?userId=" + userId, function(data)
+            function getCookie(name)
             {
-                $.each(data, function(key, val)
+                var value = "; " + document.cookie ;
+                var parts = value.split("; " + name + "=") ;
+                if (parts.length == 2) return parts.pop().split(";").shift() ;
+            }
+
+            var urlTeacher = "/teacher/home" ;
+            var urlAdmin = "/admin/home" ;
+            var urlDefault = "/home" ;
+
+            if(getCookie("brotherhood") == null)
+                window.location.replace(urlDefault) ;
+
+            $.post("/users/verifyToken",
+            {
+                token: getCookie("brotherhood")
+            }).done(function(data)
+            {
+                switch(data)
                 {
-                    surveysDone[val["surveyId"]] = 1 ;
-                }) ;
+                    case "STUDENT":
+                        break ;
+                    case "TEACHER":
+                        window.location.replace(urlTeacher) ;
+                        break ;
+                    case "ADMIN":
+                        window.location.replace(urlAdmin) ;
+                        break ;
+                    default:
+                        window.location.replace(urlDefault) ;
+                        break ;
+                }
             }) ;
 
-            $.getJSON("./surveys", function(data)
+            $.post("/users/getInformations",
             {
+                token : getCookie("brotherhood")
+            }).done(function(data)
+            {
+                var content = "" ;
+
                 $.each(data, function(key, val)
                 {
-                    if(surveysDone[val["id"]] == null)
+                    if(key == "firstname" || key == "lastname")
+                        content += val + " " ;
+
+                    if(key == "id")
                     {
-                        var dom = "<tr>" ;
+                        userId = val ;
 
-                        dom += "<td id='image' value=" + val["imageId"] + ">" + val["imageId"] + "</td>" ;
-                        dom += "<td>" + val["name"] + "</td>" ;
-                        dom += "<td>" + val["mark"] + "</td>" ;
-                        dom += "<td>" + val["chances"] + "</td>" ;
-                        dom += "<td>" + val["deadLine"] + "</td>" ;
-
-                        if(val["deadLine"] >= today.getTime())
-                        {
-                            dom += "<td><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
-                        }
-
-                        table.append(dom + "</tr>") ;
+                        getUsersQuizz(userId) ;
+                        displaySurveysNotDone(userId) ;
                     }
                 }) ;
-            }) ;
 
-            results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
+                $(".firstnamelastname").append(content) ;
+            });
+
+
+            function getUsersQuizz(userId)
+            {
+                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
+                {
+                    if(data != null)
+                    {
+                        $.each(data, function(key, val)
+                        {
+                            surveysDone[val["surveyId"]] = 1 ;
+                        }) ;
+                    }
+                }) ;
+            }
+
+            function displaySurveysNotDone(userId)
+            {
+                $.getJSON("/surveys", function(data)
+                {
+                    $.each(data, function(key, val)
+                    {
+                        var surveyOpen = false ;
+
+                        if(surveysDone == null)
+                        {
+                            surveyOpen = true ;
+                        }
+
+                        else
+                        {
+                            if(surveysDone[val["id"]] == null)
+                            {
+                                surveyOpen = true ;
+                            }
+                        }
+
+                        if(surveyOpen)
+                        {
+                            var dom = "<tr class='row'>" ;
+
+                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+                            dom += "<td class='col'>" + val["name"] + "</td>" ;
+                            dom += "<td class='col'>" + val["mark"] + "</td>" ;
+                            dom += "<td class='col'>" + val["chances"] + "</td>" ;
+                            dom += "<td class='col'>" + val["deadLine"] + "</td>" ;
+
+                            if(val["deadLine"] >= todayString)
+                            {
+                                dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
+                            }
+
+                            table.append(dom + "</tr>") ;
+                        }
+                    }) ;
+                }) ;
+
+                results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
+            }
 
 
             function answerSurvey(userId, surveyId)
             {
-                window.location.replace("answerSurvey.html?userId=" + userId + "surveyId=" + surveyId + "&done=false") ;
+                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId + "&done=false") ;
             }
 
             function seeResults(userId)
             {
-                window.location.replace("seeResults.html?userId=" + userId) ;
+                window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
             }
 
         </script>

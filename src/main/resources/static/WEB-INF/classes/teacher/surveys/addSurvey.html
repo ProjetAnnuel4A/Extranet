@@ -4,8 +4,13 @@
 
     <head>
 
-        <meta charset="UTF-8">
-        <title>Brotherhood - Ajout d'un questionnaire</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Ajout d'un questionnaire</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
         <!-- Bootstrap -->
@@ -26,50 +31,140 @@
 
     <body class="nav-md">
 
-        <div class="navbar nav_title" style="border: 0;">
-            <a href="/student/home" class="site_title"><span>Retourner au menu principal</span></a>
-        </div>
-        <h1 class="fa fa-home">Ajout d'un questionnaire</h1>
+        <div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="/teacher/home" class="site_title"><span>Brotherhood</span></a>
+                        </div>
 
-        <br/>
+                        <div class="clearfix"></div>
 
-        <div id="survey" class="container body">
+                        <!-- menu profile quick info -->
+                        <div class="profile clearfix">
+                            <div class="profile_pic">
+                                <img src="/images/logo.png" alt="..." class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Welcome,</span>
+                                <h2 class="firstnamelastname"></h2>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
 
-            <div id="surveyDetails" class="main_container" class="profile clearfix">
+                        <br />
 
-                <h2>Questionnaire :</h2> <span class='error'></span>
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <h3>General</h3>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
+                                            <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                                            <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /sidebar menu -->
 
-                <ul>
-                    <li>Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
-                    <li>Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
-                    <li>Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
-                    <li>Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
-                    <li>Date limite : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/></li>
-                </ul>
-
-            </div>
-
-            <br/>
-
-            <div>
-
-                <div id="questions">
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="/home">
+                                <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
                 </div>
 
-                <br/>
-                <br/>
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
 
-                <input type='button' name='addQuestion' class='addQuestion' value='Ajouter une question' onclick="addQuestion()"/>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="/images/logo.png" alt=""><span class="firstnamelastname"></span>
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li><a href="/changePassword"> Profile</a></li>
+                                        <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
 
+                <!-- page content -->
+                <div class="right_col" role="main">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph">
+                                <h1>Ajout d'un questionnaire</h1>
+
+                                <p>
+
+                                    <br/>
+
+                                    <div id="survey" class="container body">
+
+                                        <div id="surveyDetails" class="main_container" class="profile clearfix">
+
+                                            <h2>Questionnaire :</h2> <span class='error'></span>
+
+                                            <ul>
+                                                <li>Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
+                                                <li>Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
+                                                <li>Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
+                                                <li>Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
+                                                <li>Date limite : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/></li>
+                                            </ul>
+
+                                        </div>
+
+                                        <br/>
+
+                                        <div>
+
+                                            <div id="questions">
+                                            </div>
+
+                                            <br/>
+                                            <br/>
+
+                                            <input type='button' name='addQuestion' class='addQuestion' value='Ajouter une question' onclick="addQuestion()"/>
+
+                                        </div>
+
+                                    </div>
+
+                                    <br/>
+
+                                    <p>
+                                        <button onclick="saveAll()">Sauvegarder</button>
+                                    </p>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                </div>
+                <!-- /page content -->
             </div>
-
         </div>
-
-        <br/>
-
-        <p>
-            <button onclick="saveSurvey()">Sauvegarder</button>
-        </p>
 
         <script type = "text/javascript">
 
@@ -245,9 +340,9 @@
             {
                 var isOk = false ;
 
-                if(verifyNumberOfQuestions == true && verifyNumberOfResponsesFromQuestions == true)
+                if(verifyNumberOfQuestions() == true && verifyNumberOfResponsesFromQuestions() == true)
                 {
-                    if(verifySurveyDetails == true && verifyQuestionsDetails == true && verifyResponsesDetails == true)
+                    if(verifySurveyDetails() == true && verifyQuestionsDetails() == true && verifyResponsesDetails() == true)
                     {
                         isOk = true ;
                     }
@@ -267,11 +362,11 @@
                 {
                     if(questionsPoints[i].value != "")
                     {
-                        result += parseInt(questionsPoints[i].value) ;
+                        result += parseFloat(questionsPoints[i].value) ;
                     }
                 }
 
-                $("input.surveyMark").val(parseInt(result)) ;
+                $("input.surveyMark").val(parseFloat(result)) ;
             }
 
 
@@ -371,90 +466,119 @@
                 }
             }
 
+            var responses = {} ;
+            var correctResponses = {} ;
+            var questions = [] ;
+
+            function saveResponses()
+            {
+                var domQuestions = $("div.question") ;
+
+                for(var i = 0 ; i < domQuestions.length ; i++)
+                {
+                    var questionReference = domQuestions[i].id ;
+                    var domResponses = $("div.question[id='" + questionReference + "']").children("div.responses").children("div.response") ;
+
+                    responses[questionReference] = new Array() ;
+                    correctResponses[questionReference] = new Array() ;
+
+                    for(var j = 0 ; j < domResponses.get().length ; j++)
+                    {
+                        $.post("/responses/addResponse",
+                        {
+                            description: domResponses.find("input.responseDescription")[j].value,
+                            imageId: domResponses.find("input.responseImage")[j].value
+                        }).done(function(data)
+                        {
+                            responses[questionReference].push(data["id"]) ;
+
+                            for(var k = 0 ; k < domResponses.get().length ; k++)
+                            {
+                                if (domResponses.find("input.correctResponse")[k].checked)
+                                {
+                                    correctResponses[questionReference].push(data["id"]) ;
+                                }
+                            }
+                        }).done() ;
+                    }
+                }
+            }
+
+            function saveQuestions()
+            {
+                var domQuestions = $("div.question") ;
+
+                for(var i = 0 ; i < domQuestions.length ; i++)
+                {
+                    var questionReference = domQuestions[i].id ;
+
+                    $.post("/questions/addQuestion",
+                    {
+                        description: domQuestions.find("input.questionDescription")[i].value,
+                        points: parseFloat(domQuestions.find("input.questionPoints")[i].value),
+                        allOrNot: domQuestions.find("input.questionAllOrNot")[i].checked,
+                        imageId: domQuestions.find("input.questionImage")[i].value
+                    }).done(function(data)
+                    {
+                        for(var k = 0 ; k < responses[questionReference].length ; k++)
+                        {
+                            $.post("/questions/addResponseForAQuestion",
+                            {
+                                questionId: data["id"],
+                                responseId: responses[questionReference][k]
+                            }).done() ;
+                        }
+
+                        for(var l = 0 ; l < correctResponses[questionReference].length ; l++)
+                        {
+                            $.post("/questions/addCorrectResponseForAQuestion",
+                            {
+                                questionId: data["id"],
+                                correctResponseId: correctResponses[questionReference][l]
+                            }).done() ;
+                        }
+
+                        questions.push(data["id"]) ;
+                    }).done() ;
+                }
+            }
+
             function saveSurvey()
+            {
+                var domSurvey = $("#surveyDetails") ;
+
+                $.post("/surveys/addSurvey",
+                {
+                    name: domSurvey.find("input.surveyName")[0].value,
+                    mark: parseFloat(domSurvey.find("input.surveyMark")[0].value),
+                    chances: parseInt(domSurvey.find("input.surveyChances")[0].value),
+                    deadLine: domSurvey.find("input.surveyDeadLine")[0].value,
+                    imageId: domSurvey.find("input.surveyImage")[0].value
+                }).done(function(data)
+                {
+                    for(var i = 0 ; i < questions.length ; i++)
+                    {
+                        $.post("/surveys/addQuestionForASurvey",
+                        {
+                            surveyId: data["id"],
+                            questionId: questions[i]
+                        }).done() ;
+                    }
+                }) ;
+            }
+
+            function saveAll()
             {
                 if(verifyAll())
                 {
-                    var domSurvey = $("#surveyDetails") ;
+                    saveResponses() ;
 
-                    var domQuestions = $("div.question") ;
-                    var questions = [] ;
+                    saveQuestions() ;
 
-                    for(var i = 0 ; i < domQuestions.length ; i++)
-                    {
-                        var domResponses = $("div.question[id='" + domQuestions[i].id + "']").children("div.responses").children("div.response").get() ;
-
-                        var responses = [] ;
-                        var correctResponses = [] ;
-
-                        for(var j = 0 ; j < domResponses.length ; j++)
-                        {
-                            $.post("/responses/addResponse",
-                            {
-                                description: domResponses[j].children[2].children[1].children[0].value,
-                                    imageId: domResponses[j].children[2].children[0].children[0].value
-                            }).done(function(data)
-                            {
-                                responses.add(data["id"]) ;
-
-                                if(domResponses[j].children[2].children[2].children[0].checked)
-                                {
-                                    correctResponses.add(data["id"]) ;
-                                }
-                            }) ;
-                        }
-
-                        $.post("/questions/addQuestion",
-                        {
-                            description: domQuestions[i].children[2].children[1].children[0].value,
-                            points: domQuestions[i].children[2].children[2].children[0].value,
-                            allOrNot: domQuestions[i].children[2].children[3].children[0].checked,
-                            imageId: domQuestions[i].children[2].children[0].children[0].value
-                        }).done(function(data)
-                        {
-                            for(var i = 0 ; i < responses.length ; i++)
-                            {
-                                $.post("/questions/addResponseForAQuestion",
-                                {
-                                    questionId: data["id"],
-                                    responseId: responses[i]
-                                }) ;
-                            }
-
-                            for(var i = 0 ; i < correctResponses.length ; i++)
-                            {
-                                $.post("/questions/addCorrectResponseForAQuestion",
-                                {
-                                    questionId: data["id"],
-                                    responseId: correctResponses[i]
-                                }) ;
-                            }
-
-                            questions.add(data["id"]) ;
-                        }) ;
-                    }
-
-                    $.post("/surveys/addSurvey",
-                    {
-                        nom: domSurvey.children[1].children[1].children[0].value,
-                        mark: domSurvey.children[1].children[2].children[0].value,
-                        chances: domSurvey.children[1].children[3].children[0].value,
-                        deadLine: domSurvey.children[1].children[4].children[0].value,
-                        imageId: domSurvey.children[1].children[0].children[0].value
-                    }).done(function(data)
-                    {
-                        for(var i = 0 ; i < questions.length ; i++)
-                        {
-                            $.post("/surveys/addQuestionForASurvey",
-                            {
-                                surveyId: data["id"],
-                                questionId: questions[i]
-                            }) ;
-                        }
-                    }) ;
+                    saveSurvey() ;
                 }
 
-                window.location.replace("/teacher/viewSurveys") ;
+                //window.location.replace("/teacher/surveys/viewSurveys/view") ;
             }
 
         </script>
