@@ -13,13 +13,14 @@ public interface UserQuizzService
 
     List<UserQuizzEntity> getAll() ;
 
-    UserQuizzEntity addUserQuizz(Long userId, Long surveyId, int count) ;
-    UserQuizzEntity updateUserQuizz(Long userQuizzId, Long userId, Long surveyId, int count) ;
+    UserQuizzEntity addUserQuizz(Long userId, Long surveyId, float score) ;
+    UserQuizzEntity updateUserQuizz(Long userQuizzId, Long userId, Long surveyId, float score) ;
+    float updateUserQuizzScore(Long userQuizzId, float score) ;
     boolean removeUserQuizz(Long userQuizzId) ;
     List<UserQuizzEntity> getAllUsersQuizzBySurveyId(Long surveyId) ;
     List<UserQuizzEntity> getAllUsersQuizzByUserId(Long userId) ;
     UserQuizzEntity getUserQuizz(Long userQuizzId) ;
-    UserQuizzEntity getUserQuizzByUserIdAndSurveyId(Long userId, Long surveyId) ;
+    List<UserQuizzEntity> getUserQuizzsByUserIdAndSurveyId(Long userId, Long surveyId) ;
 
     List<UserQuizzResponsesEntity> getAllUsersQuizzResponsesFromAnUserQuizz(Long userQuizzId) ;
     boolean removeAllUsersQuizzResponsesFromAnUserQuizz(Long userQuizzId) ;

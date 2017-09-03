@@ -21,7 +21,7 @@ public class QuizzSystem
 
         int nbCorrectResponses = 0 ;
 
-        if(question.isAllOrNot())
+        if(question.isAllOrNone())
         {
             if(userQuizzResponses.getResponses().size() != question.getCorrectResponses().size())
             {
@@ -46,7 +46,7 @@ public class QuizzSystem
             }
         }
 
-        if(question.isAllOrNot())
+        if(question.isAllOrNone())
         {
             if(nbCorrectResponses == question.getCorrectResponses().size())
             {
@@ -68,7 +68,7 @@ public class QuizzSystem
 
         int nbCorrectResponses = 0 ;
 
-        if(question.isAllOrNot())
+        if(question.isAllOrNone())
         {
             if(userResponses.size() != question.getCorrectResponses().size())
             {
@@ -96,7 +96,7 @@ public class QuizzSystem
             }
         }
 
-        if(question.isAllOrNot())
+        if(question.isAllOrNone())
         {
             if(nbCorrectResponses == question.getCorrectResponses().size())
             {
@@ -118,7 +118,7 @@ public class QuizzSystem
 
         int nbCorrectResponses = 0 ;
 
-        if(question.isAllOrNot())
+        if(question.isAllOrNone())
         {
             if(userResponses.length != question.getCorrectResponses().size())
             {
@@ -146,7 +146,7 @@ public class QuizzSystem
             }
         }
 
-        if(question.isAllOrNot())
+        if(question.isAllOrNone())
         {
             if(nbCorrectResponses == question.getCorrectResponses().size())
             {
@@ -221,24 +221,48 @@ public class QuizzSystem
 
     public static boolean surveyIsOpen(SurveyEntity survey)
     {
-        if(survey.getDeadLine() == null)
-        {
-            return true ;
-        }
+        boolean beginLineOk = false ;
+        boolean deadLineOk = false ;
 
         LocalDate today = LocalDate.now() ;
         Date todayConverted = Date.valueOf(today) ;
 
-        return !(todayConverted.after(survey.getDeadLine())) ;
+        if(survey.getBeginLine() == null)
+        {
+            beginLineOk = true ;
+        }
+
+        else
+        {
+            if(!(todayConverted.before(survey.getBeginLine())))
+            {
+                beginLineOk = true ;
+            }
+        }
+
+        if(survey.getDeadLine() == null)
+        {
+            deadLineOk = true ;
+        }
+
+        else
+        {
+            if(!(todayConverted.after(survey.getDeadLine())))
+            {
+                deadLineOk =  true ;
+            }
+        }
+
+        return (beginLineOk && deadLineOk) ;
     }
 
-    public static boolean userQuizzCanAnswerSurvey(UserQuizzEntity userQuizzEntity, SurveyEntity survey)
+    public static boolean userQuizzCanAnswerSurvey(int tries, SurveyEntity survey)
     {
         if(surveyIsOpen(survey))
         {
             if(survey.getChances() != 0)
             {
-                if(userQuizzEntity.getCount() >= survey.getChances())
+                if(tries >= survey.getChances())
                 {
                     return false ;
                 }

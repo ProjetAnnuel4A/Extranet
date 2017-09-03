@@ -50,7 +50,7 @@ public class UserQuizzEntityTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -73,18 +73,18 @@ public class UserQuizzEntityTests
                 .id(new Long(1))
                 .userId(student.getId())
                 .surveyId(survey.getId())
-                .count(1)
+                .score(1)
                 .build() ;
 
 
         Assert.assertNotNull(userQuizz) ;
         Assert.assertNotNull(userQuizz.getUserId()) ;
         Assert.assertNotNull(userQuizz.getSurveyId()) ;
-        Assert.assertNotNull(userQuizz.getCount()) ;
+        Assert.assertNotNull(userQuizz.getScore()) ;
 
         Assert.assertEquals(new Long(2), userQuizz.getUserId()) ;
         Assert.assertEquals(new Long(3), userQuizz.getSurveyId()) ;
-        Assert.assertEquals(1, userQuizz.getCount()) ;
+        Assert.assertEquals(1.0, userQuizz.getScore(), 0) ;
     }
 
 }

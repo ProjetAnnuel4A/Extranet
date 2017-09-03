@@ -30,7 +30,7 @@ public class QuestionEntityTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -41,7 +41,7 @@ public class QuestionEntityTests
         Assert.assertEquals(responses, question.getResponses()) ;
         Assert.assertEquals(correctResponses, question.getCorrectResponses()) ;
         Assert.assertEquals(6.0, question.getPoints(), 0) ;
-        Assert.assertTrue(question.isAllOrNot()) ;
+        Assert.assertTrue(question.isAllOrNone()) ;
         Assert.assertEquals(new Long(1), question.getImageId()) ;
     }
 

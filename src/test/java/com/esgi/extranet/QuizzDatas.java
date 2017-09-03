@@ -77,7 +77,7 @@ public class QuizzDatas
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
         QuestionEntity q2 = QuestionEntity.builder()
@@ -86,7 +86,7 @@ public class QuizzDatas
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(8)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
         QuestionEntity q3 = QuestionEntity.builder()
@@ -95,7 +95,7 @@ public class QuizzDatas
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -154,7 +154,7 @@ public class QuizzDatas
                 .id(new Long(1))
                 .userId(student.getId())
                 .surveyId(survey.getId())
-                .count(1)
+                .score(1)
                 .build() ;
 
         ArrayList<Long> userResponses = new ArrayList<Long>() ;

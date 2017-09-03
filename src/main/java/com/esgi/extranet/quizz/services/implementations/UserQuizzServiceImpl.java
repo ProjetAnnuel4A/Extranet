@@ -44,12 +44,12 @@ public class UserQuizzServiceImpl implements UserQuizzService
 
     @Override
     @Transactional
-    public UserQuizzEntity addUserQuizz(Long userId, Long surveyId, int count)
+    public UserQuizzEntity addUserQuizz(Long userId, Long surveyId, float score)
     {
         UserQuizzEntity userQuizzEntity = UserQuizzEntity.builder()
                 .userId(userId)
                 .surveyId(surveyId)
-                .count(count)
+                .score(score)
                 .build() ;
 
         userQuizzRepository.save(userQuizzEntity) ;
@@ -59,18 +59,30 @@ public class UserQuizzServiceImpl implements UserQuizzService
 
     @Override
     @Transactional
-    public UserQuizzEntity updateUserQuizz(Long userQuizzId, Long userId, Long surveyId, int count)
+    public UserQuizzEntity updateUserQuizz(Long userQuizzId, Long userId, Long surveyId, float score)
     {
         UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
 
-        userQuizzEntity.setId(userQuizzId) ;
         userQuizzEntity.setUserId(userId) ;
         userQuizzEntity.setSurveyId(surveyId) ;
-        userQuizzEntity.setCount(count) ;
+        userQuizzEntity.setScore(score) ;
 
         userQuizzRepository.save(userQuizzEntity) ;
 
         return userQuizzEntity ;
+    }
+
+    @Override
+    @Transactional
+    public float updateUserQuizzScore(Long userQuizzId, float score)
+    {
+        UserQuizzEntity userQuizzEntity = userQuizzRepository.findById(userQuizzId) ;
+
+        userQuizzEntity.setScore(score) ;
+
+        userQuizzRepository.save(userQuizzEntity) ;
+
+        return score ;
     }
 
     @Override
@@ -101,9 +113,9 @@ public class UserQuizzServiceImpl implements UserQuizzService
     }
 
     @Override
-    public UserQuizzEntity getUserQuizzByUserIdAndSurveyId(Long userId, Long surveyId)
+    public List<UserQuizzEntity> getUserQuizzsByUserIdAndSurveyId(Long userId, Long surveyId)
     {
-        return userQuizzRepository.findByUserIdAndSurveyId(userId, surveyId) ;
+        return userQuizzRepository.findAllByUserIdAndSurveyId(userId, surveyId) ;
     }
 
 

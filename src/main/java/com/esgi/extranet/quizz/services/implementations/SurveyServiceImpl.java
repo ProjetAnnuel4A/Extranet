@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service ;
 import javax.transaction.Transactional ;
 import java.sql.Date ;
 import java.util.List ;
+import java.util.Optional;
 
 /**
  * Created by Samuel Bijou on 27/06/2017.
@@ -42,12 +43,13 @@ public class SurveyServiceImpl implements SurveyService
 
     @Override
     @Transactional
-    public SurveyEntity addSurvey(String name, float mark, int chances, Date deadLine, Long imageId)
+    public SurveyEntity addSurvey(String name, float mark, int chances, Date beginLine, Date deadLine, Long imageId)
     {
         SurveyEntity surveyEntity = SurveyEntity.builder()
                 .name(name)
                 .mark(mark)
                 .chances(chances)
+                .beginLine(beginLine)
                 .deadLine(deadLine)
                 .imageId(imageId)
                 .build() ;
@@ -59,13 +61,14 @@ public class SurveyServiceImpl implements SurveyService
 
     @Override
     @Transactional
-    public SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date deadLine, Long imageId)
+    public SurveyEntity updateSurvey(Long surveyId, String name, float mark, int chances, Date beginLine, Date deadLine, Long imageId)
     {
         SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;
 
         surveyEntity.setName(name) ;
         surveyEntity.setMark(mark) ;
         surveyEntity.setChances(chances) ;
+        surveyEntity.setBeginLine(beginLine);
         surveyEntity.setDeadLine(deadLine) ;
         surveyEntity.setImageId(imageId) ;
 
@@ -96,6 +99,12 @@ public class SurveyServiceImpl implements SurveyService
     public SurveyEntity getSurvey(Long surveyId)
     {
         return surveyRepository.findById(surveyId) ;
+    }
+
+    @Override
+    public Optional<SurveyEntity> getSurveyByName(String surveyName)
+    {
+        return surveyRepository.findByName(surveyName) ;
     }
 
 

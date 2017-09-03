@@ -34,7 +34,7 @@ public class UserQuizzRepositoryTests
                 .id(new Long(1))
                 .userId(new Long(1))
                 .surveyId(new Long(1))
-                .count(1)
+                .score(new Float(1))
                 .build() ;
 
         userQuizzRepository.save(userQuizzEntity) ;
@@ -66,7 +66,7 @@ public class UserQuizzRepositoryTests
     @Test
     public void should_find_user_quizz_by_user_id_and_survey_id()
     {
-        UserQuizzEntity result = userQuizzRepository.findByUserIdAndSurveyId(new Long(1), new Long(1)) ;
+        List<UserQuizzEntity> result = userQuizzRepository.findAllByUserIdAndSurveyId(new Long(1), new Long(1)) ;
 
 
         Assert.assertNotNull(result) ;

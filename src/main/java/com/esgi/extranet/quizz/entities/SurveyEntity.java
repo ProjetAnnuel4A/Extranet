@@ -51,6 +51,9 @@ public class SurveyEntity
     private int chances = 1 ; // Détermine le nombre d'essais (0 = infini)
 
     @Column
+    private Date beginLine ;
+
+    @Column
     private Date deadLine ;
 
     @Column
@@ -80,15 +83,39 @@ public class SurveyEntity
 
     public boolean isOpen()
     {
-        if(this.deadLine == null)
-        {
-            return true ;
-        }
+        boolean beginLineOk = false ;
+        boolean deadLineOk = false ;
 
         LocalDate today = LocalDate.now() ;
         Date todayConverted = Date.valueOf(today) ;
 
-        return !(todayConverted.after(this.deadLine)) ;
+        if(this.beginLine == null)
+        {
+            beginLineOk = true ;
+        }
+
+        else
+        {
+            if(!(todayConverted.before(this.beginLine)))
+            {
+                beginLineOk = true ;
+            }
+        }
+
+        if(this.deadLine == null)
+        {
+            deadLineOk = true ;
+        }
+
+        else
+        {
+            if(!(todayConverted.after(this.deadLine)))
+            {
+                deadLineOk =  true ;
+            }
+        }
+
+        return (beginLineOk && deadLineOk) ;
     }
 
 }

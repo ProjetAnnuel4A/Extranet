@@ -112,7 +112,7 @@ public class SurveyServiceTests
             e.printStackTrace() ;
         }
 
-        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, deadLine, new Long(2)) ;
+        SurveyEntity result = surveyService.updateSurvey(survey.getId(), "SurveyTest 2", 1, 1, null, deadLine, new Long(2)) ;
 
 
         Assert.assertNotNull(survey) ;
@@ -161,7 +161,7 @@ public class SurveyServiceTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -192,7 +192,7 @@ public class SurveyServiceTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -217,7 +217,7 @@ public class SurveyServiceTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 

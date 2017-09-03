@@ -12,6 +12,8 @@ import com.esgi.extranet.quizz.services.interfaces.UserQuizzService ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.web.bind.annotation.* ;
 
+import java.util.List;
+
 /**
  * Created by Samuel Bijou on 18/07/2017.
  */
@@ -48,17 +50,6 @@ public class QuizzSystemController
         return QuizzSystem.calculateQuestionScore(question, userQuizzService.getUserQuizzResponsesFromAnUserQuizz(userQuizzId, questionId)) ;
     }
 
-    @PostMapping("/calculateQuestionScoreWithUserIdAndSurveyId")
-    public float calculateQuestionScoreWithUserIdAndSurveyId(@RequestParam("questionId") Long questionId,
-                                                             @RequestParam("userId") Long userId,
-                                                             @RequestParam("surveyId") Long surveyId)
-    {
-        QuestionEntity question = questionService.getQuestion(questionId) ;
-        UserQuizzEntity userQuizz = userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
-
-        return QuizzSystem.calculateQuestionScore(question, userQuizzService.getUserQuizzResponsesFromAnUserQuizz(userQuizz.getId(), questionId)) ;
-    }
-
     @PostMapping("/calculateQuestionScoreWithUserQuizzResponsesId")
     public float calculateQuestionScoreWithUserQuizzResponsesId(@RequestParam("questionId") Long questionId,
                                                                 @RequestParam("userQuizzResponsesId") Long userQuizzResponsesId)
@@ -78,22 +69,6 @@ public class QuizzSystemController
         for(int i = 0 ; i < survey.getQuestions().size() ; i++)
         {
             userQuizzResponses[i] = userQuizzService.getUserQuizzResponsesFromAnUserQuizz(userQuizzId, survey.getQuestions().get(i).getId()) ;
-        }
-
-        return QuizzSystem.calculateSurveyScore(survey, userQuizzResponses) ;
-    }
-
-    @PostMapping("/calculateSurveyScoreWithUserIdAndSurveyId")
-    public float calculateSurveyScoreWithUserIdAndSurveyId(@RequestParam("userId") Long userId,
-                                                           @RequestParam("surveyId") Long surveyId)
-    {
-        SurveyEntity survey = surveyService.getSurvey(surveyId) ;
-        UserQuizzEntity userQuizz = userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
-        UserQuizzResponsesEntity[] userQuizzResponses = new UserQuizzResponsesEntity[survey.getQuestions().size()] ;
-
-        for(int i = 0 ; i < survey.getQuestions().size() ; i++)
-        {
-            userQuizzResponses[i] = userQuizzService.getUserQuizzResponsesFromAnUserQuizz(userQuizz.getId(), survey.getQuestions().get(i).getId()) ;
         }
 
         return QuizzSystem.calculateSurveyScore(survey, userQuizzResponses) ;
@@ -126,24 +101,23 @@ public class QuizzSystemController
     }
 
 
-    @PostMapping("/checkIfUserQuizzCanAnswerSurveyWithUserQuizzId")
-    public boolean checkIfUserQuizzCanAnswerSurveyWithUserQuizzId(@RequestParam("userQuizzId") Long userQuizzId,
-                                                                @RequestParam("surveyId") Long surveyId)
+    @PostMapping("/checkIfUserCanAnswerSurveyWithNumberOfTries")
+    public boolean checkIfUserCanAnswerSurveyWithNumberOfTries(@RequestParam("tries") int tries,
+                                                               @RequestParam("surveyId") Long surveyId)
     {
         SurveyEntity survey = surveyService.getSurvey(surveyId) ;
-        UserQuizzEntity userQuizz = userQuizzService.getUserQuizz(userQuizzId) ;
 
-        return QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey) ;
+        return QuizzSystem.userQuizzCanAnswerSurvey(tries, survey) ;
     }
 
-    @PostMapping("/checkIfUserQuizzCanAnswerSurveyWithUserIdAndSurveyId")
-    public boolean checkIfUserQuizzCanAnswerSurveyWithUserIdAndSurveyId(@RequestParam("userId") Long userId,
-                                                                      @RequestParam("surveyId") Long surveyId)
+    @PostMapping("/checkIfUserCanAnswerSurveyWithUserIdAndSurveyId")
+    public boolean checkIfUserCanAnswerSurveyWithUserIdAndSurveyId(@RequestParam("userId") Long userId,
+                                                                   @RequestParam("surveyId") Long surveyId)
     {
         SurveyEntity survey = surveyService.getSurvey(surveyId) ;
-        UserQuizzEntity userQuizz = userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
+        List<UserQuizzEntity> userQuizzs = userQuizzService.getUserQuizzsByUserIdAndSurveyId(userId, surveyId) ;
 
-        return QuizzSystem.userQuizzCanAnswerSurvey(userQuizz, survey) ;
+        return QuizzSystem.userQuizzCanAnswerSurvey(userQuizzs.size(), survey) ;
     }
 
 }

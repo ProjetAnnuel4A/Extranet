@@ -51,7 +51,7 @@ public class UserQuizzServiceTests
                 .id(new Long(1))
                 .userId(new Long(1))
                 .surveyId(new Long(2))
-                .count(1)
+                .score(1)
                 .build() ;
 
         userQuizzRepository.save(userQuizz) ;
@@ -83,17 +83,17 @@ public class UserQuizzServiceTests
 
         Assert.assertEquals(new Long(1), userQuizz.getUserId()) ;
         Assert.assertEquals(new Long(2), userQuizz.getSurveyId()) ;
-        Assert.assertEquals(1, userQuizz.getCount()) ;
+        Assert.assertEquals(1.0, userQuizz.getScore(), 0) ;
 
         Assert.assertEquals(result.getUserId(), userQuizz.getUserId()) ;
         Assert.assertEquals(result.getSurveyId(), userQuizz.getSurveyId()) ;
-        Assert.assertEquals(result.getCount(), userQuizz.getCount()) ;
+        Assert.assertEquals(result.getScore(), userQuizz.getScore(), 0) ;
     }
 
     @Test
     public void should_update_user_quizz() throws Exception
     {
-        UserQuizzEntity result = userQuizzService.updateUserQuizz(new Long(1), new Long(2), new Long(3), 2) ;
+        UserQuizzEntity result = userQuizzService.updateUserQuizz(new Long(1), new Long(2), new Long(3), new Float(2)) ;
 
 
         Assert.assertNotNull(userQuizz) ;
@@ -101,7 +101,7 @@ public class UserQuizzServiceTests
 
         Assert.assertEquals(new Long(2), userQuizz.getUserId()) ;
         Assert.assertEquals(new Long(3), userQuizz.getSurveyId()) ;
-        Assert.assertEquals(2, userQuizz.getCount()) ;
+        Assert.assertEquals(2.0, userQuizz.getScore(), 0) ;
     }
 
     @Test
@@ -139,14 +139,14 @@ public class UserQuizzServiceTests
     }
 
     @Test
-    public void should_get_user_quizz_by_user_id_and_survey_id() throws Exception
+    public void should_get_user_quizzs_by_user_id_and_survey_id() throws Exception
     {
-        UserQuizzEntity result = userQuizzRepository.findByUserIdAndSurveyId(new Long(1), new Long(2)) ;
+        List<UserQuizzEntity> result = userQuizzRepository.findAllByUserIdAndSurveyId(new Long(1), new Long(2)) ;
 
 
         Assert.assertNotNull(result) ;
 
-        Assert.assertNotNull(userQuizzService.getUserQuizzByUserIdAndSurveyId(result.getUserId(), result.getSurveyId())) ;
+        Assert.assertNotNull(userQuizzService.getUserQuizzsByUserIdAndSurveyId(result.get(0).getUserId(), result.get(0).getSurveyId())) ;
     }
 
 

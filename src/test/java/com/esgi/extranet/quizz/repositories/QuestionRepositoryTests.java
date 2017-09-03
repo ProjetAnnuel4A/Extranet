@@ -34,7 +34,7 @@ public class QuestionRepositoryTests
                 .responses(null)
                 .correctResponses(null)
                 .points(1)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 

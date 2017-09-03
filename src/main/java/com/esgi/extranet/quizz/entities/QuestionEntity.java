@@ -47,7 +47,7 @@ public class QuestionEntity
     @NotNull
     @Column(nullable = false)
     @Builder.Default
-    private boolean allOrNot = true ;
+    private boolean allOrNone = true ;
 
     @Column
     private Long imageId ;

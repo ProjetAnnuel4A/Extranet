@@ -51,7 +51,7 @@ public class SurveyEntityTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
         q2 = QuestionEntity.builder()
@@ -60,7 +60,7 @@ public class SurveyEntityTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
         q3 = QuestionEntity.builder()
@@ -69,7 +69,7 @@ public class SurveyEntityTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 

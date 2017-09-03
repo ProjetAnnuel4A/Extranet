@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Liste des questionnaires</title>
+        <title>Voir le questionnaire</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
         <!-- Bootstrap -->
@@ -112,30 +112,14 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Liste des questionnaires</h1>
+                                <h1>Voir le questionnaire</h1>
 
                                 <p>
-                                    <table id="surveys" class="container">
+                                    <div id="surveyPresentation" class="container">
+                                    </div>
 
-                                        <tr class="row">
-
-                                            <th class="col">Image</th>
-                                            <th class="col">Nom</th>
-                                            <th class="col">Barème</th>
-                                            <th class="col">Essais autorisés</th>
-                                            <th class="col">Date de début</th>
-                                            <th class="col">Date de fin</th>
-
-                                        </tr>
-
+                                    <table id="survey" class="container">
                                     </table>
-                                </p>
-
-                                <br/>
-                                <br/>
-
-                                <p>
-                                    <button onclick="addSurvey()">Ajouter un questionnaire</button>
                                 </p>
                             </div>
                         </div>
@@ -201,78 +185,95 @@
                 $(".firstnamelastname").append(content) ;
             }) ;
 
-
-            var table = $("#surveys") ;
-
-            $.getJSON("/surveys", function(data)
+            var getUrlParameter = function getUrlParameter(sParam)
             {
-                $.each(data, function(key, val)
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i ;
+
+                for(i = 0 ; i < sURLVariables.length ; i++)
                 {
-                    var dom = "<tr class='row'>" ;
+                    sParameterName = sURLVariables[i].split('=') ;
 
-                    if(val["imageId"] == null)
+                    if(sParameterName[0] === sParam)
                     {
-                        val["imageId"] = "" ;
+                        return sParameterName[1] === undefined ? true : sParameterName[1] ;
+                    }
+                }
+            } ;
+
+
+            var surveyId = getUrlParameter('surveyId') ;
+
+
+            var surveyPresentation = $("#surveyPresentation") ;
+            var table = $("#survey") ;
+
+            var surveyDatas = {} ;
+            var surveyQuestions = {} ;
+            var questionsResponses = {} ;
+
+            $.getJSON("/surveys/getSurvey?surveyId=" + surveyId, function(data)
+            {
+                surveyDatas = data ;
+                surveyQuestions = data["questions"] ;
+
+                $.each(surveyQuestions, function(key, val)
+                {
+                    questionsResponses[key] = val["responses"] ;
+                }) ;
+            }).done(function()
+            {
+                var surveyDetails = "<h2>" + surveyDatas["name"] + "</h2> <div id='image'></div>" ;
+                surveyDetails += "<table class='container'><tr class='row'>" ;
+                surveyDetails += "<td class='col'> Barême :" + surveyDatas["mark"] + "</td>" ;
+
+                var chances = surveyDatas["chances"] ;
+
+                if(chances == 0)
+                {
+                    chances = "infinis" ;
+                }
+
+                surveyDetails += "<td class='col'> Essais autorisés :" + chances + "</td>" ;
+                surveyDetails += "<td class='col'> Date de début :" + surveyDatas["beginLine"] + "</td>" ;
+                surveyDetails += "<td class='col'> Date de fin :" + surveyDatas["deadLine"] + "</td>" ;
+                surveyDetails += "</tr></table>" ;
+
+                surveyPresentation.append(surveyDetails + "<br/><br/>") ;
+
+                $.each(surveyQuestions, function(qkey, qval)
+                {
+                    var qDom = "<div class='question' style='margin-left:50px' id='" + qval["id"] + "'> Question " + (qkey + 1) + " : <tr class='row'>" ;
+
+                    qDom += "<td class='questionImage' class='col'></td>" ;
+                    qDom += "<td class='col'>" + qval["description"] + "</td>" ;
+                    qDom += "<td class='col'> (points : " + qval["points"] + ")</td>" ;
+
+                    if(qval["allOrNone"] == true)
+                    {
+                        qDom += "<td class='col'>(tout correct ou rien)</td>" ;
                     }
 
-                    dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+                    qDom += "</tr><br/> <div class='responses' style='margin-left:100px'></div>" ;
 
-                    dom += "<td class='col'>" + val["name"] + "</td>" ;
+                    table.append(qDom) ;
 
-                    var mark = val["mark"] ;
-
-                    if(val["mark"] == 0)
+                    $.each(questionsResponses[qkey], function(rkey, rval)
                     {
-                        mark = "" ;
-                    }
+                        var rDom = "<tr class='row'>" ;
 
-                    dom += "<td class='col'>" + mark + "</td>" ;
+                        rDom += "<td class='col'> <div class='responseImage'></div> </td>" ;
+                        rDom += "<td class='col'>" + rval["description"] + "</td>" ;
+                        rDom += "<td class='col' style='padding-left:10px'> </td>" ;
 
-                    var chances = val["chances"] ;
+                        $("#" + qval["id"]).find("div.responses").append(rDom + "</tr>") ;
+                    }) ;
 
-                    if(chances == 0)
-                    {
-                        chances = "infinis" ;
-                    }
-
-                    dom += "<td class='col'>" + chances + "</td>" ;
-
-                    var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
-
-                    dom += "<td class='col'>" + beginDate + "</td>" ;
-
-                    var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
-
-                    dom += "<td class='col'>" + deadDate + "</td>" ;
-
-                    dom += "<td class='col'><button onclick='seeSurvey(" + val["id"] + ")'>Voir</button></td>" ;
-                    dom += "<td class='col'><button onclick='manageSurvey(" + val["id"] + ")'>Modifier</button></td>" ;
-                    dom += "<td class='col'><button onclick='deleteSurvey(" + val["id"] + ")'>Supprimer</button></td>" ;
-
-                    table.append(dom + "</tr>") ;
+                    table.append("<br/><br/></div>") ;
                 }) ;
             }) ;
-
-
-            function addSurvey()
-            {
-                window.location.replace("/teacher/surveys/addSurvey/view") ;
-            }
-
-            function seeSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/seeSurvey/view?surveyId=" + surveyId) ;
-            }
-
-            function manageSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/manageSurvey/view?surveyId=" + surveyId) ;
-            }
-
-            function deleteSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/deleteSurvey/view?surveyId=" + surveyId) ;
-            }
 
         </script>
         <!-- jQuery -->

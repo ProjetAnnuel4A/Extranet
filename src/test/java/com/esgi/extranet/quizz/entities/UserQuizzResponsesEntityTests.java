@@ -50,7 +50,7 @@ public class UserQuizzResponsesEntityTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(6)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -73,7 +73,7 @@ public class UserQuizzResponsesEntityTests
                 .id(new Long(1))
                 .userId(student.getId())
                 .surveyId(survey.getId())
-                .count(1)
+                .score(new Float(1))
                 .build() ;
 
         UserQuizzResponsesEntity userQuizzResponses = UserQuizzResponsesEntity.builder()

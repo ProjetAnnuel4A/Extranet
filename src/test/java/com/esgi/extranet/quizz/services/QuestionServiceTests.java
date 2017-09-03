@@ -53,7 +53,7 @@ public class QuestionServiceTests
                 .responses(responses)
                 .correctResponses(correctResponses)
                 .points(0)
-                .allOrNot(true)
+                .allOrNone(true)
                 .imageId(new Long(1))
                 .build() ;
 
@@ -72,12 +72,12 @@ public class QuestionServiceTests
 
         Assert.assertEquals("QuestionTest", question.getDescription()) ;
         Assert.assertEquals(0.0, question.getPoints(), 0) ;
-        Assert.assertEquals(true, question.isAllOrNot()) ;
+        Assert.assertEquals(true, question.isAllOrNone()) ;
         Assert.assertEquals(new Long(1), question.getImageId()) ;
 
         Assert.assertEquals(result.getDescription(), question.getDescription()) ;
         Assert.assertEquals(result.getPoints(), question.getPoints(), 0) ;
-        Assert.assertEquals(result.isAllOrNot(), question.isAllOrNot()) ;
+        Assert.assertEquals(result.isAllOrNone(), question.isAllOrNone()) ;
         Assert.assertEquals(result.getImageId(), question.getImageId()) ;
     }
 
@@ -92,7 +92,7 @@ public class QuestionServiceTests
 
         Assert.assertEquals("QuestionTest 2", question.getDescription()) ;
         Assert.assertEquals(1.0, question.getPoints(), 0) ;
-        Assert.assertEquals(false, question.isAllOrNot()) ;
+        Assert.assertEquals(false, question.isAllOrNone()) ;
         Assert.assertEquals(new Long(2), question.getImageId()) ;
     }
 

@@ -51,7 +51,7 @@ public class UserQuizzResponsesServiceTests
                 .id(new Long(1))
                 .userId(new Long(1))
                 .surveyId(new Long(2))
-                .count(1)
+                .score(1)
                 .build() ;
 
         userQuizzRepository.save(userQuizz) ;

@@ -115,27 +115,19 @@
                                 <h1>Liste des questionnaires</h1>
 
                                 <p>
-                                    <table id="surveys" class="container">
+                                <table id="surveys" class="container">
 
-                                        <tr class="row">
+                                    <tr class="row">
 
-                                            <th class="col">Image</th>
-                                            <th class="col">Nom</th>
-                                            <th class="col">Barème</th>
-                                            <th class="col">Essais autorisés</th>
-                                            <th class="col">Date de début</th>
-                                            <th class="col">Date de fin</th>
+                                        <th class="col">Image</th>
+                                        <th class="col">Nom</th>
+                                        <th class="col">Barème</th>
+                                        <th class="col">Essais</th>
+                                        <th class="col">Date limite</th>
 
-                                        </tr>
+                                    </tr>
 
-                                    </table>
-                                </p>
-
-                                <br/>
-                                <br/>
-
-                                <p>
-                                    <button onclick="addSurvey()">Ajouter un questionnaire</button>
+                                </table>
                                 </p>
                             </div>
                         </div>
@@ -200,79 +192,6 @@
 
                 $(".firstnamelastname").append(content) ;
             }) ;
-
-
-            var table = $("#surveys") ;
-
-            $.getJSON("/surveys", function(data)
-            {
-                $.each(data, function(key, val)
-                {
-                    var dom = "<tr class='row'>" ;
-
-                    if(val["imageId"] == null)
-                    {
-                        val["imageId"] = "" ;
-                    }
-
-                    dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-
-                    dom += "<td class='col'>" + val["name"] + "</td>" ;
-
-                    var mark = val["mark"] ;
-
-                    if(val["mark"] == 0)
-                    {
-                        mark = "" ;
-                    }
-
-                    dom += "<td class='col'>" + mark + "</td>" ;
-
-                    var chances = val["chances"] ;
-
-                    if(chances == 0)
-                    {
-                        chances = "infinis" ;
-                    }
-
-                    dom += "<td class='col'>" + chances + "</td>" ;
-
-                    var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
-
-                    dom += "<td class='col'>" + beginDate + "</td>" ;
-
-                    var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
-
-                    dom += "<td class='col'>" + deadDate + "</td>" ;
-
-                    dom += "<td class='col'><button onclick='seeSurvey(" + val["id"] + ")'>Voir</button></td>" ;
-                    dom += "<td class='col'><button onclick='manageSurvey(" + val["id"] + ")'>Modifier</button></td>" ;
-                    dom += "<td class='col'><button onclick='deleteSurvey(" + val["id"] + ")'>Supprimer</button></td>" ;
-
-                    table.append(dom + "</tr>") ;
-                }) ;
-            }) ;
-
-
-            function addSurvey()
-            {
-                window.location.replace("/teacher/surveys/addSurvey/view") ;
-            }
-
-            function seeSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/seeSurvey/view?surveyId=" + surveyId) ;
-            }
-
-            function manageSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/manageSurvey/view?surveyId=" + surveyId) ;
-            }
-
-            function deleteSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/deleteSurvey/view?surveyId=" + surveyId) ;
-            }
 
         </script>
         <!-- jQuery -->

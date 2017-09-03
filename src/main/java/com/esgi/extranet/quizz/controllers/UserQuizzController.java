@@ -51,30 +51,38 @@ public class UserQuizzController
         return userQuizzService.getUserQuizz(userQuizzId) ;
     }
 
-    @GetMapping("/getUsersQuizzByUserIdAndSurveyId")
-    public UserQuizzEntity getUsersQuizzByUserIdAndSurveyId(@RequestParam(name = "userId") Long userId,
-                                                            @RequestParam(name = "surveyId") Long surveyId)
+    @GetMapping("/getUserQuizzsByUserIdAndSurveyId")
+    public List<UserQuizzEntity> getUserQuizzsByUserIdAndSurveyId(@RequestParam(name = "userId") Long userId,
+                                                                  @RequestParam(name = "surveyId") Long surveyId)
     {
-        return userQuizzService.getUserQuizzByUserIdAndSurveyId(userId, surveyId) ;
+        return userQuizzService.getUserQuizzsByUserIdAndSurveyId(userId, surveyId) ;
     }
 
     @PostMapping("/addUserQuizz")
     public UserQuizzEntity addUserQuizz(@RequestParam(name = "userId") Long userId,
                                         @RequestParam(name = "surveyId") Long surveyId,
-                                        @RequestParam(name = "count") int count)
+                                        @RequestParam(name = "score") int score)
     {
 
-        return userQuizzService.addUserQuizz(userId, surveyId, count) ;
+        return userQuizzService.addUserQuizz(userId, surveyId, score) ;
     }
 
     @PostMapping("/updateUserQuizz")
     public UserQuizzEntity updateUserQuizz(@RequestParam(name = "userQuizzId") Long userQuizzId,
                                            @RequestParam(name = "userId") Long userId,
                                            @RequestParam(name = "surveyId") Long surveyId,
-                                           @RequestParam(name = "count") int count)
+                                           @RequestParam(name = "score") int score)
     {
 
-        return userQuizzService.updateUserQuizz(userQuizzId, userId, surveyId, count) ;
+        return userQuizzService.updateUserQuizz(userQuizzId, userId, surveyId, score) ;
+    }
+
+    @PostMapping("/updateUserQuizzScore")
+    public float updateUserQuizzScore(@RequestParam(name = "userQuizzId") Long userQuizzId,
+                                      @RequestParam(name = "note") int score)
+    {
+
+        return userQuizzService.updateUserQuizzScore(userQuizzId, score) ;
     }
 
     @RequestMapping(value = "/removeUserQuizz", method = RequestMethod.POST)

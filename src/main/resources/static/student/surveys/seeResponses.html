@@ -2,27 +2,32 @@
 
 <html lang="en">
 
-    <head>
+<head>
 
-        <meta charset="UTF-8">
-        <title>Brotherhood - Résultats</title>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Bootstrap -->
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <!-- Font Awesome -->
-        <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <!-- bootstrap-progressbar -->
-        <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-        <!-- bootstrap-daterangepicker -->
-        <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-        <!-- Custom Theme Style -->
-        <link href="/custom.min.css" rel="stylesheet">
+    <title>Brotherhood - Réponses du questionnaire</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-    </head>
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/custom.min.css" rel="stylesheet">
+
+</head>
 
     <body class="nav-md">
 
@@ -108,23 +113,27 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Résultats</h1>
+                                <h1>Réponses du questionnaire</h1>
 
                                 <p>
-                                    <table id="surveys" class="container">
+                                <table id="surveys" class="container">
 
-                                        <tr class="row">
+                                    <tr class="row">
 
-                                            <th class="col">Image</th>
-                                            <th class="col">Nom</th>
-                                            <th class="col">Barème</th>
-                                            <th class="col">Essais</th>
-                                            <th class="col">Date limite</th>
-                                            <th class="col">Note</th>
+                                        <th class="col">Image</th>
+                                        <th class="col">Nom</th>
+                                        <th class="col">Barème</th>
+                                        <th class="col">Essais</th>
+                                        <th class="col">Date limite</th>
 
-                                        </tr>
+                                    </tr>
 
-                                    </table>
+                                </table>
+
+                                <br/>
+
+                                <div id="results" class="container">
+                                </div>
                                 </p>
                             </div>
                         </div>
@@ -140,9 +149,9 @@
             var userId ;
 
             var table = $("#surveys") ;
+            var results = $("#results") ;
 
             var surveysDone = {} ;
-            var surveysScore = {} ;
             var today = new Date() ;
             var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
 
@@ -161,9 +170,9 @@
                 window.location.replace(urlDefault) ;
 
             $.post("/users/verifyToken",
-            {
-                token: getCookie("brotherhood")
-            }).done(function(data)
+                {
+                    token: getCookie("brotherhood")
+                }).done(function(data)
             {
                 switch(data)
                 {
@@ -182,9 +191,9 @@
             }) ;
 
             $.post("/users/getInformations",
-            {
-                token : getCookie("brotherhood")
-            }).done(function(data)
+                {
+                    token : getCookie("brotherhood")
+                }).done(function(data)
             {
                 var content = "" ;
 
@@ -196,91 +205,11 @@
                     if(key == "id")
                     {
                         userId = val ;
-
-                        getUsersQuizz(userId) ;
-                        displaySurveysDone(userId) ;
                     }
                 }) ;
 
                 $(".firstnamelastname").append(content) ;
             }) ;
-
-
-            function getUsersQuizz(userId)
-            {
-                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
-                {
-                    if(data != null)
-                    {
-                        $.each(data, function(key, val)
-                        {
-                            surveysDone[val["surveyId"]] = val["count"] ;
-
-                            $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + val["id"] + "&surveyId=" + val["surveyId"], function(data)
-                            {
-                                surveysScore[val["surveyId"]] = data ;
-                            }) ;
-                        }) ;
-                    }
-                }) ;
-            }
-
-            function displaySurveysDone(userId)
-            {
-                $.getJSON("/surveys", function(data)
-                {
-                    $.each(data, function(key, val)
-                    {
-                        var surveyResults = true ;
-
-                        if(surveysDone == null)
-                        {
-                            surveyResults = false ;
-                        }
-
-                        else
-                        {
-                            if(surveysDone[val["id"]] == null)
-                            {
-                                surveyResults = false ;
-                            }
-                        }
-
-                        if(surveyResults)
-                        {
-                            var dom = "<tr class='row'>" ;
-
-                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-                            dom += "<td class='col'>" + val["name"] + "</td>" ;
-                            dom += "<td class='col'>" + val["mark"] + "</td>" ;
-
-                            var chances = val["chances"] ;
-
-                            if(chances == 0)
-                            {
-                                chances = "infinis" ;
-                            }
-
-                            dom += "<td class='col'>" + chances + "</td>" ;
-                            dom += "<td class='col'>" + val["deadLine"] + "</td>" ;
-                            dom += "<td class='col'>" + surveysScore[val["id"]] + "</td>" ;
-
-                            if(val["deadLine"] >= todayString && (surveysDone[val["id"]] < val["chances"] || val["chances"] == 0))
-                            {
-                                dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
-                            }
-
-                            table.append(dom + "</tr>") ;
-                        }
-                    }) ;
-                }) ;
-            }
-
-
-            function answerSurvey(userId, surveyId)
-            {
-                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId + "&done=true") ;
-            }
 
         </script>
         <!-- jQuery -->

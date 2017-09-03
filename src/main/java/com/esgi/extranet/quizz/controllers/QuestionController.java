@@ -42,22 +42,22 @@ public class QuestionController
     @PostMapping("/addQuestion")
     public QuestionEntity addQuestion(@RequestParam(name = "description") String description,
                                       @RequestParam(name = "points") float points,
-                                      @RequestParam(name = "allOrNot") boolean allOrNot,
+                                      @RequestParam(name = "allOrNone") boolean allOrNone,
                                       @RequestParam(name = "imageId") Long imageId)
     {
 
-        return questionService.addQuestion(description, points, allOrNot, imageId) ;
+        return questionService.addQuestion(description, points, allOrNone, imageId) ;
     }
 
     @PostMapping("/updateQuestion")
     public QuestionEntity updateQuestion(@RequestParam(name = "questionId") Long questionId,
                                          @RequestParam(name = "description") String description,
                                          @RequestParam(name = "points") float points,
-                                         @RequestParam(name = "allOrNot") boolean allOrNot,
+                                         @RequestParam(name = "allOrNone") boolean allOrNone,
                                          @RequestParam(name = "imageId") Long imageId)
     {
 
-        return questionService.updateQuestion(questionId, description, points, allOrNot, imageId) ;
+        return questionService.updateQuestion(questionId, description, points, allOrNone, imageId) ;
     }
 
     @RequestMapping(value = "/removeQuestion", method = RequestMethod.POST)

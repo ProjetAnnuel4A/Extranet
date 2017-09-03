@@ -4,7 +4,7 @@ import lombok.* ;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties ;
 
 import javax.persistence.* ;
-import javax.validation.constraints.Min ;
+import javax.validation.constraints.DecimalMin ;
 import javax.validation.constraints.NotNull ;
 
 /**
@@ -33,10 +33,7 @@ public class UserQuizzEntity
     @JoinColumn(table = "survey", referencedColumnName = "id")
     private Long surveyId ;
 
-    @NotNull
-    @Column(nullable = false)
-    @Min(value = 1)
-    @Builder.Default
-    private int count = 1 ; // Nombre d'essais réalisés
+    @DecimalMin(value = "0.0")
+    private float score ;
 
 }

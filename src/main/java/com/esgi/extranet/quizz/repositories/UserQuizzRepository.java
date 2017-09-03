@@ -21,7 +21,7 @@ public interface UserQuizzRepository extends JpaRepository<UserQuizzEntity, Long
     @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.user_id = :userId")
     List<UserQuizzEntity> findAllByUserId(@Param("userId") Long userId) ;
     @Query(nativeQuery = true, value = "select * from user_quizz uq where uq.user_id = :userId and uq.survey_id = :surveyId")
-    UserQuizzEntity findByUserIdAndSurveyId(@Param("userId") Long userId,
-                                            @Param("surveyId") Long surveyId) ;
+    List<UserQuizzEntity> findAllByUserIdAndSurveyId(@Param("userId") Long userId,
+                                                     @Param("surveyId") Long surveyId) ;
 
 }

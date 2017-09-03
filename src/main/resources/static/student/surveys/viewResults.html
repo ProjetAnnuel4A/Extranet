@@ -4,13 +4,8 @@
 
     <head>
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Meta, title, CSS, favicons, etc. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Liste des questionnaires</title>
+        <meta charset="UTF-8">
+        <title>Brotherhood - Résultats</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
         <!-- Bootstrap -->
@@ -36,7 +31,7 @@
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
-                            <a href="/teacher/home" class="site_title"><span>Brotherhood</span></a>
+                            <a href="/admin/home" class="site_title"><span>Brotherhood</span></a>
                         </div>
 
                         <div class="clearfix"></div>
@@ -62,9 +57,10 @@
                                 <ul class="nav side-menu">
                                     <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
-                                            <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                            <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                            <li><a href="/student/marks/view">Consulter vos notes</a></li>
+                                            <li><a href="/student/planning/view">Consulter votre planning</a></li>
+                                            <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                                            <li><a href="/student/surveys/viewResults/view">Voir les résultats</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -97,7 +93,7 @@
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                        <li><a href="/changePassword"> Profile</a></li>
+                                        <li><a href="/user/changePassword/view"> Profil</a></li>
                                         <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                     </ul>
                                 </li>
@@ -112,7 +108,7 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Liste des questionnaires</h1>
+                                <h1>Résultats</h1>
 
                                 <p>
                                     <table id="surveys" class="container">
@@ -125,21 +121,14 @@
                                             <th class="col">Essais autorisés</th>
                                             <th class="col">Date de début</th>
                                             <th class="col">Date de fin</th>
+                                            <th class="col">Note</th>
 
                                         </tr>
 
                                     </table>
                                 </p>
-
-                                <br/>
-                                <br/>
-
-                                <p>
-                                    <button onclick="addSurvey()">Ajouter un questionnaire</button>
-                                </p>
                             </div>
                         </div>
-
                     </div>
                     <br />
                 </div>
@@ -149,15 +138,23 @@
 
         <script>
 
+            var userId ;
+
+            var table = $("#surveys") ;
+
+            var surveysDone = {} ;
+            var surveysScore = {} ;
+            var today = new Date() ;
+            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
+
             function getCookie(name)
             {
                 var value = "; " + document.cookie ;
                 var parts = value.split("; " + name + "=") ;
-
                 if (parts.length == 2) return parts.pop().split(";").shift() ;
             }
 
-            var urlStudent = "/student/home" ;
+            var urlTeacher = "/teacher/home" ;
             var urlAdmin = "/admin/home" ;
             var urlDefault = "/home" ;
 
@@ -165,16 +162,16 @@
                 window.location.replace(urlDefault) ;
 
             $.post("/users/verifyToken",
-                {
-                    token: getCookie("brotherhood")
-                }).done(function(data)
+            {
+                token: getCookie("brotherhood")
+            }).done(function(data)
             {
                 switch(data)
                 {
                     case "STUDENT":
-                        window.location.replace(urlStudent) ;
                         break ;
                     case "TEACHER":
+                        window.location.replace(urlTeacher) ;
                         break ;
                     case "ADMIN":
                         window.location.replace(urlAdmin) ;
@@ -186,9 +183,9 @@
             }) ;
 
             $.post("/users/getInformations",
-                {
-                    token : getCookie("brotherhood")
-                }).done(function(data)
+            {
+                token : getCookie("brotherhood")
+            }).done(function(data)
             {
                 var content = "" ;
 
@@ -196,82 +193,122 @@
                 {
                     if(key == "firstname" || key == "lastname")
                         content += val + " " ;
+
+                    if(key == "id")
+                    {
+                        userId = val ;
+
+                        getUsersQuizz(userId) ;
+                        displaySurveysDone(userId) ;
+                    }
                 }) ;
 
                 $(".firstnamelastname").append(content) ;
             }) ;
 
 
-            var table = $("#surveys") ;
-
-            $.getJSON("/surveys", function(data)
+            function getUsersQuizz(userId)
             {
-                $.each(data, function(key, val)
+                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
                 {
-                    var dom = "<tr class='row'>" ;
-
-                    if(val["imageId"] == null)
+                    if(data != null)
                     {
-                        val["imageId"] = "" ;
+                        $.each(data, function(key, val)
+                        {
+                            surveysDone[val["surveyId"]] += 1 ;
+                            surveysScore[val["id"]] = val["score"] ;
+                        }) ;
                     }
-
-                    dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-
-                    dom += "<td class='col'>" + val["name"] + "</td>" ;
-
-                    var mark = val["mark"] ;
-
-                    if(val["mark"] == 0)
-                    {
-                        mark = "" ;
-                    }
-
-                    dom += "<td class='col'>" + mark + "</td>" ;
-
-                    var chances = val["chances"] ;
-
-                    if(chances == 0)
-                    {
-                        chances = "infinis" ;
-                    }
-
-                    dom += "<td class='col'>" + chances + "</td>" ;
-
-                    var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
-
-                    dom += "<td class='col'>" + beginDate + "</td>" ;
-
-                    var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
-
-                    dom += "<td class='col'>" + deadDate + "</td>" ;
-
-                    dom += "<td class='col'><button onclick='seeSurvey(" + val["id"] + ")'>Voir</button></td>" ;
-                    dom += "<td class='col'><button onclick='manageSurvey(" + val["id"] + ")'>Modifier</button></td>" ;
-                    dom += "<td class='col'><button onclick='deleteSurvey(" + val["id"] + ")'>Supprimer</button></td>" ;
-
-                    table.append(dom + "</tr>") ;
                 }) ;
-            }) ;
-
-
-            function addSurvey()
-            {
-                window.location.replace("/teacher/surveys/addSurvey/view") ;
             }
 
-            function seeSurvey(surveyId)
+            function displaySurveysDone(userId)
             {
-                window.location.replace("/teacher/surveys/seeSurvey/view?surveyId=" + surveyId) ;
+                $.getJSON("/surveys", function(data)
+                {
+                    $.each(data, function(key, val)
+                    {
+                        var surveyResults = true ;
+
+                        if(surveysDone == null)
+                        {
+                            surveyResults = false ;
+                        }
+
+                        else
+                        {
+                            if(surveysDone[val["id"]] == null)
+                            {
+                                surveyResults = false ;
+                            }
+                        }
+
+                        if(surveyResults)
+                        {
+                            var dom = "<tr class='row'>" ;
+
+                            if(val["imageId"] == null)
+                            {
+                                val["imageId"] = "" ;
+                            }
+
+                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+
+                            dom += "<td class='col'>" + val["name"] + "</td>" ;
+
+                            var mark = val["mark"] ;
+                            var studentScore = surveysScore[val["id"]] ;
+
+                            if(val["mark"] == 0)
+                            {
+                                mark = "" ;
+                                studentScore = "" ;
+                            }
+
+                            else
+                            {
+                                if(surveysScore[val["id"]] == undefined)
+                                {
+                                    surveysScore[val["id"]] = 0 ;
+                                }
+                            }
+
+                            dom += "<td class='col'>" + mark + "</td>" ;
+
+                            var chances = val["chances"] ;
+
+                            if(chances == 0)
+                            {
+                                chances = "infinis" ;
+                            }
+
+                            dom += "<td class='col'>" + chances + "</td>" ;
+
+                            var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
+
+                            dom += "<td class='col'>" + beginDate + "</td>" ;
+
+                            var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
+
+                            dom += "<td class='col'>" + deadDate + "</td>" ;
+
+                            dom += "<td class='col'>" + studentScore + "</td>" ;
+
+                            if(val["deadLine"] >= todayString && (surveysDone[val["id"]] < val["chances"] || val["chances"] == 0))
+                            {
+                                dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
+                            }
+
+                            table.append(dom + "</tr>") ;
+                        }
+                    }) ;
+                }) ;
             }
 
-            function manageSurvey(surveyId)
-            {
-                window.location.replace("/teacher/surveys/manageSurvey/view?surveyId=" + surveyId) ;
-            }
 
-            function deleteSurvey(surveyId)
+            function answerSurvey(userId, surveyId)
             {
-                window.location.replace("/teacher/surveys/deleteSurvey/view?surveyId=" + surveyId) ;
+                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId) ;
             }
 
         </script>

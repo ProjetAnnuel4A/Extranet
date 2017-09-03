@@ -177,19 +177,24 @@ public class MappingController {
         return "student/planning";
     }
 
+    @GetMapping(value={"student/surveys/viewSurveys/view", ""})
+    public String studentViewsSurvey(){
+        return "student/surveys/viewSurveys";
+    }
+
     @GetMapping(value={"student/surveys/answerSurvey/view", ""})
     public String studentAnswerSurvey(){
         return "student/surveys/answerSurvey";
     }
 
-    @GetMapping(value={"student/surveys/seeResults/view", ""})
-    public String studentSeeResults(){
-        return "student/surveys/seeResults";
+    @GetMapping(value={"student/surveys/viewResults/view", ""})
+    public String studentViewResults(){
+        return "student/surveys/viewResults";
     }
 
-    @GetMapping(value={"student/surveys/viewSurveys/view", ""})
-    public String studentViewSurvey(){
-        return "student/surveys/viewSurveys";
+    @GetMapping(value={"student/surveys/seeResponses/view", ""})
+    public String studentSeeResponses(){
+        return "student/surveys/seeResponses";
     }
 
     /**
@@ -217,12 +222,32 @@ public class MappingController {
     }
 
     @GetMapping(value={"teacher/surveys/viewSurveys/view", ""})
-    public String teacherViewSurvey(){
+    public String teacherViewSurveys(){
         return "teacher/surveys/viewSurveys";
+    }
+
+    @GetMapping(value={"teacher/surveys/seeSurvey/view", ""})
+    public String teacherSeeSurvey(){
+        return "teacher/surveys/seeSurvey";
+    }
+
+    @GetMapping(value={"teacher/surveys/manageSurvey/view", ""})
+    public String teacherManageSurvey(){
+        return "teacher/surveys/manageSurvey";
     }
 
     @GetMapping(value={"teacher/surveys/deleteSurvey/view", ""})
     public String teacherDeleteSurvey(){
         return "teacher/surveys/deleteSurvey";
+    }
+
+    @GetMapping(value={"teacher/surveys/viewStudentResults/view", ""})
+    public String teacherViewStudentResults(){
+        return "teacher/surveys/viewStudentResults";
+    }
+
+    @GetMapping(value={"teacher/surveys/seeStudentResponses/view", ""})
+    public String teacherSeeStudentResponses(){
+        return "teacher/surveys/seeStudentResponses";
     }
 }

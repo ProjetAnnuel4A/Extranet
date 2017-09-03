@@ -125,11 +125,12 @@
                                             <h2>Questionnaire :</h2> <span class='error'></span>
 
                                             <ul class="container">
-                                                <li class="row">Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
+                                                <li class="row">Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*' hidden='true'/></li>
                                                 <li class="row">Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
                                                 <li class="row">Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
                                                 <li class="row">Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
-                                                <li class="row">Date limite : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/></li>
+                                                <li class="row">Date de début : <input type='date' name='surveyBeginLine' class='surveyBeginLine' onchange='updateDeadLine()'/><span class='error'></span></li>
+                                                <li class="row">Date de fin : <input type='date' name='surveyDeadLine' class='surveyDeadLine'/><span class='error'></span></li>
                                             </ul>
 
                                         </div>
@@ -169,14 +170,74 @@
 
         <script type = "text/javascript">
 
+            var today = new Date() ;
+            var tomorrow = new Date() ;
+            tomorrow = new Date(tomorrow.setDate(tomorrow.getDate() + 1)) ;
+
+
             $("input.surveyMark").val(parseFloat(0)) ;
             $("input.surveyChances").val(parseInt(0)) ;
 
-            var today = new Date() ;
-            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
 
-            $("input.surveyDeadLine").attr("min", todayString) ;
-            $("input.surveyDeadLine").attr("value", todayString) ;
+            function dateToDateFormFormat(date)
+            {
+                var dateFormatted = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).substr(-2, 2) + "-" + ("0" + date.getDate()).substr(-2, 2) ;
+
+                return dateFormatted ;
+            }
+
+            function updateDeadLine()
+            {
+                var beginDate = new Date() ;
+                var deadDate = beginDate ;
+                var beginDateForm = $("input.surveyBeginLine").val() ;
+                var deadDateForm = $("input.surveyDeadLine").val() ;
+
+                if(beginDateForm != "")
+                {
+                    beginDate = new Date(beginDateForm) ;
+
+                    if(deadDateForm != "")
+                    {
+                        deadDate = new Date(deadDateForm) ;
+                    }
+
+                    else
+                    {
+                        deadDate = beginDate ;
+                    }
+                }
+
+                if(beginDate >= deadDate)
+                {
+                    deadDate = new Date(beginDate.setDate(beginDate.getDate() + 1)) ;
+
+                    $("input.surveyDeadLine").attr("value", dateToDateFormFormat(deadDate)) ;
+                    $("input.surveyDeadLine").attr("min", dateToDateFormFormat(deadDate)) ;
+                }
+
+                else
+                {
+                    deadDate = new Date(beginDate.setDate(beginDate.getDate() + 1)) ;
+
+                    if(deadDate > today)
+                    {
+                        $("input.surveyDeadLine").attr("min", dateToDateFormFormat(deadDate)) ;
+                    }
+
+                    else
+                    {
+                        $("input.surveyDeadLine").attr("min", dateToDateFormFormat(tomorrow)) ;
+                    }
+                }
+            }
+
+            $("input.surveyBeginLine").attr("value", dateToDateFormFormat(today)) ;
+            $("input.surveyBeginLine").attr("min", dateToDateFormFormat(today)) ;
+
+            $("input.surveyDeadLine").attr("min", dateToDateFormFormat(tomorrow)) ;
+
+            updateDeadLine() ;
 
 
             function getCookie(name)
@@ -195,9 +256,9 @@
                 window.location.replace(urlDefault) ;
 
             $.post("/users/verifyToken",
-                {
-                    token: getCookie("brotherhood")
-                }).done(function(data)
+            {
+                token: getCookie("brotherhood")
+            }).done(function(data)
             {
                 switch(data)
                 {
@@ -216,9 +277,9 @@
             }) ;
 
             $.post("/users/getInformations",
-                {
-                    token : getCookie("brotherhood")
-                }).done(function(data)
+            {
+                token : getCookie("brotherhood")
+            }).done(function(data)
             {
                 var content = "" ;
 
@@ -438,10 +499,10 @@
 
                         dom += "<ul class='container'>" ;
 
-                            dom += "<li class='row'>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*'/></li>" ;
+                            dom += "<li class='row'>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*' hidden='true'/></li>" ;
                             dom += "<li class='row'>Description : <input type='text' name='questionDescription' class='questionDescription' required/><span class='error'></span></li>" ;
                             dom += "<li class='row'>Points : <input type='number' name='questionPoints' class='questionPoints' min='0' value='" + parseFloat(0) + "' step='0.1' onchange='calculateMark()' required/><span class='error'></span></li>" ;
-                            dom += "<li class='row'>Tout ou rien : <input type='checkbox' name='questionAllOrNot' class='questionAllOrNot'/></li>" ;
+                            dom += "<li class='row'>Tout correct ou rien : <input type='checkbox' name='questionAllOrNone' class='questionAllOrNone'/></li>" ;
 
                         dom += "</ul>" ;
 
@@ -496,7 +557,7 @@
 
                         dom += "<ul class='container'>" ;
 
-                            dom += "<li class='row'>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*'/></li>" ;
+                            dom += "<li class='row'>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*' hidden='true'/></li>" ;
                             dom += "<li class='row'>Description : <input type='text' name='responseDescription' class='responseDescription' required/><span class='error'></span></li>" ;
 
                             dom += "<li class='row'>Réponse correcte : <input type='checkbox' name='correctResponse' class='correctResponse'/></li>" ;
@@ -529,98 +590,112 @@
 
             function saveResponses()
             {
-                var domQuestions = $("div.question") ;
-
-                for(var i = 0 ; i < domQuestions.length ; i++)
+                $("div.question").each(function(qkey, qval)
                 {
-                    var questionReference = domQuestions[i].id ;
+                    var questionReference = qval.id ;
+                    console.log("[réponse] référence question : " + questionReference) ;
                     var domResponses = $("div.question[id='" + questionReference + "']").children("div.responses").children("div.response") ;
 
                     responses[questionReference] = new Array() ;
                     correctResponses[questionReference] = new Array() ;
 
-                    for(var j = 0 ; j < domResponses.get().length ; j++)
+                    $.each(domResponses, function(rkey, rval)
                     {
+                        console.log("[réponse] réponse description : " + domResponses.find("input.responseDescription")[rkey].value) ;
                         $.post("/responses/addResponse",
                         {
-                            description: domResponses.find("input.responseDescription")[j].value,
-                            imageId: domResponses.find("input.responseImage")[j].value
+                            description: domResponses.find("input.responseDescription")[rkey].value,
+                            imageId: domResponses.find("input.responseImage")[rkey].value
                         }).done(function(data)
                         {
+                            console.log("[réponse] réponse id : " + data["id"]) ;
                             responses[questionReference].push(data["id"]) ;
 
-                            for(var k = 0 ; k < domResponses.get().length ; k++)
+                            if(domResponses.find("input.correctResponse")[rkey].checked)
                             {
-                                if (domResponses.find("input.correctResponse")[k].checked)
-                                {
-                                    correctResponses[questionReference].push(data["id"]) ;
-                                }
+                                console.log("[réponse] réponse correcte id : " + data["id"]) ;
+                                correctResponses[questionReference].push(data["id"]) ;
                             }
-                        }).done() ;
-                    }
-                }
+                        }) ;
+                    }) ;
+                }) ;
             }
 
             function saveQuestions()
             {
                 var domQuestions = $("div.question") ;
 
-                for(var i = 0 ; i < domQuestions.length ; i++)
+                $.each(domQuestions, function(qkey, qval)
                 {
-                    var questionReference = domQuestions[i].id ;
-
+                    var questionReference = qval.id ;
+                    console.log("[question] référence question : " + questionReference) ;
                     $.post("/questions/addQuestion",
                     {
-                        description: domQuestions.find("input.questionDescription")[i].value,
-                        points: parseFloat(domQuestions.find("input.questionPoints")[i].value),
-                        allOrNot: domQuestions.find("input.questionAllOrNot")[i].checked,
-                        imageId: domQuestions.find("input.questionImage")[i].value
+                        description: domQuestions.find("input.questionDescription")[qkey].value,
+                        points: parseFloat(domQuestions.find("input.questionPoints")[qkey].value),
+                        allOrNone: domQuestions.find("input.questionAllOrNone")[qkey].checked,
+                        imageId: domQuestions.find("input.questionImage")[qkey].value
                     }).done(function(data)
                     {
-                        for(var k = 0 ; k < responses[questionReference].length ; k++)
+                        console.log("[question] question id : " + data["id"]) ;
+                        responses[questionReference] = new Array() ;
+                        responses[questionReference].push(1) ;
+                        $.each(responses[questionReference], function(rkey, rval)
                         {
                             $.post("/questions/addResponseForAQuestion",
                             {
                                 questionId: data["id"],
-                                responseId: responses[questionReference][k]
-                            }).done() ;
-                        }
-
-                        for(var l = 0 ; l < correctResponses[questionReference].length ; l++)
+                                responseId: rval
+                            }) ;
+                        }).done(function()
                         {
-                            $.post("/questions/addCorrectResponseForAQuestion",
+                            correctResponses[questionReference] = new Array() ;
+                            correctResponses[questionReference].push(1) ;
+                            $.each(correctResponses[questionReference], function(crkey, crval)
                             {
-                                questionId: data["id"],
-                                correctResponseId: correctResponses[questionReference][l]
-                            }).done() ;
-                        }
+                                $.post("/questions/addCorrectResponseForAQuestion",
+                                {
+                                    questionId: data["id"],
+                                    correctResponseId: crval
+                                }) ;
+                            }) ;
+                        });
 
                         questions.push(data["id"]) ;
-                    }).done() ;
-                }
+                    }) ;
+                }) ;
             }
 
             function saveSurvey()
             {
                 var domSurvey = $("#surveyDetails") ;
 
+                console.log("[questionnaire] date début (avant ajout) :" + domSurvey.find("input.surveyBeginLine")[0].value) ;
+                console.log("[questionnaire] date fin (avant ajout) :" + domSurvey.find("input.surveyDeadLine")[0].value) ;
+
                 $.post("/surveys/addSurvey",
                 {
                     name: domSurvey.find("input.surveyName")[0].value,
                     mark: parseFloat(domSurvey.find("input.surveyMark")[0].value),
                     chances: parseInt(domSurvey.find("input.surveyChances")[0].value),
+                    beginLine: domSurvey.find("input.surveyBeginLine")[0].value,
                     deadLine: domSurvey.find("input.surveyDeadLine")[0].value,
                     imageId: domSurvey.find("input.surveyImage")[0].value
                 }).done(function(data)
                 {
-                    for(var i = 0 ; i < questions.length ; i++)
+                    console.log("[questionnaire] date début (après ajout) : " + data["beginLine"]) ;
+                    console.log("[questionnaire] date fin (après ajout) : " + data["deadLine"]) ;
+                    console.log("[questionnaire] questionnaire id : " + data["id"]) ;
+                    questions = new Array() ;
+                    questions.push(1) ;
+                    $.each(questions, function(qkey, qval)
                     {
                         $.post("/surveys/addQuestionForASurvey",
                         {
                             surveyId: data["id"],
-                            questionId: questions[i]
-                        }).done() ;
-                    }
+                            questionId: qval
+                        }) ;
+                    }) ;
                 }) ;
             }
 
@@ -628,14 +703,32 @@
             {
                 if(verifyAll())
                 {
-                    saveResponses() ;
+                    $.getJSON("/surveys/getSurveyByName",
+                    {
+                        surveyName: $("#surveyDetails").find("input.surveyName")[0].value
+                    }).done(function(data)
+                    {
+                        if(data["present"] == false)
+                        {
+                            $("input.surveyName").next("span").text("") ;
 
-                    saveQuestions() ;
+                            saveResponses() ;
 
-                    saveSurvey() ;
+                            saveQuestions() ;
+
+                            saveSurvey() ;
+                        }
+
+                        else
+                        {
+                            $("input.surveyName").next("span").text(" Le nom de ce questionnaire existe déjà") ;
+
+                            alert("Le nom de ce questionnaire existe déjà") ;
+                        }
+                    }) ;
                 }
 
-                window.location.replace("/teacher/surveys/viewSurveys/view") ;
+                //window.location.replace("/teacher/surveys/viewSurveys/view") ;
             }
 
         </script>

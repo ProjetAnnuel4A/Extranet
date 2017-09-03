@@ -41,12 +41,12 @@ public class QuestionServiceImpl implements QuestionService
 
     @Override
     @Transactional
-    public QuestionEntity addQuestion(String description, float points, boolean allOrNot, Long imageId)
+    public QuestionEntity addQuestion(String description, float points, boolean allOrNone, Long imageId)
     {
         QuestionEntity questionEntity = QuestionEntity.builder()
                 .description(description)
                 .points(points)
-                .allOrNot(allOrNot)
+                .allOrNone(allOrNone)
                 .imageId(imageId)
                 .build() ;
 
@@ -57,13 +57,13 @@ public class QuestionServiceImpl implements QuestionService
 
     @Override
     @Transactional
-    public QuestionEntity updateQuestion(Long questionId, String description, float points, boolean allOrNot, Long imageId)
+    public QuestionEntity updateQuestion(Long questionId, String description, float points, boolean allOrNone, Long imageId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
 
         questionEntity.setDescription(description) ;
         questionEntity.setPoints(points) ;
-        questionEntity.setAllOrNot(allOrNot) ;
+        questionEntity.setAllOrNone(allOrNone) ;
         questionEntity.setImageId(imageId) ;
 
         questionRepository.save(questionEntity) ;
