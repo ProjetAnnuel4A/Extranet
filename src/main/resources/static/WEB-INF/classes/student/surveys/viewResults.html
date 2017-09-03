@@ -60,7 +60,7 @@
                                             <li><a href="/student/marks/view">Consulter vos notes</a></li>
                                             <li><a href="/student/planning/view">Consulter votre planning</a></li>
                                             <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                            <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
+                                            <li><a href="/student/surveys/viewResults/view">Voir les résultats</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -118,8 +118,9 @@
                                             <th class="col">Image</th>
                                             <th class="col">Nom</th>
                                             <th class="col">Barème</th>
-                                            <th class="col">Essais</th>
-                                            <th class="col">Date limite</th>
+                                            <th class="col">Essais autorisés</th>
+                                            <th class="col">Date de début</th>
+                                            <th class="col">Date de fin</th>
                                             <th class="col">Note</th>
 
                                         </tr>
@@ -142,9 +143,9 @@
             var table = $("#surveys") ;
 
             var surveysDone = {} ;
-            var surveysScore = {} ;
+            var studentScores = {} ;
             var today = new Date() ;
-            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
+            var todayString = (today.getYear() + 1900) + "-" + ("0" + (today.getMonth() + 1)).substr(-2, 2) + "-" + ("0" + today.getDate()).substr(-2, 2) ;
 
             function getCookie(name)
             {
@@ -214,12 +215,19 @@
                     {
                         $.each(data, function(key, val)
                         {
-                            surveysDone[val["surveyId"]] = val["count"] ;
-
-                            $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + val["id"] + "&surveyId=" + val["surveyId"], function(data)
+                            if(surveysDone[val["surveyId"]] == null)
                             {
-                                surveysScore[val["surveyId"]] = data ;
-                            }) ;
+                                surveysDone[val["surveyId"]] = 0 ;
+                            }
+
+                            surveysDone[val["surveyId"]] += 1 ;
+
+                            if(studentScores[val["surveyId"]] == null)
+                            {
+                                studentScores[val["surveyId"]] = new Array() ;
+                            }
+
+                            studentScores[val["surveyId"]].push(val["score"]) ;
                         }) ;
                     }
                 }) ;
@@ -248,29 +256,64 @@
 
                         if(surveyResults)
                         {
-                            var dom = "<tr class='row'>" ;
-
-                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-                            dom += "<td class='col'>" + val["name"] + "</td>" ;
-                            dom += "<td class='col'>" + val["mark"] + "</td>" ;
-
-                            var chances = val["chances"] ;
-
-                            if(chances == 0)
+                            for(var i = 0 ; i < surveysDone[val["id"]] ; i++)
                             {
-                                chances = "infinis" ;
+                                var dom = "<tr class='row'>" ;
+
+                                if(val["imageId"] == null)
+                                {
+                                    val["imageId"] = "" ;
+                                }
+
+                                dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+
+                                dom += "<td class='col'>" + val["name"] + "</td>" ;
+
+                                var mark = val["mark"] ;
+                                var studentScoreForThisSurvey = studentScores[val["id"]][i] ;
+
+                                if(val["mark"] == 0)
+                                {
+                                    mark = "" ;
+                                    studentScoreForThisSurvey = "" ;
+                                }
+
+                                else
+                                {
+                                    if(studentScores[val["id"]][i] == undefined)
+                                    {
+                                        studentScoreForThisSurvey = 0 ;
+                                    }
+                                }
+
+                                dom += "<td class='col'>" + mark + "</td>" ;
+
+                                var chances = val["chances"] ;
+
+                                if(chances == 0)
+                                {
+                                    chances = "infinis" ;
+                                }
+
+                                dom += "<td class='col'>" + chances + "</td>" ;
+
+                                var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
+
+                                dom += "<td class='col'>" + beginDate + "</td>" ;
+
+                                var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
+
+                                dom += "<td class='col'>" + deadDate + "</td>" ;
+
+                                dom += "<td class='col'>" + studentScoreForThisSurvey + "</td>" ;
+
+                                if((val["beginLine"] <= todayString) && (val["deadLine"] >= todayString) && ((surveysDone[val["id"]] < val["chances"]) || (val["chances"] == 0)))
+                                {
+                                    dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
+                                }
+
+                                table.append(dom + "</tr>") ;
                             }
-
-                            dom += "<td class='col'>" + chances + "</td>" ;
-                            dom += "<td class='col'>" + val["deadLine"] + "</td>" ;
-                            dom += "<td class='col'>" + surveysScore[val["id"]] + "</td>" ;
-
-                            if(val["deadLine"] >= todayString && (surveysDone[val["id"]] < val["chances"] || val["chances"] == 0))
-                            {
-                                dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
-                            }
-
-                            table.append(dom + "</tr>") ;
                         }
                     }) ;
                 }) ;
@@ -279,7 +322,7 @@
 
             function answerSurvey(userId, surveyId)
             {
-                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId + "&done=true") ;
+                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId) ;
             }
 
         </script>

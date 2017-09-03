@@ -79,7 +79,7 @@ public class UserQuizzController
 
     @PostMapping("/updateUserQuizzScore")
     public float updateUserQuizzScore(@RequestParam(name = "userQuizzId") Long userQuizzId,
-                                      @RequestParam(name = "note") int score)
+                                      @RequestParam(name = "score") int score)
     {
 
         return userQuizzService.updateUserQuizzScore(userQuizzId, score) ;

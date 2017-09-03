@@ -125,7 +125,7 @@
                                             <h2>Questionnaire :</h2> <span class='error'></span>
 
                                             <ul class="container">
-                                                <li class="row">Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*' hidden='true'/></li>
+                                                <li class="row" hidden>Image : <input type='file' name='surveyImage' class='surveyImage' class="profile_pic" accept='image/*'/></li>
                                                 <li class="row">Nom : <input type='text' name='surveyName' class='surveyName' required/><span class='error'></span></li>
                                                 <li class="row">Barème : <input type='number' name='surveyMark' class='surveyMark' min='0' step='0.1' readonly disabled required/><span class='error'></span></li>
                                                 <li class="row">Nombre d'essais possibles (0 = infini) : <input type='number' name='surveyChances' class='surveyChances' min='0' required/><span class='error'></span></li>
@@ -499,7 +499,7 @@
 
                         dom += "<ul class='container'>" ;
 
-                            dom += "<li class='row'>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*' hidden='true'/></li>" ;
+                            dom += "<li class='row' hidden>Image : <input type='file' name='questionImage' class='questionImage' accept='image/*'/></li>" ;
                             dom += "<li class='row'>Description : <input type='text' name='questionDescription' class='questionDescription' required/><span class='error'></span></li>" ;
                             dom += "<li class='row'>Points : <input type='number' name='questionPoints' class='questionPoints' min='0' value='" + parseFloat(0) + "' step='0.1' onchange='calculateMark()' required/><span class='error'></span></li>" ;
                             dom += "<li class='row'>Tout correct ou rien : <input type='checkbox' name='questionAllOrNone' class='questionAllOrNone'/></li>" ;
@@ -557,7 +557,7 @@
 
                         dom += "<ul class='container'>" ;
 
-                            dom += "<li class='row'>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*' hidden='true'/></li>" ;
+                            dom += "<li class='row' hidden>Image : <input type='file' name='responseImage' class='responseImage' accept='image/*'/></li>" ;
                             dom += "<li class='row'>Description : <input type='text' name='responseDescription' class='responseDescription' required/><span class='error'></span></li>" ;
 
                             dom += "<li class='row'>Réponse correcte : <input type='checkbox' name='correctResponse' class='correctResponse'/></li>" ;
@@ -725,10 +725,11 @@
 
                             alert("Le nom de ce questionnaire existe déjà") ;
                         }
+                    }).done(function()
+                    {
+                        //window.location.replace("/teacher/surveys/viewSurveys/view") ;
                     }) ;
                 }
-
-                //window.location.replace("/teacher/surveys/viewSurveys/view") ;
             }
 
         </script>

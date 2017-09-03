@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Brotherhood - Liste des questionnaires</title>
+        <title>Voir le questionnaire</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
         <!-- Bootstrap -->
@@ -36,7 +36,7 @@
                 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
-                            <a href="/admin/home" class="site_title"><span>Brotherhood</span></a>
+                            <a href="/teacher/home" class="site_title"><span>Brotherhood</span></a>
                         </div>
 
                         <div class="clearfix"></div>
@@ -62,10 +62,9 @@
                                 <ul class="nav side-menu">
                                     <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu">
-                                            <li><a href="/student/marks/view">Consulter vos notes</a></li>
-                                            <li><a href="/student/planning/view">Consulter votre planning</a></li>
-                                            <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                            <li><a href="/student/surveys/viewResults/view">Voir les résultats</a></li>
+                                            <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
+                                            <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                                            <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -98,7 +97,7 @@
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                        <li><a href="/user/changePassword/view"> Profil</a></li>
+                                        <li><a href="/changePassword"> Profile</a></li>
                                         <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                     </ul>
                                 </li>
@@ -113,31 +112,18 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Liste des questionnaires</h1>
+                                <h1>Voir le questionnaire</h1>
 
                                 <p>
-                                    <table id="surveys" class="container">
-
-                                        <tr class="row">
-
-                                            <th class="col">Image</th>
-                                            <th class="col">Nom</th>
-                                            <th class="col">Barème</th>
-                                            <th class="col">Essais autorisés</th>
-                                            <th class="col">Date de début</th>
-                                            <th class="col">Date de fin</th>
-
-                                        </tr>
-
-                                    </table>
-
-                                    <br/>
-
-                                    <div id="results" class="container">
+                                    <div id="surveyPresentation" class="container">
                                     </div>
+
+                                    <table id="survey" class="container">
+                                    </table>
                                 </p>
                             </div>
                         </div>
+
                     </div>
                     <br />
                 </div>
@@ -147,23 +133,15 @@
 
         <script>
 
-            var userId ;
-
-            var table = $("#surveys") ;
-            var results = $("#results") ;
-
-            var surveysDone = {} ;
-            var today = new Date() ;
-            var todayString = (today.getYear() + 1900) + "-" + ("0" + (today.getMonth() + 1)).substr(-2, 2) + "-" + ("0" + today.getDate()).substr(-2, 2) ;
-
             function getCookie(name)
             {
                 var value = "; " + document.cookie ;
                 var parts = value.split("; " + name + "=") ;
+
                 if (parts.length == 2) return parts.pop().split(";").shift() ;
             }
 
-            var urlTeacher = "/teacher/home" ;
+            var urlStudent = "/student/home" ;
             var urlAdmin = "/admin/home" ;
             var urlDefault = "/home" ;
 
@@ -171,16 +149,16 @@
                 window.location.replace(urlDefault) ;
 
             $.post("/users/verifyToken",
-            {
-                token: getCookie("brotherhood")
-            }).done(function(data)
+                {
+                    token: getCookie("brotherhood")
+                }).done(function(data)
             {
                 switch(data)
                 {
                     case "STUDENT":
+                        window.location.replace(urlStudent) ;
                         break ;
                     case "TEACHER":
-                        window.location.replace(urlTeacher) ;
                         break ;
                     case "ADMIN":
                         window.location.replace(urlAdmin) ;
@@ -192,9 +170,9 @@
             }) ;
 
             $.post("/users/getInformations",
-            {
-                token : getCookie("brotherhood")
-            }).done(function(data)
+                {
+                    token : getCookie("brotherhood")
+                }).done(function(data)
             {
                 var content = "" ;
 
@@ -202,117 +180,100 @@
                 {
                     if(key == "firstname" || key == "lastname")
                         content += val + " " ;
-
-                    if(key == "id")
-                    {
-                        userId = val ;
-
-                        getUsersQuizz(userId) ;
-                        displaySurveysNotDone(userId) ;
-                    }
                 }) ;
 
                 $(".firstnamelastname").append(content) ;
             }) ;
 
-
-            function getUsersQuizz(userId)
+            var getUrlParameter = function getUrlParameter(sParam)
             {
-                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i ;
+
+                for(i = 0 ; i < sURLVariables.length ; i++)
                 {
-                    if(data != null)
+                    sParameterName = sURLVariables[i].split('=') ;
+
+                    if(sParameterName[0] === sParam)
                     {
-                        $.each(data, function(key, val)
-                        {
-                            surveysDone[val["surveyId"]] += 1 ;
-                        }) ;
+                        return sParameterName[1] === undefined ? true : sParameterName[1] ;
                     }
-                }) ;
-            }
+                }
+            } ;
 
-            function displaySurveysNotDone(userId)
+
+            var surveyId = getUrlParameter('surveyId') ;
+
+
+            var surveyPresentation = $("#surveyPresentation") ;
+            var table = $("#survey") ;
+
+            var surveyDatas = {} ;
+            var surveyQuestions = {} ;
+            var questionsResponses = {} ;
+
+            $.getJSON("/surveys/getSurvey?surveyId=" + surveyId, function(data)
             {
-                $.getJSON("/surveys", function(data)
+                surveyDatas = data ;
+                surveyQuestions = data["questions"] ;
+
+                $.each(surveyQuestions, function(key, val)
                 {
-                    $.each(data, function(key, val)
-                    {
-                        var surveyOpen = false ;
-
-                        if(surveysDone == null)
-                        {
-                            surveyOpen = true ;
-                        }
-
-                        else
-                        {
-                            if(surveysDone[val["id"]] == null)
-                            {
-                                surveyOpen = true ;
-                            }
-                        }
-
-                        if(surveyOpen)
-                        {
-                            var dom = "<tr class='row'>" ;
-
-                            if(val["imageId"] == null)
-                            {
-                                val["imageId"] = "" ;
-                            }
-
-                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-
-                            dom += "<td class='col'>" + val["name"] + "</td>" ;
-
-                            var mark = val["mark"] ;
-
-                            if(val["mark"] == 0)
-                            {
-                                mark = "" ;
-                            }
-
-                            dom += "<td class='col'>" + mark + "</td>" ;
-
-                            var chances = val["chances"] ;
-
-                            if(chances == 0)
-                            {
-                                chances = "infinis" ;
-                            }
-
-                            dom += "<td class='col'>" + chances + "</td>" ;
-
-                            var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
-
-                            dom += "<td class='col'>" + beginDate + "</td>" ;
-
-                            var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
-
-                            dom += "<td class='col'>" + deadDate + "</td>" ;
-
-                            if((val["beginLine"] <= todayString) && (val["deadLine"] > todayString))
-                            {
-                                dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
-                            }
-
-                            table.append(dom + "</tr>") ;
-                        }
-                    }) ;
+                    questionsResponses[key] = val["responses"] ;
                 }) ;
-
-                results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
-            }
-
-
-            function answerSurvey(userId, surveyId)
+            }).done(function()
             {
-                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId + "&done=false") ;
-            }
+                var surveyDetails = "<h2>" + surveyDatas["name"] + "</h2> <div id='image'></div>" ;
+                surveyDetails += "<table class='container'><tr class='row'>" ;
+                surveyDetails += "<td class='col'> Barême :" + surveyDatas["mark"] + "</td>" ;
 
-            function seeResults(userId)
-            {
-                window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
-            }
+                var chances = surveyDatas["chances"] ;
+
+                if(chances == 0)
+                {
+                    chances = "infinis" ;
+                }
+
+                surveyDetails += "<td class='col'> Essais autorisés :" + chances + "</td>" ;
+                surveyDetails += "<td class='col'> Date de début :" + surveyDatas["beginLine"] + "</td>" ;
+                surveyDetails += "<td class='col'> Date de fin :" + surveyDatas["deadLine"] + "</td>" ;
+                surveyDetails += "</tr></table>" ;
+
+                surveyPresentation.append(surveyDetails + "<br/><br/>") ;
+
+                $.each(surveyQuestions, function(qkey, qval)
+                {
+                    var qDom = "<div class='question' style='margin-left:50px' id='" + qval["id"] + "'> Question " + (qkey + 1) + " : <tr class='row'>" ;
+
+                    qDom += "<td class='questionImage' class='col'></td>" ;
+                    qDom += "<td class='col'>" + qval["description"] + "</td>" ;
+                    qDom += "<td class='col'> (points : " + qval["points"] + ")</td>" ;
+
+                    if(qval["allOrNone"] == true)
+                    {
+                        qDom += "<td class='col'>(tout correct ou rien)</td>" ;
+                    }
+
+                    qDom += "</tr><br/> <div class='responses' style='margin-left:100px'></div>" ;
+
+                    table.append(qDom) ;
+
+                    $.each(questionsResponses[qkey], function(rkey, rval)
+                    {
+                        var rDom = "<tr class='row'>" ;
+
+                        rDom += "<td class='col'> <div class='responseImage'></div> </td>" ;
+                        rDom += "<td class='col'>" + rval["description"] + "</td>" ;
+                        rDom += "<td class='col' style='padding-left:10px'> </td>" ;
+
+                        $("#" + qval["id"]).find("div.responses").append(rDom + "</tr>") ;
+                    }) ;
+
+                    table.append("<br/><br/></div>") ;
+                }) ;
+            }) ;
 
         </script>
         <!-- jQuery -->

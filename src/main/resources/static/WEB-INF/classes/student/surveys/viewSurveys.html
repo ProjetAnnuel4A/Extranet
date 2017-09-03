@@ -65,7 +65,7 @@
                                             <li><a href="/student/marks/view">Consulter vos notes</a></li>
                                             <li><a href="/student/planning/view">Consulter votre planning</a></li>
                                             <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                            <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
+                                            <li><a href="/student/surveys/viewResults/view">Voir les résultats</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -123,8 +123,9 @@
                                             <th class="col">Image</th>
                                             <th class="col">Nom</th>
                                             <th class="col">Barème</th>
-                                            <th class="col">Essais</th>
-                                            <th class="col">Date limite</th>
+                                            <th class="col">Essais autorisés</th>
+                                            <th class="col">Date de début</th>
+                                            <th class="col">Date de fin</th>
 
                                         </tr>
 
@@ -153,7 +154,7 @@
 
             var surveysDone = {} ;
             var today = new Date() ;
-            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
+            var todayString = (today.getYear() + 1900) + "-" + ("0" + (today.getMonth() + 1)).substr(-2, 2) + "-" + ("0" + today.getDate()).substr(-2, 2) ;
 
             function getCookie(name)
             {
@@ -223,7 +224,7 @@
                     {
                         $.each(data, function(key, val)
                         {
-                            surveysDone[val["surveyId"]] = 1 ;
+                            surveysDone[val["surveyId"]] += 1 ;
                         }) ;
                     }
                 }) ;
@@ -254,13 +255,42 @@
                         {
                             var dom = "<tr class='row'>" ;
 
-                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-                            dom += "<td class='col'>" + val["name"] + "</td>" ;
-                            dom += "<td class='col'>" + val["mark"] + "</td>" ;
-                            dom += "<td class='col'>" + val["chances"] + "</td>" ;
-                            dom += "<td class='col'>" + val["deadLine"] + "</td>" ;
+                            if(val["imageId"] == null)
+                            {
+                                val["imageId"] = "" ;
+                            }
 
-                            if(val["deadLine"] >= todayString)
+                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+
+                            dom += "<td class='col'>" + val["name"] + "</td>" ;
+
+                            var mark = val["mark"] ;
+
+                            if(val["mark"] == 0)
+                            {
+                                mark = "" ;
+                            }
+
+                            dom += "<td class='col'>" + mark + "</td>" ;
+
+                            var chances = val["chances"] ;
+
+                            if(chances == 0)
+                            {
+                                chances = "infinis" ;
+                            }
+
+                            dom += "<td class='col'>" + chances + "</td>" ;
+
+                            var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
+
+                            dom += "<td class='col'>" + beginDate + "</td>" ;
+
+                            var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
+
+                            dom += "<td class='col'>" + deadDate + "</td>" ;
+
+                            if((val["beginLine"] <= todayString) && (val["deadLine"] > todayString))
                             {
                                 dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
                             }

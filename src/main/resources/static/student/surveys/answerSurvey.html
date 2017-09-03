@@ -325,9 +325,16 @@
                             }) ;
                         }) ;
                     }) ;
+                }).done(function()
+                {
+                    $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId, function(data)
+                    {
+                        $.post("/updateUserQuizzScore?userQuizzId=" + userQuizzId + "&score=" + data) ;
+                    }) ;
+                }).done(function()
+                {
+                    window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
                 }) ;
-
-                window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
             }
 
         </script>

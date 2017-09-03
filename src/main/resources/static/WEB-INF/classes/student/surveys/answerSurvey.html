@@ -65,7 +65,7 @@
                                             <li><a href="/student/marks/view">Consulter vos notes</a></li>
                                             <li><a href="/student/planning/view">Consulter votre planning</a></li>
                                             <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                            <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
+                                            <li><a href="/student/surveys/viewResults/view">Voir les résultats</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -243,8 +243,9 @@
                     chances = "infinis" ;
                 }
 
-                surveyDetails += "<td class='col'> Essais :" + chances + "</td>" ;
-                surveyDetails += "<td class='col'> Date limite :" + surveyDatas["deadLine"] + "</td>" ;
+                surveyDetails += "<td class='col'> Essais autorisés :" + chances + "</td>" ;
+                surveyDetails += "<td class='col'> Date de début :" + surveyDatas["beginLine"] + "</td>" ;
+                surveyDetails += "<td class='col'> Date de fin :" + surveyDatas["deadLine"] + "</td>" ;
                 surveyDetails += "</tr></table>" ;
 
                 surveyPresentation.append(surveyDetails + "<br/><br/>") ;
@@ -257,9 +258,9 @@
                     qDom += "<td class='col'>" + qval["description"] + "</td>" ;
                     qDom += "<td class='col'> (points : " + qval["points"] + ")</td>" ;
 
-                    if(qval["allOrNot"] == true)
+                    if(qval["allOrNone"] == true)
                     {
-                        qDom += "<td class='col'>*</td>" ;
+                        qDom += "<td class='col'>(tout correct ou rien)</td>" ;
                     }
 
                     qDom += "</tr><br/> <div class='responses' style='margin-left:100px'></div>" ;
@@ -272,7 +273,7 @@
 
                         rDom += "<td class='col'> <div class='responseImage'></div> </td>" ;
                         rDom += "<td class='col'>" + rval["description"] + "</td>" ;
-                        rDom += "<td class='col'>  <input type='checkbox' class='response' value=" + rval["id"] + "/> </td>" ;
+                        rDom += "<td class='col' style='padding-left:10px'> <input type='checkbox' class='response' value=" + rval["id"] + "/> </td>" ;
 
                         $("#" + qval["id"]).find("div.responses").append(rDom + "</tr>") ;
                     }) ;
@@ -286,66 +287,54 @@
 
             function confirm(userId, surveyId)
             {
-                var questionsResponsesChecked = {} ;
+                var userQuizzId = 0 ;
 
-                $(".question").each(function(data)
+                $.post("/usersQuizz/addUserQuizz?userId=" + userId + "&surveyId=" + surveyId + "&note=null", function(data)
                 {
-                    $.each(data, function(qkey, qval)
-                    {
-                        var responses = [] ;
+                    userQuizzId = data["id"] ;
+                }).done(function()
+                {
 
-                        $(".response:checked=true<.question:" + qval["id"]).each(function(data)
+                    var questionsResponsesChecked = {} ;
+
+                    $(".question").each(function(data)
+                    {
+                        $.each(data, function(qkey, qval)
                         {
-                            $.each(data, function(rkey, rval)
+                            var responses = [] ;
+
+                            $(".response:checked=true<.question:" + qval["id"]).each(function(data)
                             {
-                                questionsResponsesChecked[qval["id"]] = responses.push(rval["value"]);
+                                $.each(data, function(rkey, rval)
+                                {
+                                    questionsResponsesChecked[qval["id"]] = responses.push(rval["value"]);
+                                }) ;
                             }) ;
                         }) ;
                     }) ;
-                }) ;
 
-                var userQuizzId = 0 ;
-
-                var done = getUrlParameter('done') ;
-
-                if(done)
+                }).done(function()
                 {
-                    var usersQuizz = {} ;
-                    var count ;
-
-                    $.getJSON("/usersQuizz/getUsersQuizzByUserIdAndSurveyId?userId=" + userId + "&surveyId=" + surveyId, function(data)
+                    $.each(questionsResponsesChecked, function(qkey, qval)
                     {
-                        usersQuizz = data ;
-
-                        userQuizzId = usersQuizz["id"] ;
-
-                        $.post("/usersQuizz/removeAllUserQuizzResponses?userQuizzId=" + usersQuizz["id"]) ;
-                    }).done(function()
-                    {
-                        $.post("/usersQuizz/updateUserQuizz?id=" + usersQuizz["id"] + "&userId=" + usersQuizz["userId"] + "&surveyId=" + usersQuizz["surveyId"] + "&count=" + usersQuizz[count]++) ;
-                    }) ;
-                }
-
-                else
-                {
-                    $.post("/usersQuizz/addUserQuizz?userId=" + userId + "&surveyId=" + surveyId + "&count=1", function(data)
-                    {
-                        userQuizzId = data["id"] ;
-                    }) ;
-                }
-
-                $.each(questionsResponsesChecked, function(qkey, qval)
-                {
-                    $.post("/usersQuizzResponses/addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + qkey, function(data)
-                    {
-                        $.each(qval, function(rkey, rval)
+                        $.post("/usersQuizzResponses/addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + qkey, function(data)
                         {
-                            $.post("/usersQuizzResponses/addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + data["id"] + "&questionId=" + qkey + "&responseId=" + rval["value"]) ;
+                            $.each(qval, function(rkey, rval)
+                            {
+                                $.post("/usersQuizzResponses/addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + data["id"] + "&questionId=" + qkey + "&responseId=" + rval["value"]) ;
+                            }) ;
                         }) ;
                     }) ;
+                }).done(function()
+                {
+                    $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId, function(data)
+                    {
+                        $.post("/updateUserQuizzScore?userQuizzId=" + userQuizzId + "&score=" + data) ;
+                    }) ;
+                }).done(function()
+                {
+                    window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
                 }) ;
-
-                window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
             }
 
         </script>

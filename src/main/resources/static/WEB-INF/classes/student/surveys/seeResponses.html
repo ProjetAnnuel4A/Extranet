@@ -2,32 +2,32 @@
 
 <html lang="en">
 
-    <head>
+<head>
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Meta, title, CSS, favicons, etc. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Brotherhood - Liste des questionnaires</title>
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <title>Brotherhood - Réponses du questionnaire</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-        <!-- Bootstrap -->
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <!-- Font Awesome -->
-        <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-        <!-- bootstrap-progressbar -->
-        <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-        <!-- bootstrap-daterangepicker -->
-        <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-        <!-- Custom Theme Style -->
-        <link href="/custom.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="/custom.min.css" rel="stylesheet">
 
-    </head>
+</head>
 
     <body class="nav-md">
 
@@ -65,7 +65,7 @@
                                             <li><a href="/student/marks/view">Consulter vos notes</a></li>
                                             <li><a href="/student/planning/view">Consulter votre planning</a></li>
                                             <li><a href="/student/surveys/viewSurveys/view">Voir les questionnaires</a></li>
-                                            <li><a href="/student/surveys/viewResults/view">Voir les résultats</a></li>
+                                            <li><a href="/student/surveys/seeResults/view">Voir les résultats</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -113,28 +113,27 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Liste des questionnaires</h1>
+                                <h1>Réponses du questionnaire</h1>
 
                                 <p>
-                                    <table id="surveys" class="container">
+                                <table id="surveys" class="container">
 
-                                        <tr class="row">
+                                    <tr class="row">
 
-                                            <th class="col">Image</th>
-                                            <th class="col">Nom</th>
-                                            <th class="col">Barème</th>
-                                            <th class="col">Essais autorisés</th>
-                                            <th class="col">Date de début</th>
-                                            <th class="col">Date de fin</th>
+                                        <th class="col">Image</th>
+                                        <th class="col">Nom</th>
+                                        <th class="col">Barème</th>
+                                        <th class="col">Essais</th>
+                                        <th class="col">Date limite</th>
 
-                                        </tr>
+                                    </tr>
 
-                                    </table>
+                                </table>
 
-                                    <br/>
+                                <br/>
 
-                                    <div id="results" class="container">
-                                    </div>
+                                <div id="results" class="container">
+                                </div>
                                 </p>
                             </div>
                         </div>
@@ -154,7 +153,7 @@
 
             var surveysDone = {} ;
             var today = new Date() ;
-            var todayString = (today.getYear() + 1900) + "-" + ("0" + (today.getMonth() + 1)).substr(-2, 2) + "-" + ("0" + today.getDate()).substr(-2, 2) ;
+            var todayString = (today.getYear() + 1900) + "-" + ("0" + today.getMonth()).substr(-2, 2) + "-" + ("0" + today.getDay()).substr(-2, 2) ;
 
             function getCookie(name)
             {
@@ -171,9 +170,9 @@
                 window.location.replace(urlDefault) ;
 
             $.post("/users/verifyToken",
-            {
-                token: getCookie("brotherhood")
-            }).done(function(data)
+                {
+                    token: getCookie("brotherhood")
+                }).done(function(data)
             {
                 switch(data)
                 {
@@ -192,9 +191,9 @@
             }) ;
 
             $.post("/users/getInformations",
-            {
-                token : getCookie("brotherhood")
-            }).done(function(data)
+                {
+                    token : getCookie("brotherhood")
+                }).done(function(data)
             {
                 var content = "" ;
 
@@ -206,113 +205,11 @@
                     if(key == "id")
                     {
                         userId = val ;
-
-                        getUsersQuizz(userId) ;
-                        displaySurveysNotDone(userId) ;
                     }
                 }) ;
 
                 $(".firstnamelastname").append(content) ;
             }) ;
-
-
-            function getUsersQuizz(userId)
-            {
-                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
-                {
-                    if(data != null)
-                    {
-                        $.each(data, function(key, val)
-                        {
-                            surveysDone[val["surveyId"]] += 1 ;
-                        }) ;
-                    }
-                }) ;
-            }
-
-            function displaySurveysNotDone(userId)
-            {
-                $.getJSON("/surveys", function(data)
-                {
-                    $.each(data, function(key, val)
-                    {
-                        var surveyOpen = false ;
-
-                        if(surveysDone == null)
-                        {
-                            surveyOpen = true ;
-                        }
-
-                        else
-                        {
-                            if(surveysDone[val["id"]] == null)
-                            {
-                                surveyOpen = true ;
-                            }
-                        }
-
-                        if(surveyOpen)
-                        {
-                            var dom = "<tr class='row'>" ;
-
-                            if(val["imageId"] == null)
-                            {
-                                val["imageId"] = "" ;
-                            }
-
-                            dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
-
-                            dom += "<td class='col'>" + val["name"] + "</td>" ;
-
-                            var mark = val["mark"] ;
-
-                            if(val["mark"] == 0)
-                            {
-                                mark = "" ;
-                            }
-
-                            dom += "<td class='col'>" + mark + "</td>" ;
-
-                            var chances = val["chances"] ;
-
-                            if(chances == 0)
-                            {
-                                chances = "infinis" ;
-                            }
-
-                            dom += "<td class='col'>" + chances + "</td>" ;
-
-                            var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
-
-                            dom += "<td class='col'>" + beginDate + "</td>" ;
-
-                            var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
-
-                            dom += "<td class='col'>" + deadDate + "</td>" ;
-
-                            if((val["beginLine"] <= todayString) && (val["deadLine"] > todayString))
-                            {
-                                dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Répondre</button></td>" ;
-                            }
-
-                            table.append(dom + "</tr>") ;
-                        }
-                    }) ;
-                }) ;
-
-                results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
-            }
-
-
-            function answerSurvey(userId, surveyId)
-            {
-                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId + "&done=false") ;
-            }
-
-            function seeResults(userId)
-            {
-                window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
-            }
 
         </script>
         <!-- jQuery -->

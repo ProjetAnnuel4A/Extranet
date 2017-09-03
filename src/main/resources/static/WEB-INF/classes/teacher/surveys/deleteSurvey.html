@@ -113,6 +113,10 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
                                 <h1>Suppression d'un questionnaire</h1>
+
+                                <p>
+                                    Suppression en cours...
+                                </p>
                             </div>
                         </div>
 
@@ -196,7 +200,7 @@
             } ;
 
 
-            var surveyId = getUrlParameter('id') ;
+            var surveyId = getUrlParameter('surveyId') ;
 
             $.get("/usersQuizz/getAllUsersQuizzBySurveyId", {surveyId: surveyId}).done(function(data)
             {

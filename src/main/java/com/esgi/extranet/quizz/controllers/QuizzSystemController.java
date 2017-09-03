@@ -61,7 +61,7 @@ public class QuizzSystemController
 
     @PostMapping("/calculateSurveyScoreWithUserQuizzIdAndSurveyId")
     public float calculateSurveyScoreWithUserQuizzIdAndSurveyId(@RequestParam("userQuizzId") Long userQuizzId,
-                                                     @RequestParam("surveyId") Long surveyId)
+                                                                @RequestParam("surveyId") Long surveyId)
     {
         SurveyEntity survey = surveyService.getSurvey(surveyId) ;
         UserQuizzResponsesEntity[] userQuizzResponses = new UserQuizzResponsesEntity[survey.getQuestions().size()] ;
