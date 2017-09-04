@@ -735,8 +735,8 @@
                     name: domSurvey.find("input.surveyName")[0].value,
                     mark: parseFloat(domSurvey.find("input.surveyMark")[0].value),
                     chances: parseInt(domSurvey.find("input.surveyChances")[0].value),
-                    beginLine: domSurvey.find("input.surveyBeginLine")[0].value,
-                    deadLine: domSurvey.find("input.surveyDeadLine")[0].value,
+                    beginLine: new Date(domSurvey.find("input.surveyBeginLine")[0].value),
+                    deadLine: new Date(domSurvey.find("input.surveyDeadLine")[0].value),
                     imageId: domSurvey.find("input.surveyImage")[0].value
                 }).done(function(data)
                 {

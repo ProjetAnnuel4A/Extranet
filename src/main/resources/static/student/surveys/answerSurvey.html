@@ -244,8 +244,14 @@
                 }
 
                 surveyDetails += "<td class='col'> Essais autorisés :" + chances + "</td>" ;
-                surveyDetails += "<td class='col'> Date de début :" + surveyDatas["beginLine"] + "</td>" ;
-                surveyDetails += "<td class='col'> Date de fin :" + surveyDatas["deadLine"] + "</td>" ;
+
+                var beginDate = new Date(Date.parse(surveyDatas["beginLine"])).toLocaleDateString("fr-FR") ;
+
+                surveyDetails += "<td class='col'> Date de début :" + beginDate + "</td>" ;
+
+                var deadDate = new Date(Date.parse(surveyDatas["deadLine"])).toLocaleDateString("fr-FR") ;
+
+                surveyDetails += "<td class='col'> Date de fin :" + deadDate + "</td>" ;
                 surveyDetails += "</tr></table>" ;
 
                 surveyPresentation.append(surveyDetails + "<br/><br/>") ;
