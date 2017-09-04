@@ -289,16 +289,35 @@
 
             function calculateScore(userQuizzId, surveyId)
             {
-                $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId, function(data)
+                $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId).done(function(data)
                 {
-                    $.post("/updateUserQuizzScore?userQuizzId=" + userQuizzId + "&score=" + data).done(function()
+                    $.post("/usersQuizz/updateUserQuizzScore?userQuizzId=" + userQuizzId + "&score=" + data).done(function()
                     {
-                        window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
+                        window.location.replace("/student/surveys/viewResults/view?userId=" + userId) ;
                     }) ;
                 }) ;
             }
 
-            function saveResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked)
+            function saveResponsesChecked(userQuizzId, userQuizzResponseId, indexQuestion, indexResponseChecked)
+            {
+                var domQuestions = $("div.question") ;
+
+                if((questionsResponsesChecked[domQuestions[indexQuestion].id].length == 0) || (indexResponseChecked >= questionsResponsesChecked[domQuestions[indexQuestion].id].length))
+                {
+                    indexQuestion = indexQuestion + 1 ;
+                    indexResponseChecked = 0 ;
+
+                    return saveAllResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked) ;
+                }
+
+                $.post("/usersQuizzResponses/addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + userQuizzResponseId + "&responseId=" + questionsResponsesChecked[domQuestions[indexQuestion].id][indexResponseChecked]).done(function()
+                {
+                    indexResponseChecked = indexResponseChecked + 1 ;
+                    saveResponsesChecked(userQuizzId, userQuizzResponseId, indexQuestion, indexResponseChecked) ;
+                }) ;
+            }
+
+            function saveAllResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked)
             {
                 var domQuestions = $("div.question") ;
 
@@ -312,16 +331,12 @@
                     indexQuestion = indexQuestion + 1 ;
                     indexResponseChecked = 0 ;
 
-                    return saveResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked) ;
+                    return saveAllResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked) ;
                 }
 
-                $.post("/usersQuizzResponses/addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + domQuestions[indexQuestion].id, function(data)
+                $.post("/usersQuizzResponses/addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + domQuestions[indexQuestion].id).done(function(data)
                 {
-                    $.post("/usersQuizzResponses/addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + data["id"] + "&responseId=" + questionsResponsesChecked[domQuestions[indexQuestion].id][indexResponseChecked]) ;
-                }).done(function()
-                {
-                    indexResponseChecked = indexResponseChecked + 1 ;
-                    saveResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked) ;
+                    saveResponsesChecked(userQuizzId, data["id"], indexQuestion, indexResponseChecked) ;
                 }) ;
             }
 
@@ -351,7 +366,7 @@
                     }) ;
                 }).done(function()
                 {
-                    saveResponsesChecked(userQuizzId, 0, 0) ;
+                    saveAllResponsesChecked(userQuizzId, 0, 0) ;
                 }) ;
             }
 

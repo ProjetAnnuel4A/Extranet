@@ -18,28 +18,31 @@ public class QuizzSystem
 
         int nbCorrectResponses = 0 ;
 
-        if(question.isAllOrNone())
+        if(userQuizzResponses != null)
         {
-            if(userQuizzResponses.getResponses().size() != question.getCorrectResponses().size())
+            if(question.isAllOrNone())
             {
-                return 0 ;
-            }
-        }
-
-        for(int i = 0 ; i < userQuizzResponses.getResponses().size() ; i++)
-        {
-            boolean responseCorrect = false ;
-
-            if(question.getCorrectResponses().contains(userQuizzResponses.getResponses().get(i)))
-            {
-                responseCorrect = true ;
-
-                nbCorrectResponses++ ;
+                if(userQuizzResponses.getResponses().size() != question.getCorrectResponses().size())
+                {
+                    return 0 ;
+                }
             }
 
-            if(!responseCorrect)
+            for(int i = 0 ; i < userQuizzResponses.getResponses().size() ; i++)
             {
-                return 0 ;
+                boolean responseCorrect = false ;
+
+                if(question.getCorrectResponses().contains(userQuizzResponses.getResponses().get(i)))
+                {
+                    responseCorrect = true ;
+
+                    nbCorrectResponses++ ;
+                }
+
+                if(!responseCorrect)
+                {
+                    return 0 ;
+                }
             }
         }
 
@@ -53,7 +56,18 @@ public class QuizzSystem
 
         else
         {
-            score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+            if(question.getCorrectResponses().size() > 0)
+            {
+                score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+            }
+
+            else
+            {
+                if(nbCorrectResponses == 0)
+                {
+                    score = question.getPoints() ;
+                }
+            }
         }
 
         return score ;
@@ -65,31 +79,34 @@ public class QuizzSystem
 
         int nbCorrectResponses = 0 ;
 
-        if(question.isAllOrNone())
+        if(userResponses != null)
         {
-            if(userResponses.size() != question.getCorrectResponses().size())
+            if(question.isAllOrNone())
             {
-                return 0 ;
-            }
-        }
-
-        for(int i = 0 ; i < userResponses.size() ; i++)
-        {
-            boolean responseCorrect = false ;
-
-            for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
-            {
-                if(userResponses.get(i).getId() == question.getCorrectResponses().get(j).getId())
+                if(userResponses.size() != question.getCorrectResponses().size())
                 {
-                    responseCorrect = true ;
-
-                    nbCorrectResponses++ ;
+                    return 0 ;
                 }
             }
 
-            if(!responseCorrect)
+            for(int i = 0 ; i < question.getCorrectResponses().size() ; i++)
             {
-                return 0 ;
+                boolean responseCorrect = false ;
+
+                for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
+                {
+                    if(userResponses.get(i).getId() == question.getCorrectResponses().get(j).getId())
+                    {
+                        responseCorrect = true ;
+
+                        nbCorrectResponses++ ;
+                    }
+                }
+
+                if(!responseCorrect)
+                {
+                    return 0 ;
+                }
             }
         }
 
@@ -103,7 +120,18 @@ public class QuizzSystem
 
         else
         {
-            score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+            if(question.getCorrectResponses().size() > 0)
+            {
+                score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+            }
+
+            else
+            {
+                if(nbCorrectResponses == 0)
+                {
+                    score = question.getPoints() ;
+                }
+            }
         }
 
         return score ;
@@ -115,31 +143,34 @@ public class QuizzSystem
 
         int nbCorrectResponses = 0 ;
 
-        if(question.isAllOrNone())
+        if(userResponses != null)
         {
-            if(userResponses.length != question.getCorrectResponses().size())
+            if(question.isAllOrNone())
             {
-                return 0 ;
-            }
-        }
-
-        for(int i = 0 ; i < userResponses.length ; i++)
-        {
-            boolean responseCorrect = false ;
-
-            for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
-            {
-                if(userResponses[i].getId() == question.getCorrectResponses().get(j).getId())
+                if(userResponses.length != question.getCorrectResponses().size())
                 {
-                    responseCorrect = true ;
-
-                    nbCorrectResponses++ ;
+                    return 0 ;
                 }
             }
 
-            if(!responseCorrect)
+            for(int i = 0 ; i < userResponses.length ; i++)
             {
-                return 0 ;
+                boolean responseCorrect = false ;
+
+                for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
+                {
+                    if(userResponses[i].getId() == question.getCorrectResponses().get(j).getId())
+                    {
+                        responseCorrect = true ;
+
+                        nbCorrectResponses++ ;
+                    }
+                }
+
+                if(!responseCorrect)
+                {
+                    return 0 ;
+                }
             }
         }
 
@@ -153,11 +184,36 @@ public class QuizzSystem
 
         else
         {
-            score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+            if(question.getCorrectResponses().size() > 0)
+            {
+                score = (question.getPoints() / question.getCorrectResponses().size()) * nbCorrectResponses ;
+            }
+
+            else
+            {
+                if(nbCorrectResponses == 0)
+                {
+                    score = question.getPoints() ;
+                }
+            }
         }
 
         return score ;
     }
+
+    /*
+    public static float calculateSurveyScore(SurveyEntity survey, ArrayList<UserQuizzResponsesEntity> userQuizzResponses)
+    {
+        float score = 0 ;
+
+        for(int i = 0 ; i < survey.getQuestions().size() ; i++)
+        {
+            score += calculateQuestionScore(survey.getQuestions().get(i), userQuizzResponses.get(i)) ;
+        }
+
+        return score ;
+    }
+    */
 
     public static float calculateSurveyScore(SurveyEntity survey, UserQuizzResponsesEntity[] userQuizzResponses)
     {
