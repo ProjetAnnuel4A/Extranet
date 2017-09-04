@@ -1,12 +1,9 @@
 package com.esgi.extranet.school.repositories;
 
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author timotheearnauld

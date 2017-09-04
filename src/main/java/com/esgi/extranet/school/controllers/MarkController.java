@@ -1,5 +1,7 @@
 package com.esgi.extranet.school.controllers;
 
+import com.esgi.extranet.login.Service.UserServices;
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.school.entities.MarkEntity;
 import com.esgi.extranet.school.services.MarkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ public class MarkController {
     private final MarkService markService;
 
     @Autowired
-    public MarkController(MarkService markService) {
+    public MarkController(MarkService markService, UserServices userServices) {
         this.markService = markService;
     }
 
@@ -30,6 +32,11 @@ public class MarkController {
                               @RequestParam(name="idCourse")Long idCourse,
                               @RequestParam(name="mark")Float mark){
         return markService.addMark(idStudent, idCourse, mark);
+    }
+
+    @GetMapping("/getMarkForStudent")
+    public List<MarkEntity> getMarkForStudent(@RequestParam(name="idStudent") int idStudent){
+        return markService.getMarkForStudent(idStudent);
     }
 
     @RequestMapping(value = "/removeMark", method = RequestMethod.POST)

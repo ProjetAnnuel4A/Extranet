@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Résultats des étudiants</title>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+        <!-- Bootstrap -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <!-- Font Awesome -->
+        <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- bootstrap-progressbar -->
+        <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <!-- bootstrap-daterangepicker -->
+        <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- Custom Theme Style -->
+        <link href="/custom.min.css" rel="stylesheet">
+
+    </head>
+
+    <body class="nav-md">
+
+        <div class="container body">
+            <div class="main_container">
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="/teacher/home" class="site_title"><span>Brotherhood</span></a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <!-- menu profile quick info -->
+                        <div class="profile clearfix">
+                            <div class="profile_pic">
+                                <img src="/images/logo.png" alt="..." class="img-circle profile_img">
+                            </div>
+                            <div class="profile_info">
+                                <span>Welcome,</span>
+                                <h2 class="firstnamelastname"></h2>
+                            </div>
+                        </div>
+                        <!-- /menu profile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                            <div class="menu_section">
+                                <h3>General</h3>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-home"></i> Accueil <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu">
+                                            <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
+                                            <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
+                                            <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                            <li><a href="/teacher/surveys/viewStudentsResults/view">Voir les résultats des étudiants</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /sidebar menu -->
+
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" style="width:100%" data-placement="top" title="Logout" href="/home">
+                                <span class="glyphicon glyphicon-off"  aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+
+                <!-- top navigation -->
+                <div class="top_nav">
+                    <div class="nav_menu">
+                        <nav>
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="/images/logo.png" alt=""><span class="firstnamelastname"></span>
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                        <li><a href="/changePassword"> Profile</a></li>
+                                        <li><a href="/home"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <!-- /top navigation -->
+
+                <!-- page content -->
+                <div class="right_col" role="main">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard_graph">
+                                <h1>Résultats des étudiants</h1>
+
+                                <p>
+                                    <div id="students">
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <!-- /page content -->
+            </div>
+        </div>
+
+        <script>
+
+            var studentsDatas = $("#students") ;
+
+            var today = new Date() ;
+
+            function getCookie(name)
+            {
+                var value = "; " + document.cookie ;
+                var parts = value.split("; " + name + "=") ;
+
+                if (parts.length == 2) return parts.pop().split(";").shift() ;
+            }
+
+            var urlStudent = "/student/home" ;
+            var urlAdmin = "/admin/home" ;
+            var urlDefault = "/home" ;
+
+            if(getCookie("brotherhood") == null)
+                window.location.replace(urlDefault) ;
+
+            $.post("/users/verifyToken",
+                {
+                    token: getCookie("brotherhood")
+                }).done(function(data)
+            {
+                switch(data)
+                {
+                    case "STUDENT":
+                        window.location.replace(urlStudent) ;
+                        break ;
+                    case "TEACHER":
+                        break ;
+                    case "ADMIN":
+                        window.location.replace(urlAdmin) ;
+                        break ;
+                    default:
+                        window.location.replace(urlDefault) ;
+                        break ;
+                }
+            }) ;
+
+            $.post("/users/getInformations",
+                {
+                    token : getCookie("brotherhood")
+                }).done(function(data)
+            {
+                var content = "" ;
+
+                $.each(data, function(key, val)
+                {
+                    if(key == "firstname" || key == "lastname")
+                        content += val + " " ;
+                }) ;
+
+                $(".firstnamelastname").append(content) ;
+            }) ;
+
+
+            var table ;
+
+            var surveysDone ;
+            var studentScores ;
+
+            var userQuizzs ;
+
+            function getUsersQuizz(userId)
+            {
+                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
+                {
+                    if(data != null)
+                    {
+                        userQuizzs = data ;
+                        userQuizzs.sort(function (a, b){return a.id - b.id ;}) ;
+                        userQuizzs.sort(function (a, b){return a.surveyId - b.surveyId ;}) ;
+
+                        $.each(data, function(key, val)
+                        {
+                            if(surveysDone[val["surveyId"]] == null)
+                            {
+                                surveysDone[val["surveyId"]] = 0 ;
+                            }
+
+                            surveysDone[val["surveyId"]] += 1 ;
+
+                            if(studentScores[val["surveyId"]] == null)
+                            {
+                                studentScores[val["surveyId"]] = new Array() ;
+                            }
+
+                            studentScores[val["surveyId"]].push(val["score"]) ;
+                        }) ;
+                    }
+
+                    else
+                    {
+                        return false ;
+                    }
+                }) ;
+            }
+
+            function displaySurveysDone(userId)
+            {
+                $.getJSON("/surveys", function(data)
+                {
+                    $.each(data, function(key, val)
+                    {
+                        var surveyResults = true ;
+
+                        if(surveysDone == null)
+                        {
+                            surveyResults = false ;
+                        }
+
+                        else
+                        {
+                            if(surveysDone[val["id"]] == null)
+                            {
+                                surveyResults = false ;
+                            }
+                        }
+
+                        if(surveyResults)
+                        {
+                            for(var i = 0 ; i < surveysDone[val["id"]] ; i++)
+                            {
+                                var dom = "<tr class='row'>" ;
+
+                                if(val["imageId"] == null)
+                                {
+                                    val["imageId"] = "" ;
+                                }
+
+                                dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+
+                                dom += "<td class='col'>" + val["name"] + "</td>" ;
+
+                                var mark = val["mark"] ;
+                                var studentScoreForThisSurvey = studentScores[val["id"]][i] ;
+
+                                if(val["mark"] == 0)
+                                {
+                                    mark = "" ;
+                                    studentScoreForThisSurvey = "" ;
+                                }
+
+                                else
+                                {
+                                    if(studentScores[val["id"]][i] == undefined)
+                                    {
+                                        studentScoreForThisSurvey = 0 ;
+                                    }
+                                }
+
+                                dom += "<td class='col'>" + mark + "</td>" ;
+
+                                var chances = val["chances"] ;
+
+                                if(chances == 0)
+                                {
+                                    chances = "infinis" ;
+                                }
+
+                                dom += "<td class='col'>" + chances + "</td>" ;
+
+                                var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
+
+                                dom += "<td class='col'>" + beginDate + "</td>" ;
+
+                                var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
+
+                                dom += "<td class='col'>" + deadDate + "</td>" ;
+
+                                dom += "<td class='col'>" + studentScoreForThisSurvey + "</td>" ;
+
+                                var userQuizzSurveyId ;
+
+                                for(var j = 0 ; userQuizzSurveyId == null ; j++)
+                                {
+                                    if((userQuizzs[j]["surveyId"] == val["id"]) && (userQuizzs[j]["score"] == studentScoreForThisSurvey))
+                                    {
+                                        userQuizzSurveyId = userQuizzs[j]["id"] ;
+                                        userQuizzs.splice(j, 1) ;
+                                    }
+                                }
+
+                                dom += "<td class='col'><button onclick='seeStudentResponses(" + userQuizzSurveyId + ", " + val["id"] + ")'>Voir les réponses</button></td>" ;
+
+                                table.append(dom + "</tr>") ;
+                            }
+                        }
+                    }) ;
+                }) ;
+            }
+
+            $.getJSON("/users/getUsers").done(function(data)
+            {
+                $.each(data, function(key, val)
+                {
+                    $.post("/users/getInformations", {token : val["token"]}).done(function(data)
+                    {
+                        if(data["role"] == "STUDENT")
+                        {
+                            var userId = data["id"] ;
+
+                            var dom = "<div id=" + userId + ">" ;
+
+                            dom += "<p>" + data["lastname"] + " " + data["firstname"] + " " + data["idClassmate"] + "</p>" ;
+
+                            dom += "<table class='surveys' id=" + userId + " class='container'>" ;
+
+                            dom += "<tr class='row'>" ;
+
+                            dom += "<th class='col'>Image</th>" ;
+
+                            dom += "<th class='col'>Nom</th>" ;
+
+                            dom += "<th class='col'>Barème</th>" ;
+
+                            dom += "<th class='col'>Essais autorisés</th>" ;
+
+                            dom += "<th class='col'>Date de début</th>" ;
+
+                            dom += "<th class='col'>Date de fin</th>" ;
+
+                            dom += "<th class='col'>Note</th>" ;
+
+                            dom += "</tr></table></div>" ;
+
+                            studentsDatas.append(dom) ;
+
+                            table = $(".surveys[id='" + userId + "']") ;
+
+                            surveysDone = {} ;
+                            studentScores = {} ;
+
+                            var result = getUsersQuizz(userId) ;
+
+                            if(result != false)
+                            {
+                                displaySurveysDone(userId) ;
+                            }
+                        }
+                    }) ;
+                }) ;
+            }) ;
+
+
+            function seeStudentResponses(userQuizzId, surveyId)
+            {
+                window.location.replace("/teacher/surveys/seeStudentResponses/view?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId) ;
+            }
+
+        </script>
+        <!-- jQuery -->
+
+        <!-- Custom Theme Scripts -->
+        <script src="/custom.min.js"></script>
+
+    </body>
+
+</html>

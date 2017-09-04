@@ -1,18 +1,14 @@
 package com.esgi.extranet.administration.controllers;
 
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.TeacherService;
-import com.esgi.extranet.school.entities.StudentEntity;
+import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,42 +27,42 @@ public class TeacherController {
     }
 
     @GetMapping("")
-    public List<TeacherEntity> getAll(){
-        return teacherService.getAll();
+    public List<UserEntity> getAll(){
+        return teacherService.getAllTeachers();
     }
 
     @GetMapping("/getTeacher")
-    public TeacherEntity getTeacher(@RequestParam("id")Long id){
+    public UserEntity getTeacher(@RequestParam("id")Long id){
         return teacherService.getTeacher(id);
     }
 
     @PostMapping(value = "/addTeacher")
-    public TeacherEntity addTeacher(@RequestParam(name = "firstname") String firstname,
+    public UserEntity addTeacher(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
-                             @RequestParam(name = "photo") String photo,
                              @RequestParam(name = "address") String address){
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return teacherService.addTeacher(firstname, lastname, email, date, photo, address);
+        SecureRandom random = new SecureRandom();
+        String password = new BigInteger(130, random).toString(32);
+        return teacherService.addTeacher(firstname, lastname, email, password, date, "", address);
     }
 
     @PostMapping("/updateTeacher")
-    public TeacherEntity udpateTeacher(@RequestParam(name = "firstname") String firstname,
+    public UserEntity updateTeacher(@RequestParam(name = "firstname") String firstname,
                                        @RequestParam(name = "lastname") String lastname,
                                        @RequestParam(name = "email") String email,
                                        @RequestParam(name = "birthday") String birthday,
-                                       @RequestParam(name = "photo") String photo,
                                        @RequestParam(name = "address") String address,
                                        @RequestParam(name = "id") Long id){
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return teacherService.updateTeacher(firstname, lastname, email, date, photo, address, id);
+        return teacherService.updateTeacher(firstname, lastname, email, date, address, id);
     }
 
     @RequestMapping(value = "/removeTeacher", method = RequestMethod.POST)

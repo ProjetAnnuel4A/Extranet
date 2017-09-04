@@ -1,8 +1,8 @@
 package com.esgi.extranet.school.controllers;
 
 import com.esgi.extranet.administration.entities.CourseEntity;
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.TeacherService;
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.school.entities.ClassmateEntity;
 import com.esgi.extranet.school.services.ClassmateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class ClassmateController {
     }
 
     @GetMapping("/getTeachersForClassmate")
-    public List<TeacherEntity> getTeachersForClassmate(@RequestParam("idClassmate")Long idClassmate){
+    public List<UserEntity> getTeachersForClassmate(@RequestParam("idClassmate")Long idClassmate){
         ClassmateEntity teachersId = classmateService.getClassmate(idClassmate);
         return teachersId.getTeacherEntities();
     }
@@ -64,7 +64,7 @@ public class ClassmateController {
     }
 
     @GetMapping("/getTeachersFromClassmate")
-    public List<TeacherEntity>getTeachersFromClassmate(@RequestParam("idClassmate")Long idClassmate){
+    public List<UserEntity>getTeachersFromClassmate(@RequestParam("idClassmate")Long idClassmate){
         return classmateService.getTeachersFromClassmate(idClassmate);
     }
 

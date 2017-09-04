@@ -1,7 +1,7 @@
 package com.esgi.extranet.administration.services;
 
 import com.esgi.extranet.administration.entities.CourseEntity;
-import com.esgi.extranet.administration.entities.TeacherEntity;
+import com.esgi.extranet.login.UserEntity;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface CourseService {
     CourseEntity addCourse(String coursename);
     boolean removeCourse(Long id);
     CourseEntity getCourse(Long courseId);
-    List<TeacherEntity> getTeachersForACourse(Long courseId);
+    List<UserEntity> getTeachersForACourse(Long courseId);
     boolean addTeacherForACourse(Long courseId, Long teacherId);
     boolean removeTeacherFromACourse(Long courseId, Long teacherId);
 }

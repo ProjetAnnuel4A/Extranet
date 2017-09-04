@@ -1,9 +1,12 @@
 package com.esgi.extranet.school.controllers;
 
-import com.esgi.extranet.school.entities.StudentEntity;
+import com.esgi.extranet.login.UserEntity;
 import com.esgi.extranet.school.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,12 +27,12 @@ public class StudentController {
     }
 
     @GetMapping("")
-    public List<StudentEntity> getAll(){
-        return studentService.getAll();
+    public List<UserEntity> getAll(){
+        return studentService.getAllStudents();
     }
 
     @GetMapping("/getStudent")
-    public StudentEntity getStudent(@RequestParam("id")Long id){
+    public UserEntity getStudent(@RequestParam("id")Long id){
         return studentService.getStudent(id);
     }
 
@@ -45,46 +48,57 @@ public class StudentController {
     }
 
     @GetMapping("/getStudentsForClassmate")
-    public List<StudentEntity>getStudentsForClassmate(@RequestParam("idClassmate")Long idClassmate){
+    public List<UserEntity>getStudentsForClassmate(@RequestParam("idClassmate")Long idClassmate){
         return studentService.getStudentsForClassmate(idClassmate);
     }
 
     @GetMapping("/getStudentsWithoutClassmate")
-    public List<StudentEntity>getStudentsWithoutClassmate(){
+    public List<UserEntity>getStudentsWithoutClassmate(){
         return studentService.getStudentsWithoutClassmate();
     }
 
     @PostMapping("/addStudent")
-    public StudentEntity addStudent(@RequestParam(name = "firstname") String firstname,
+    public UserEntity addStudent(@RequestParam(name = "firstname") String firstname,
                              @RequestParam(name = "lastname") String lastname,
                              @RequestParam(name = "email") String email,
                              @RequestParam(name = "birthday") String birthday,
-                             @RequestParam(name = "photo") String photo,
                              @RequestParam(name = "address") String address){
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return studentService.addStudent(firstname, lastname, email, date, photo, address);
+        SecureRandom random = new SecureRandom();
+        String password = new BigInteger(130, random).toString(32);
+        return studentService.addStudent(firstname, lastname, email, password, date, "", address);
     }
 
     @PostMapping("/updateStudent")
-    public StudentEntity udpateStudent(@RequestParam(name = "firstname") String firstname,
+    public UserEntity udpateStudent(@RequestParam(name = "firstname") String firstname,
                               @RequestParam(name = "lastname") String lastname,
                               @RequestParam(name = "email") String email,
                               @RequestParam(name = "birthday") String birthday,
-                              @RequestParam(name = "photo") String photo,
                               @RequestParam(name = "address") String address,
                               @RequestParam(name = "id") Long id){
         LocalDate date = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale( Locale.FRANCE);
         date = LocalDate.parse(birthday, formatter);
-        return studentService.updateStudent(firstname, lastname, email, date, photo, address, id);
+        return studentService.updateStudent(firstname, lastname, email, date, address, id);
     }
 
     @RequestMapping(value = "/removeStudent", method = RequestMethod.POST)
     public boolean removeStudent(@RequestParam(name = "id") Long id){
         return studentService.removeStudent(id);
+    }
+
+    @RequestMapping(value = "/getIdForToken", method = RequestMethod.POST)
+    public int getIdForToken(@RequestParam(name = "token") String token){
+        return studentService.getIdForToken(token);
+    }
+
+    @RequestMapping(value = "/getClassmateFromToken", method = RequestMethod.POST)
+    public int getClassmateFromToken(@RequestParam("token") String token){
+        int id = studentService.getIdForToken(token);
+        return studentService.getClassmateForId(id);
     }
 }

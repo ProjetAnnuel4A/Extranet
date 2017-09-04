@@ -1,10 +1,9 @@
 package com.esgi.extranet.administration.controllers;
 
 import com.esgi.extranet.administration.entities.CourseEntity;
-import com.esgi.extranet.administration.entities.TeacherEntity;
 import com.esgi.extranet.administration.services.CourseService;
+import com.esgi.extranet.login.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class CourseController {
     }
 
     @GetMapping("/getTeachersForACourse")
-    public List<TeacherEntity>getTeachersForACourse(@RequestParam("courseId")Long courseId){
+    public List<UserEntity>getTeachersForACourse(@RequestParam("courseId")Long courseId){
         return courseService.getTeachersForACourse(courseId);
     }
 
