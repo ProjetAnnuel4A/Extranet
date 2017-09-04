@@ -32,7 +32,7 @@ public class UserServiceController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping
+    @GetMapping("/getUsers")
     public List<UserDto> getUsers(){
         return userServices.getAllUsers();
     }

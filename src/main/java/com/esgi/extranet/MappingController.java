@@ -241,9 +241,9 @@ public class MappingController {
         return "teacher/surveys/deleteSurvey";
     }
 
-    @GetMapping(value={"teacher/surveys/viewStudentResults/view", ""})
-    public String teacherViewStudentResults(){
-        return "teacher/surveys/viewStudentResults";
+    @GetMapping(value={"teacher/surveys/viewStudentsResults/view", ""})
+    public String teacherViewStudentsResults(){
+        return "teacher/surveys/viewStudentsResults";
     }
 
     @GetMapping(value={"teacher/surveys/seeStudentResponses/view", ""})

@@ -2,6 +2,10 @@
 
 <html lang="en">
 
+<!DOCTYPE html>
+
+<html lang="en">
+
     <head>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -10,7 +14,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Liste des questionnaires</title>
+        <title>Résultats des étudiants</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
         <!-- Bootstrap -->
@@ -65,6 +69,7 @@
                                             <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
                                             <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
                                             <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                            <li><a href="/teacher/surveys/viewStudentsResults/view">Voir les résultats des étudiants</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -112,26 +117,14 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Liste des questionnaires</h1>
+                                <h1>Résultats des étudiants</h1>
 
                                 <p>
-                                <table id="surveys" class="container">
-
-                                    <tr class="row">
-
-                                        <th class="col">Image</th>
-                                        <th class="col">Nom</th>
-                                        <th class="col">Barème</th>
-                                        <th class="col">Essais</th>
-                                        <th class="col">Date limite</th>
-
-                                    </tr>
-
-                                </table>
+                                    <div id="students">
+                                    </div>
                                 </p>
                             </div>
                         </div>
-
                     </div>
                     <br />
                 </div>
@@ -140,6 +133,10 @@
         </div>
 
         <script>
+
+            var studentsDatas = $("#students") ;
+
+            var today = new Date() ;
 
             function getCookie(name)
             {
@@ -192,6 +189,201 @@
 
                 $(".firstnamelastname").append(content) ;
             }) ;
+
+
+            var table ;
+
+            var surveysDone ;
+            var studentScores ;
+
+            var userQuizzs ;
+
+            function getUsersQuizz(userId)
+            {
+                $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
+                {
+                    if(data != null)
+                    {
+                        userQuizzs = data ;
+                        userQuizzs.sort(function (a, b){return a.id - b.id ;}) ;
+                        userQuizzs.sort(function (a, b){return a.surveyId - b.surveyId ;}) ;
+
+                        $.each(data, function(key, val)
+                        {
+                            if(surveysDone[val["surveyId"]] == null)
+                            {
+                                surveysDone[val["surveyId"]] = 0 ;
+                            }
+
+                            surveysDone[val["surveyId"]] += 1 ;
+
+                            if(studentScores[val["surveyId"]] == null)
+                            {
+                                studentScores[val["surveyId"]] = new Array() ;
+                            }
+
+                            studentScores[val["surveyId"]].push(val["score"]) ;
+                        }) ;
+                    }
+
+                    else
+                    {
+                        return false ;
+                    }
+                }) ;
+            }
+
+            function displaySurveysDone(userId)
+            {
+                $.getJSON("/surveys", function(data)
+                {
+                    $.each(data, function(key, val)
+                    {
+                        var surveyResults = true ;
+
+                        if(surveysDone == null)
+                        {
+                            surveyResults = false ;
+                        }
+
+                        else
+                        {
+                            if(surveysDone[val["id"]] == null)
+                            {
+                                surveyResults = false ;
+                            }
+                        }
+
+                        if(surveyResults)
+                        {
+                            for(var i = 0 ; i < surveysDone[val["id"]] ; i++)
+                            {
+                                var dom = "<tr class='row'>" ;
+
+                                if(val["imageId"] == null)
+                                {
+                                    val["imageId"] = "" ;
+                                }
+
+                                dom += "<td id='image' class='col'>" + val["imageId"] + "</td>" ;
+
+                                dom += "<td class='col'>" + val["name"] + "</td>" ;
+
+                                var mark = val["mark"] ;
+                                var studentScoreForThisSurvey = studentScores[val["id"]][i] ;
+
+                                if(val["mark"] == 0)
+                                {
+                                    mark = "" ;
+                                    studentScoreForThisSurvey = "" ;
+                                }
+
+                                else
+                                {
+                                    if(studentScores[val["id"]][i] == undefined)
+                                    {
+                                        studentScoreForThisSurvey = 0 ;
+                                    }
+                                }
+
+                                dom += "<td class='col'>" + mark + "</td>" ;
+
+                                var chances = val["chances"] ;
+
+                                if(chances == 0)
+                                {
+                                    chances = "infinis" ;
+                                }
+
+                                dom += "<td class='col'>" + chances + "</td>" ;
+
+                                var beginDate = new Date(Date.parse(val["beginLine"])).toLocaleDateString("fr-FR") ;
+
+                                dom += "<td class='col'>" + beginDate + "</td>" ;
+
+                                var deadDate = new Date(Date.parse(val["deadLine"])).toLocaleDateString("fr-FR") ;
+
+                                dom += "<td class='col'>" + deadDate + "</td>" ;
+
+                                dom += "<td class='col'>" + studentScoreForThisSurvey + "</td>" ;
+
+                                var userQuizzSurveyId ;
+
+                                for(var j = 0 ; userQuizzSurveyId == null ; j++)
+                                {
+                                    if((userQuizzs[j]["surveyId"] == val["id"]) && (userQuizzs[j]["score"] == studentScoreForThisSurvey))
+                                    {
+                                        userQuizzSurveyId = userQuizzs[j]["id"] ;
+                                        userQuizzs.splice(j, 1) ;
+                                    }
+                                }
+
+                                dom += "<td class='col'><button onclick='seeStudentResponses(" + userQuizzSurveyId + ", " + val["id"] + ")'>Voir les réponses</button></td>" ;
+
+                                table.append(dom + "</tr>") ;
+                            }
+                        }
+                    }) ;
+                }) ;
+            }
+
+            $.getJSON("/users/getUsers").done(function(data)
+            {
+                $.each(data, function(key, val)
+                {
+                    $.post("/users/getInformations", {token : val["token"]}).done(function(data)
+                    {
+                        if(data["role"] == "STUDENT")
+                        {
+                            var userId = data["id"] ;
+
+                            var dom = "<div id=" + userId + ">" ;
+
+                            dom += "<p>" + data["lastname"] + " " + data["firstname"] + " " + data["idClassmate"] + "</p>" ;
+
+                            dom += "<table class='surveys' id=" + userId + " class='container'>" ;
+
+                            dom += "<tr class='row'>" ;
+
+                            dom += "<th class='col'>Image</th>" ;
+
+                            dom += "<th class='col'>Nom</th>" ;
+
+                            dom += "<th class='col'>Barème</th>" ;
+
+                            dom += "<th class='col'>Essais autorisés</th>" ;
+
+                            dom += "<th class='col'>Date de début</th>" ;
+
+                            dom += "<th class='col'>Date de fin</th>" ;
+
+                            dom += "<th class='col'>Note</th>" ;
+
+                            dom += "</tr></table></div>" ;
+
+                            studentsDatas.append(dom) ;
+
+                            table = $(".surveys[id='" + userId + "']") ;
+
+                            surveysDone = {} ;
+                            studentScores = {} ;
+
+                            var result = getUsersQuizz(userId) ;
+
+                            if(result != false)
+                            {
+                                displaySurveysDone(userId) ;
+                            }
+                        }
+                    }) ;
+                }) ;
+            }) ;
+
+
+            function seeStudentResponses(userQuizzId, surveyId)
+            {
+                window.location.replace("/teacher/surveys/seeStudentResponses/view?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId) ;
+            }
 
         </script>
         <!-- jQuery -->

@@ -300,18 +300,18 @@
                     }) ;
                 }) ;
 
-                results.append("<button onclick='seeResults(" + userId + ")'>Voir les résultats</button>") ;
+                results.append("<button onclick='seeResults()'>Voir les résultats</button>") ;
             }
 
 
             function answerSurvey(userId, surveyId)
             {
-                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId + "&done=false") ;
+                window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId) ;
             }
 
-            function seeResults(userId)
+            function seeResults()
             {
-                window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
+                window.location.replace("/student/surveys/viewResults/view") ;
             }
 
         </script>

@@ -65,6 +65,7 @@
                                             <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
                                             <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
                                             <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                            <li><a href="/teacher/surveys/viewStudentsResults/view">Voir les résultats des étudiants</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -588,90 +589,146 @@
             var correctResponses = {} ;
             var questions = [] ;
 
-            function saveResponses()
-            {
-                $("div.question").each(function(qkey, qval)
-                {
-                    var questionReference = qval.id ;
-                    console.log("[réponse] référence question : " + questionReference) ;
-                    var domResponses = $("div.question[id='" + questionReference + "']").children("div.responses").children("div.response") ;
-
-                    responses[questionReference] = new Array() ;
-                    correctResponses[questionReference] = new Array() ;
-
-                    $.each(domResponses, function(rkey, rval)
-                    {
-                        console.log("[réponse] réponse description : " + domResponses.find("input.responseDescription")[rkey].value) ;
-                        $.post("/responses/addResponse",
-                        {
-                            description: domResponses.find("input.responseDescription")[rkey].value,
-                            imageId: domResponses.find("input.responseImage")[rkey].value
-                        }).done(function(data)
-                        {
-                            console.log("[réponse] réponse id : " + data["id"]) ;
-                            responses[questionReference].push(data["id"]) ;
-
-                            if(domResponses.find("input.correctResponse")[rkey].checked)
-                            {
-                                console.log("[réponse] réponse correcte id : " + data["id"]) ;
-                                correctResponses[questionReference].push(data["id"]) ;
-                            }
-                        }) ;
-                    }) ;
-                }) ;
-            }
-
-            function saveQuestions()
+            function saveResponses(indexQuestion, indexResponse)
             {
                 var domQuestions = $("div.question") ;
 
-                $.each(domQuestions, function(qkey, qval)
+                // Pour la première itération récursive
+                if((indexQuestion == 0) && (indexResponse == 0))
                 {
-                    var questionReference = qval.id ;
-                    console.log("[question] référence question : " + questionReference) ;
-                    $.post("/questions/addQuestion",
-                    {
-                        description: domQuestions.find("input.questionDescription")[qkey].value,
-                        points: parseFloat(domQuestions.find("input.questionPoints")[qkey].value),
-                        allOrNone: domQuestions.find("input.questionAllOrNone")[qkey].checked,
-                        imageId: domQuestions.find("input.questionImage")[qkey].value
-                    }).done(function(data)
-                    {
-                        console.log("[question] question id : " + data["id"]) ;
-                        responses[questionReference] = new Array() ;
-                        responses[questionReference].push(1) ;
-                        $.each(responses[questionReference], function(rkey, rval)
-                        {
-                            $.post("/questions/addResponseForAQuestion",
-                            {
-                                questionId: data["id"],
-                                responseId: rval
-                            }) ;
-                        }).done(function()
-                        {
-                            correctResponses[questionReference] = new Array() ;
-                            correctResponses[questionReference].push(1) ;
-                            $.each(correctResponses[questionReference], function(crkey, crval)
-                            {
-                                $.post("/questions/addCorrectResponseForAQuestion",
-                                {
-                                    questionId: data["id"],
-                                    correctResponseId: crval
-                                }) ;
-                            }) ;
-                        });
+                    responses[indexQuestion] = new Array() ;
+                    correctResponses[indexQuestion] = new Array() ;
+                }
 
-                        questions.push(data["id"]) ;
-                    }) ;
+                var questionReference = "q" + (indexQuestion + 1) ;
+                var domResponses = $("div.question[id='" + questionReference + "']").children("div.responses").children("div.response") ;
+
+                if(indexResponse >= domResponses.length)
+                {
+                    indexQuestion = indexQuestion + 1 ;
+                    indexResponse = 0 ;
+
+                    if(indexQuestion < domQuestions.length)
+                    {
+                        responses[indexQuestion] = new Array() ;
+                        correctResponses[indexQuestion] = new Array() ;
+
+                        questionReference = "q" + (indexQuestion + 1) ;
+
+                        domResponses = $("div.question[id='" + questionReference + "']").children("div.responses").children("div.response") ;
+                    }
+
+                    else
+                    {
+                        return saveQuestions(0) ;
+                    }
+                }
+
+                $.post("/responses/addResponse",
+                {
+                    description: domResponses.find("input.responseDescription")[indexResponse].value,
+                    imageId: domResponses.find("input.responseImage")[indexResponse].value
+                }).done(function(data)
+                {
+                    responses[indexQuestion].push(data["id"]) ;
+
+                    if(domResponses.find("input.correctResponse")[indexResponse].checked)
+                    {
+                        correctResponses[indexQuestion].push(data["id"]) ;
+                    }
+                }).done(function()
+                {
+                    indexResponse = indexResponse + 1 ;
+                    saveResponses(indexQuestion, indexResponse) ;
+                }) ;
+            }
+
+            function saveCorrectResponsesForAQuestion(questionId, indexQuestion, indexCorrectResponse)
+            {
+                if(indexCorrectResponse >= correctResponses[indexQuestion].length)
+                {
+                    questions.push(questionId) ;
+
+                    indexQuestion = indexQuestion + 1 ;
+
+                    return saveQuestions(indexQuestion) ;
+                }
+
+                $.post("/questions/addCorrectResponseForAQuestion",
+                {
+                    questionId: questionId,
+                    correctResponseId: correctResponses[indexQuestion][indexCorrectResponse]
+                }).done(function()
+                {
+                    indexCorrectResponse = indexCorrectResponse + 1 ;
+
+                    saveCorrectResponsesForAQuestion(questionId, indexQuestion, indexCorrectResponse) ;
+                }) ;
+            }
+
+            function saveResponsesForAQuestion(questionId, indexQuestion, indexResponse)
+            {
+                if(indexResponse >= responses[indexQuestion].length)
+                {
+                    return saveCorrectResponsesForAQuestion(questionId, indexQuestion, 0) ;
+                }
+
+                $.post("/questions/addResponseForAQuestion",
+                {
+                    questionId: questionId,
+                    responseId: responses[indexQuestion][indexResponse]
+                }).done(function()
+                {
+                    indexResponse = indexResponse + 1 ;
+
+                    saveResponsesForAQuestion(questionId, indexQuestion, indexResponse) ;
+                }) ;
+            }
+
+            function saveQuestions(indexQuestion)
+            {
+                var domQuestions = $("div.question") ;
+
+                if(indexQuestion >= domQuestions.length)
+                {
+                    return saveSurvey() ;
+                }
+
+                var questionReference = "q" + (indexQuestion + 1) ;
+                $.post("/questions/addQuestion",
+                {
+                    description: domQuestions.find("input.questionDescription")[indexQuestion].value,
+                    points: parseFloat(domQuestions.find("input.questionPoints")[indexQuestion].value),
+                    allOrNone: domQuestions.find("input.questionAllOrNone")[indexQuestion].checked,
+                    imageId: domQuestions.find("input.questionImage")[indexQuestion].value
+                }).done(function(data)
+                {
+                    saveResponsesForAQuestion(data["id"], indexQuestion, 0) ;
+                }) ;
+            }
+
+            function saveQuestionsForASurvey(surveyId, indexQuestion)
+            {
+                if(indexQuestion >= questions.length)
+                {
+                    return window.location.replace("/teacher/surveys/viewSurveys/view") ;
+                }
+
+                $.post("/surveys/addQuestionForASurvey",
+                {
+                    surveyId: surveyId,
+                    questionId: questions[indexQuestion]
+                }).done(function()
+                {
+                    indexQuestion = indexQuestion + 1 ;
+
+                    saveQuestionsForASurvey(surveyId, indexQuestion) ;
                 }) ;
             }
 
             function saveSurvey()
             {
                 var domSurvey = $("#surveyDetails") ;
-
-                console.log("[questionnaire] date début (avant ajout) :" + domSurvey.find("input.surveyBeginLine")[0].value) ;
-                console.log("[questionnaire] date fin (avant ajout) :" + domSurvey.find("input.surveyDeadLine")[0].value) ;
 
                 $.post("/surveys/addSurvey",
                 {
@@ -683,19 +740,7 @@
                     imageId: domSurvey.find("input.surveyImage")[0].value
                 }).done(function(data)
                 {
-                    console.log("[questionnaire] date début (après ajout) : " + data["beginLine"]) ;
-                    console.log("[questionnaire] date fin (après ajout) : " + data["deadLine"]) ;
-                    console.log("[questionnaire] questionnaire id : " + data["id"]) ;
-                    questions = new Array() ;
-                    questions.push(1) ;
-                    $.each(questions, function(qkey, qval)
-                    {
-                        $.post("/surveys/addQuestionForASurvey",
-                        {
-                            surveyId: data["id"],
-                            questionId: qval
-                        }) ;
-                    }) ;
+                    return saveQuestionsForASurvey(data["id"], 0) ;
                 }) ;
             }
 
@@ -712,11 +757,7 @@
                         {
                             $("input.surveyName").next("span").text("") ;
 
-                            saveResponses() ;
-
-                            saveQuestions() ;
-
-                            saveSurvey() ;
+                            return saveResponses(0, 0) ;
                         }
 
                         else
@@ -725,9 +766,6 @@
 
                             alert("Le nom de ce questionnaire existe déjà") ;
                         }
-                    }).done(function()
-                    {
-                        //window.location.replace("/teacher/surveys/viewSurveys/view") ;
                     }) ;
                 }
             }

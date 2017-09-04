@@ -207,12 +207,18 @@
             }) ;
 
 
+            var userQuizzs ;
+
             function getUsersQuizz(userId)
             {
                 $.getJSON("/usersQuizz/getAllUsersQuizzByUserId?userId=" + userId, function(data)
                 {
                     if(data != null)
                     {
+                        userQuizzs = data ;
+                        userQuizzs.sort(function (a, b){return a.id - b.id ;}) ;
+                        userQuizzs.sort(function (a, b){return a.surveyId - b.surveyId ;}) ;
+
                         $.each(data, function(key, val)
                         {
                             if(surveysDone[val["surveyId"]] == null)
@@ -307,6 +313,19 @@
 
                                 dom += "<td class='col'>" + studentScoreForThisSurvey + "</td>" ;
 
+                                var userQuizzSurveyId ;
+
+                                for(var j = 0 ; userQuizzSurveyId == null ; j++)
+                                {
+                                    if((userQuizzs[j]["surveyId"] == val["id"]) && (userQuizzs[j]["score"] == studentScoreForThisSurvey))
+                                    {
+                                        userQuizzSurveyId = userQuizzs[j]["id"] ;
+                                        userQuizzs.splice(j, 1) ;
+                                    }
+                                }
+
+                                dom += "<td class='col'><button onclick='seeResponses(" + userQuizzSurveyId + ", " + val["id"] + ")'>Voir les réponses</button></td>" ;
+
                                 if((val["beginLine"] <= todayString) && (val["deadLine"] >= todayString) && ((surveysDone[val["id"]] < val["chances"]) || (val["chances"] == 0)))
                                 {
                                     dom += "<td class='col'><button onclick='answerSurvey(" + userId + ", " + val["id"] + ")'>Réessayer</button></td>" ;
@@ -323,6 +342,11 @@
             function answerSurvey(userId, surveyId)
             {
                 window.location.replace("/student/surveys/answerSurvey/view?userId=" + userId + "&surveyId=" + surveyId) ;
+            }
+
+            function seeResponses(userQuizzId, surveyId)
+            {
+                window.location.replace("/student/surveys/seeResponses/view?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId) ;
             }
 
         </script>

@@ -10,7 +10,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Liste des questionnaires</title>
+        <title>Réponses de l'étudiant sur le questionnaire</title>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
         <!-- Bootstrap -->
@@ -65,6 +65,7 @@
                                             <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
                                             <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
                                             <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                            <li><a href="/teacher/surveys/viewStudentsResults/view">Voir les résultats des étudiants</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -112,22 +113,14 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="dashboard_graph">
-                                <h1>Liste des questionnaires</h1>
+                                <h1>Réponses de l'étudiant sur le questionnaire</h1>
 
                                 <p>
-                                <table id="surveys" class="container">
+                                    <div id="surveyPresentation" class="container">
+                                    </div>
 
-                                    <tr class="row">
-
-                                        <th class="col">Image</th>
-                                        <th class="col">Nom</th>
-                                        <th class="col">Barème</th>
-                                        <th class="col">Essais</th>
-                                        <th class="col">Date limite</th>
-
-                                    </tr>
-
-                                </table>
+                                    <table id="survey" class="container">
+                                    </table>
                                 </p>
                             </div>
                         </div>
@@ -191,6 +184,130 @@
                 }) ;
 
                 $(".firstnamelastname").append(content) ;
+            }) ;
+
+            var getUrlParameter = function getUrlParameter(sParam)
+            {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i ;
+
+                for(i = 0 ; i < sURLVariables.length ; i++)
+                {
+                    sParameterName = sURLVariables[i].split('=') ;
+
+                    if(sParameterName[0] === sParam)
+                    {
+                        return sParameterName[1] === undefined ? true : sParameterName[1] ;
+                    }
+                }
+            } ;
+
+
+            var surveyId = getUrlParameter('surveyId') ;
+            var userQuizzId = getUrlParameter('userQuizzId') ;
+
+
+            var surveyPresentation = $("#surveyPresentation") ;
+            var table = $("#survey") ;
+
+            var surveyDatas = {} ;
+            var surveyQuestions = {} ;
+            var questionsResponses = {} ;
+
+            function getUsersQuizz(userQuizzId)
+            {
+                $.getJSON("/usersQuizz/getUserQuizz?userQuizzId=" + userQuizzId, function(data)
+                {}).done(function(data)
+                {
+                    $.getJSON("/usersQuizz/getAllUserQuizzResponsesFromAnUserQuizz?userQuizzId=" + userQuizzId, function(data)
+                    {
+                        if(data != null)
+                        {
+                            $.each(data, function(qkey, qval)
+                            {
+                                $.each(qval["responses"], function(rkey, rval)
+                                {
+                                    $("input.response[id='" + rval["id"] + "']").attr("checked", true) ;
+                                }) ;
+                            }) ;
+                        }
+                    }) ;
+                }) ;
+            }
+
+            $.getJSON("/surveys/getSurvey?surveyId=" + surveyId, function(data)
+            {
+                surveyDatas = data ;
+                surveyQuestions = data["questions"].sort(function (a, b){return a.id - b.id ;}) ;
+
+                $.each(surveyQuestions, function(key, val)
+                {
+                    questionsResponses[key] = val["responses"].sort(function (a, b){return a.id - b.id ;}) ;
+                }) ;
+            }).done(function()
+            {
+                var surveyDetails = "<h2>" + surveyDatas["name"] + "</h2> <div id='image'></div>" ;
+
+                surveyDetails += "<table class='container'><tr class='row'>" ;
+
+                surveyDetails += "<td class='col'> Barême :" + surveyDatas["mark"] + "</td>" ;
+
+                var chances = surveyDatas["chances"] ;
+
+                if(chances == 0)
+                {
+                    chances = "infinis" ;
+                }
+
+                surveyDetails += "<td class='col'> Essais autorisés :" + chances + "</td>" ;
+
+                surveyDetails += "<td class='col'> Date de début :" + surveyDatas["beginLine"] + "</td>" ;
+
+                surveyDetails += "<td class='col'> Date de fin :" + surveyDatas["deadLine"] + "</td>" ;
+
+                surveyDetails += "</tr></table>" ;
+
+                surveyPresentation.append(surveyDetails + "<br/><br/>") ;
+
+                $.each(surveyQuestions, function(qkey, qval)
+                {
+                    var qDom = "<div class='question' style='margin-left:50px' id='" + qval["id"] + "'> Question " + (qkey + 1) + " : <tr class='row'>" ;
+
+                    qDom += "<td class='questionImage' class='col'></td>" ;
+
+                    qDom += "<td class='col'>" + qval["description"] + "</td>" ;
+
+                    qDom += "<td class='col'> (points : " + qval["points"] + ")</td>" ;
+
+                    if(qval["allOrNone"] == true)
+                    {
+                        qDom += "<td class='col' style='padding-left:10px'>(tout correct ou rien)</td>" ;
+                    }
+
+                    qDom += "</tr><br/> <div class='responses' style='margin-left:100px'></div>" ;
+
+                    table.append(qDom) ;
+
+                    $.each(questionsResponses[qkey], function(rkey, rval)
+                    {
+                        var rDom = "<tr class='row'>" ;
+
+                        rDom += "<td class='col'> <div class='responseImage'></div> </td>" ;
+
+                        rDom += "<td class='col'>" + rval["description"] + "</td>" ;
+
+                        rDom += "<td class='col' style='padding-left:10px'> <input type='checkbox' id='" + rval["id"] + "' class='response' value='" + rval["id"] + "' disabled/> </td>" ;
+
+                        $("div.question[id='" + qval["id"] + "']").find("div.responses").append(rDom + "</tr>") ;
+                    }) ;
+
+                    table.append("<br/><br/></div>") ;
+                }) ;
+            }).done(function()
+            {
+                getUsersQuizz(userQuizzId) ;
             }) ;
 
         </script>

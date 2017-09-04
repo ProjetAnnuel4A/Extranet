@@ -65,6 +65,7 @@
                                             <li><a href="/teacher/manageClassmate/view">Ajouter une note</a></li>
                                             <li><a href="/teacher/surveys/viewSurveys/view">Voir les questionnaires</a></li>
                                             <li><a href="/teacher/surveys/addSurvey/view">Ajouter un questionnaire</a></li>
+                                            <li><a href="/teacher/surveys/viewStudentsResults/view">Voir les résultats des étudiants</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -213,20 +214,24 @@
             var surveyDatas = {} ;
             var surveyQuestions = {} ;
             var questionsResponses = {} ;
+            var questionsCorrectResponses = {} ;
 
             $.getJSON("/surveys/getSurvey?surveyId=" + surveyId, function(data)
             {
                 surveyDatas = data ;
-                surveyQuestions = data["questions"] ;
+                surveyQuestions = data["questions"].sort(function (a, b){return a.id - b.id ;}) ;
 
                 $.each(surveyQuestions, function(key, val)
                 {
-                    questionsResponses[key] = val["responses"] ;
+                    questionsResponses[key] = val["responses"].sort(function (a, b){return a.id - b.id ;}) ;
+                    questionsCorrectResponses[key] = val["correctResponses"].sort(function (a, b){return a.id - b.id ;}) ;
                 }) ;
             }).done(function()
             {
                 var surveyDetails = "<h2>" + surveyDatas["name"] + "</h2> <div id='image'></div>" ;
+
                 surveyDetails += "<table class='container'><tr class='row'>" ;
+
                 surveyDetails += "<td class='col'> Barême :" + surveyDatas["mark"] + "</td>" ;
 
                 var chances = surveyDatas["chances"] ;
@@ -237,8 +242,11 @@
                 }
 
                 surveyDetails += "<td class='col'> Essais autorisés :" + chances + "</td>" ;
+
                 surveyDetails += "<td class='col'> Date de début :" + surveyDatas["beginLine"] + "</td>" ;
+
                 surveyDetails += "<td class='col'> Date de fin :" + surveyDatas["deadLine"] + "</td>" ;
+
                 surveyDetails += "</tr></table>" ;
 
                 surveyPresentation.append(surveyDetails + "<br/><br/>") ;
@@ -248,12 +256,14 @@
                     var qDom = "<div class='question' style='margin-left:50px' id='" + qval["id"] + "'> Question " + (qkey + 1) + " : <tr class='row'>" ;
 
                     qDom += "<td class='questionImage' class='col'></td>" ;
+
                     qDom += "<td class='col'>" + qval["description"] + "</td>" ;
+
                     qDom += "<td class='col'> (points : " + qval["points"] + ")</td>" ;
 
                     if(qval["allOrNone"] == true)
                     {
-                        qDom += "<td class='col'>(tout correct ou rien)</td>" ;
+                        qDom += "<td class='col' style='padding-left:10px'>(tout correct ou rien)</td>" ;
                     }
 
                     qDom += "</tr><br/> <div class='responses' style='margin-left:100px'></div>" ;
@@ -265,10 +275,22 @@
                         var rDom = "<tr class='row'>" ;
 
                         rDom += "<td class='col'> <div class='responseImage'></div> </td>" ;
-                        rDom += "<td class='col'>" + rval["description"] + "</td>" ;
-                        rDom += "<td class='col' style='padding-left:10px'> </td>" ;
 
-                        $("#" + qval["id"]).find("div.responses").append(rDom + "</tr>") ;
+                        rDom += "<td class='col'>" + rval["description"] + "</td>" ;
+
+                        var correct = "" ;
+
+                        for(var i = 0 ; i < questionsCorrectResponses[qkey].length ; i++)
+                        {
+                            if(questionsCorrectResponses[qkey][i]["id"] == rval["id"])
+                            {
+                                correct = "(réponse correcte)" ;
+                            }
+                        }
+
+                        rDom += "<td class='col' style='padding-left:10px'>" + correct + "</td>" ;
+
+                        $("div.question[id='" + qval["id"] + "']").find("div.responses").append(rDom + "</tr>") ;
                     }) ;
 
                     table.append("<br/><br/></div>") ;
