@@ -1,5 +1,6 @@
 package com.esgi.extranet.quizz.controllers ;
 
+import com.esgi.extranet.quizz.entities.ResponseEntity;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 import com.esgi.extranet.quizz.services.interfaces.UserQuizzResponsesService ;
@@ -64,7 +65,7 @@ public class UserQuizzResponsesController
 
 
     @GetMapping("/getResponsesFromAnUserQuizzResponses")
-    public List<Long> getResponsesFromAnUserQuizzResponses(@RequestParam("userQuizzResponsesId") Long userQuizzResponsesId)
+    public List<ResponseEntity> getResponsesFromAnUserQuizzResponses(@RequestParam("userQuizzResponsesId") Long userQuizzResponsesId)
     {
         return userQuizzResponsesService.getResponsesFromAnUserQuizzResponses(userQuizzResponsesId) ;
     }

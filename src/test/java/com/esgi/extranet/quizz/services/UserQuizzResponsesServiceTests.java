@@ -1,5 +1,6 @@
 package com.esgi.extranet.quizz.services ;
 
+import com.esgi.extranet.quizz.entities.ResponseEntity;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
@@ -45,7 +46,7 @@ public class UserQuizzResponsesServiceTests
     @BeforeAll
     public static void initialize_datas()
     {
-        userQuizzService = new UserQuizzServiceImpl(userQuizzRepository) ;
+        userQuizzService = new UserQuizzServiceImpl(userQuizzRepository, userQuizzResponsesRepository) ;
 
         userQuizz = UserQuizzEntity.builder()
                 .id(new Long(1))
@@ -57,9 +58,9 @@ public class UserQuizzResponsesServiceTests
         userQuizzRepository.save(userQuizz) ;
 
 
-        userQuizzResponsesService = new UserQuizzResponsesServiceImpl(userQuizzResponsesRepository) ;
+        userQuizzResponsesService = new UserQuizzResponsesServiceImpl(userQuizzRepository, userQuizzResponsesRepository) ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
 
         userQuizzResponses = UserQuizzResponsesEntity.builder()
                 .id(new Long(1))
@@ -130,7 +131,7 @@ public class UserQuizzResponsesServiceTests
     @Test
     public void should_get_responses_from_an_user_quizz_responses() throws Exception
     {
-        List<Long> result = userQuizzResponsesService.getResponsesFromAnUserQuizzResponses(userQuizzResponses.getId()) ;
+        List<ResponseEntity> result = userQuizzResponsesService.getResponsesFromAnUserQuizzResponses(userQuizzResponses.getId()) ;
 
 
         Assert.assertNotNull(result) ;
@@ -143,7 +144,7 @@ public class UserQuizzResponsesServiceTests
 
         boolean result = userQuizzResponsesService.addResponseForAnUserQuizzResponses(userQuizzResponses.getId(), response) ;
 
-        List<Long> responses = userQuizzResponsesService.getResponsesFromAnUserQuizzResponses(userQuizzResponses.getId()) ;
+        List<ResponseEntity> responses = userQuizzResponsesService.getResponsesFromAnUserQuizzResponses(userQuizzResponses.getId()) ;
 
 
         Assert.assertNotNull(userQuizzResponses) ;

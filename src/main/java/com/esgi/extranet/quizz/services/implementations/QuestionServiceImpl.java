@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.stereotype.Service ;
 
 import javax.transaction.Transactional ;
+import java.util.ArrayList;
 import java.util.List ;
 
 /**
@@ -146,7 +147,14 @@ public class QuestionServiceImpl implements QuestionService
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
 
-        return questionEntity.getCorrectResponses() ;
+        ArrayList<Long> correctResponsesId = new ArrayList<Long>() ;
+
+        for(int i = 0 ; i < questionEntity.getCorrectResponses().size() ; i++)
+        {
+            correctResponsesId.add(questionEntity.getCorrectResponses().get(i).getId()) ;
+        }
+
+        return correctResponsesId ;
     }
 
     @Override
@@ -155,8 +163,9 @@ public class QuestionServiceImpl implements QuestionService
     {
 
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
+        ResponseEntity responseEntity = responseRepository.findById(correctResponseId) ;
 
-        questionEntity.getCorrectResponses().add(correctResponseId) ;
+        questionEntity.getCorrectResponses().add(responseEntity) ;
 
         questionRepository.save(questionEntity) ;
 
@@ -168,11 +177,11 @@ public class QuestionServiceImpl implements QuestionService
     public boolean removeCorrectResponseFromAQuestion(Long questionId, Long correctResponseId)
     {
         QuestionEntity questionEntity = questionRepository.findById(questionId) ;
-        List<Long> correctResponses = questionEntity.getCorrectResponses() ;
+        List<ResponseEntity> correctResponses = questionEntity.getCorrectResponses() ;
 
         for(int i = 0 ; i < correctResponses.size() ; i++)
         {
-            if(correctResponses.get(i).equals(correctResponseId))
+            if(correctResponses.get(i).getId().equals(correctResponseId))
             {
                 correctResponses.remove(i) ;
                 questionEntity.setCorrectResponses(correctResponses) ;

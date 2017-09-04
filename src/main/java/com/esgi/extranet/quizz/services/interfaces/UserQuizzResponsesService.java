@@ -1,5 +1,6 @@
 package com.esgi.extranet.quizz.services.interfaces ;
 
+import com.esgi.extranet.quizz.entities.ResponseEntity;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 
@@ -18,7 +19,7 @@ public interface UserQuizzResponsesService
     boolean removeUserQuizzResponses(Long userQuizzResponsesId) ;
     UserQuizzResponsesEntity getUserQuizzResponses(Long userQuizzResponsesId) ;
 
-    List<Long> getResponsesFromAnUserQuizzResponses(Long userQuizzResponsesId) ;
+    List<ResponseEntity> getResponsesFromAnUserQuizzResponses(Long userQuizzResponsesId) ;
     boolean addResponseForAnUserQuizzResponses(Long userQuizzResponsesId, Long responseId) ;
     boolean removeResponseFromAnUserQuizzResponses(Long userQuizzResponsesId, Long responseId) ;
 

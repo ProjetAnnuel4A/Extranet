@@ -1,9 +1,6 @@
 package com.esgi.extranet.quizz ;
 
-import com.esgi.extranet.quizz.entities.QuestionEntity ;
-import com.esgi.extranet.quizz.entities.SurveyEntity ;
-import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
-import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
+import com.esgi.extranet.quizz.entities.*;
 
 import java.sql.Date ;
 import java.time.LocalDate ;
@@ -62,7 +59,7 @@ public class QuizzSystem
         return score ;
     }
 
-    public static float calculateQuestionScore(QuestionEntity question, ArrayList<Long> userResponses)
+    public static float calculateQuestionScore(QuestionEntity question, ArrayList<ResponseEntity> userResponses)
     {
         float score = 0 ;
 
@@ -82,7 +79,7 @@ public class QuizzSystem
 
             for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
             {
-                if(userResponses.get(i) == question.getCorrectResponses().get(j))
+                if(userResponses.get(i).getId() == question.getCorrectResponses().get(j).getId())
                 {
                     responseCorrect = true ;
 
@@ -112,7 +109,7 @@ public class QuizzSystem
         return score ;
     }
 
-    public static float calculateQuestionScore(QuestionEntity question, Long[] userResponses)
+    public static float calculateQuestionScore(QuestionEntity question, ResponseEntity[] userResponses)
     {
         float score = 0 ;
 
@@ -132,7 +129,7 @@ public class QuizzSystem
 
             for(int j = 0 ; j < question.getCorrectResponses().size() ; j++)
             {
-                if(userResponses[i] == question.getCorrectResponses().get(j))
+                if(userResponses[i].getId() == question.getCorrectResponses().get(j).getId())
                 {
                     responseCorrect = true ;
 
@@ -174,7 +171,7 @@ public class QuizzSystem
         return score ;
     }
 
-    public static float calculateSurveyScore(SurveyEntity survey, ArrayList<ArrayList<Long>> userResponses)
+    public static float calculateSurveyScore(SurveyEntity survey, ArrayList<ArrayList<ResponseEntity>> userResponses)
     {
         float score = 0 ;
 
@@ -186,7 +183,7 @@ public class QuizzSystem
         return score ;
     }
 
-    public static float calculateSurveyScore(SurveyEntity survey, Long[][] userResponses)
+    public static float calculateSurveyScore(SurveyEntity survey, ResponseEntity[][] userResponses)
     {
         float score = 0 ;
 

@@ -34,9 +34,8 @@ public class UserQuizzResponsesEntity
     @JoinColumn(table = "question", referencedColumnName = "id")
     private Long questionId ;
 
-    @NotNull
-    @ManyToMany(targetEntity = ResponseEntity.class)
-    @JoinColumn(referencedColumnName = "id")
-    private List<Long> responses ;
+    @ManyToMany
+    @JoinColumn(table = "response")
+    private List<ResponseEntity> responses ;
 
 }

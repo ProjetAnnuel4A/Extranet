@@ -34,7 +34,8 @@ public class QuizzSystemTests
     private static ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
 
 
-    private static ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+    private static ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
+    private static ArrayList<Long> correctResponsesId = new ArrayList<Long>() ;
 
 
     private static QuestionEntity question ;
@@ -90,8 +91,11 @@ public class QuizzSystemTests
         responses.add(r4) ;
 
 
-        correctResponses.add(new Long (2)) ;
-        correctResponses.add(new Long (3)) ;
+        correctResponses.add(r2) ;
+        correctResponses.add(r3) ;
+
+        correctResponsesId.add(r2.getId()) ;
+        correctResponsesId.add(r3.getId()) ;
 
 
         question = QuestionEntity.builder()
@@ -195,9 +199,9 @@ public class QuizzSystemTests
     @Test
     public void should_calculate_question_score_with_user_quizz_responses()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(2)) ;
-        userResponses.add(new Long(3)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r2) ;
+        userResponses.add(r3) ;
 
         userQuizzResponses.setResponses(userResponses) ;
 
@@ -212,9 +216,9 @@ public class QuizzSystemTests
     @Test
     public void should_give_all_question_points_with_user_quizz_responses()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(2)) ;
-        userResponses.add(new Long(3)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r2) ;
+        userResponses.add(r3) ;
 
         userQuizzResponses.setResponses(userResponses) ;
 
@@ -227,8 +231,8 @@ public class QuizzSystemTests
     {
         question.setAllOrNone(false) ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(2)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r2) ;
 
         userQuizzResponses.setResponses(userResponses) ;
 
@@ -239,9 +243,9 @@ public class QuizzSystemTests
     @Test
     public void should_not_give_question_points_with_user_quizz_responses()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(1)) ;
-        userResponses.add(new Long(4)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r1) ;
+        userResponses.add(r4) ;
 
         userQuizzResponses.setResponses(userResponses) ;
 
@@ -253,10 +257,10 @@ public class QuizzSystemTests
     @Test
     public void should_calculate_question_score_with_array_list_of_responses_id()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
 
-        userResponses.add(new Long(2)) ;
-        userResponses.add(new Long(3)) ;
+        userResponses.add(r2) ;
+        userResponses.add(r3) ;
 
         float result = QuizzSystem.calculateQuestionScore(question, userResponses) ;
 
@@ -269,10 +273,10 @@ public class QuizzSystemTests
     @Test
     public void should_give_all_question_points_with_array_list_of_responses_id()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
 
-        userResponses.add(new Long(2)) ;
-        userResponses.add(new Long(3)) ;
+        userResponses.add(r2) ;
+        userResponses.add(r3) ;
 
 
         Assert.assertEquals(6.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
@@ -283,9 +287,9 @@ public class QuizzSystemTests
     {
         question.setAllOrNone(false) ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
 
-        userResponses.add(new Long(2)) ;
+        userResponses.add(r2) ;
 
 
         Assert.assertEquals(3.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
@@ -294,10 +298,10 @@ public class QuizzSystemTests
     @Test
     public void should_not_give_question_points_with_array_list_of_responses_id()
     {
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
 
-        userResponses.add(new Long(1)) ;
-        userResponses.add(new Long(4)) ;
+        userResponses.add(r1) ;
+        userResponses.add(r4) ;
 
 
         Assert.assertEquals(0.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
@@ -307,10 +311,10 @@ public class QuizzSystemTests
     @Test
     public void should_calculate_question_score_with_array_of_responses_id()
     {
-        Long[] userResponses = new Long[2] ;
+        ResponseEntity[] userResponses = new ResponseEntity[2] ;
 
-        userResponses[0] = new Long(2) ;
-        userResponses[1] = new Long(3) ;
+        userResponses[0] = r2 ;
+        userResponses[1] = r3 ;
 
         float result = QuizzSystem.calculateQuestionScore(question, userResponses) ;
 
@@ -323,10 +327,10 @@ public class QuizzSystemTests
     @Test
     public void should_give_all_question_points_with_array_of_responses_id()
     {
-        Long[] userResponses = new Long[2] ;
+        ResponseEntity[] userResponses = new ResponseEntity[2] ;
 
-        userResponses[0] = new Long(2) ;
-        userResponses[1] = new Long(3) ;
+        userResponses[0] = r2 ;
+        userResponses[1] = r3 ;
 
 
         Assert.assertEquals(6.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
@@ -337,9 +341,9 @@ public class QuizzSystemTests
     {
         question.setAllOrNone(false) ;
 
-        Long[] userResponses = new Long[1] ;
+        ResponseEntity[] userResponses = new ResponseEntity[1] ;
 
-        userResponses[0] = new Long(2) ;
+        userResponses[0] = r2 ;
 
 
         Assert.assertEquals(3.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
@@ -348,10 +352,10 @@ public class QuizzSystemTests
     @Test
     public void should_not_give_question_points_with_array_of_responses_id()
     {
-        Long[] userResponses = new Long[2] ;
+        ResponseEntity[] userResponses = new ResponseEntity[2] ;
 
-        userResponses[0] = new Long(1) ;
-        userResponses[1] = new Long(4) ;
+        userResponses[0] = r1 ;
+        userResponses[1] = r4 ;
 
 
         Assert.assertEquals(0.0, QuizzSystem.calculateQuestionScore(question, userResponses), 0) ;
@@ -363,9 +367,9 @@ public class QuizzSystemTests
     {
         UserQuizzResponsesEntity[] usersQuizzResponses = new UserQuizzResponsesEntity[3] ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(2)) ;
-        userResponses.add(new Long(3)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r2) ;
+        userResponses.add(r3) ;
 
         usersQuizzResponses[0] = UserQuizzResponsesEntity.builder()
                 .id(new Long(1))
@@ -399,9 +403,9 @@ public class QuizzSystemTests
     {
         UserQuizzResponsesEntity[] usersQuizzResponses = new UserQuizzResponsesEntity[3] ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(2)) ;
-        userResponses.add(new Long(3)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r2) ;
+        userResponses.add(r3) ;
 
         usersQuizzResponses[0] = UserQuizzResponsesEntity.builder()
                 .id(new Long(1))
@@ -431,17 +435,17 @@ public class QuizzSystemTests
     {
         UserQuizzResponsesEntity[] usersQuizzResponses = new UserQuizzResponsesEntity[3] ;
 
-        ArrayList<Long> userResponses1 = new ArrayList<Long>() ;
-        userResponses1.add(new Long(2)) ;
-        userResponses1.add(new Long(3)) ;
+        ArrayList<ResponseEntity> userResponses1 = new ArrayList<ResponseEntity>() ;
+        userResponses1.add(r2) ;
+        userResponses1.add(r3) ;
 
-        ArrayList<Long> userResponses2 = new ArrayList<Long>() ;
-        userResponses2.add(new Long(1)) ;
-        userResponses2.add(new Long(3)) ;
+        ArrayList<ResponseEntity> userResponses2 = new ArrayList<ResponseEntity>() ;
+        userResponses2.add(r1) ;
+        userResponses2.add(r3) ;
 
-        ArrayList<Long> userResponses3 = new ArrayList<Long>() ;
-        userResponses3.add(new Long(2)) ;
-        userResponses3.add(new Long(4)) ;
+        ArrayList<ResponseEntity> userResponses3 = new ArrayList<ResponseEntity>() ;
+        userResponses3.add(r2) ;
+        userResponses3.add(r4) ;
 
         usersQuizzResponses[0] = UserQuizzResponsesEntity.builder()
                 .id(new Long(1))
@@ -471,9 +475,9 @@ public class QuizzSystemTests
     {
         UserQuizzResponsesEntity[] usersQuizzResponses = new UserQuizzResponsesEntity[3] ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
-        userResponses.add(new Long(4)) ;
-        userResponses.add(new Long(4)) ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
+        userResponses.add(r4) ;
+        userResponses.add(r4) ;
 
         usersQuizzResponses[0] = UserQuizzResponsesEntity.builder()
                 .id(new Long(1))
@@ -502,18 +506,18 @@ public class QuizzSystemTests
     @Test
     public void should_calculate_survey_score_with_array_list_of_responses_id()
     {
-        ArrayList<Long> firstResponses = new ArrayList<Long>() ;
-        ArrayList<Long> secondResponses = new ArrayList<Long>() ;
-        ArrayList<Long> thirdResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> firstResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> secondResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> thirdResponses = new ArrayList<ResponseEntity>() ;
 
-        firstResponses.add(new Long(2)) ;
-        firstResponses.add(new Long(3)) ;
-        secondResponses.add(new Long(2)) ;
-        secondResponses.add(new Long(3)) ;
-        thirdResponses.add(new Long(2)) ;
-        thirdResponses.add(new Long(3)) ;
+        firstResponses.add(r2) ;
+        firstResponses.add(r3) ;
+        secondResponses.add(r2) ;
+        secondResponses.add(r3) ;
+        thirdResponses.add(r2) ;
+        thirdResponses.add(r3) ;
 
-        ArrayList<ArrayList<Long>> userResponses = new ArrayList<ArrayList<Long>>() ;
+        ArrayList<ArrayList<ResponseEntity>> userResponses = new ArrayList<ArrayList<ResponseEntity>>() ;
 
         userResponses.add(firstResponses) ;
         userResponses.add(secondResponses) ;
@@ -530,18 +534,18 @@ public class QuizzSystemTests
     @Test
     public void should_give_all_survey_points_with_array_list_of_responses_id()
     {
-        ArrayList<Long> firstResponses = new ArrayList<Long>() ;
-        ArrayList<Long> secondResponses = new ArrayList<Long>() ;
-        ArrayList<Long> thirdResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> firstResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> secondResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> thirdResponses = new ArrayList<ResponseEntity>() ;
 
-        firstResponses.add(new Long(2)) ;
-        firstResponses.add(new Long(3)) ;
-        secondResponses.add(new Long(2)) ;
-        secondResponses.add(new Long(3)) ;
-        thirdResponses.add(new Long(2)) ;
-        thirdResponses.add(new Long(3)) ;
+        firstResponses.add(r2) ;
+        firstResponses.add(r3) ;
+        secondResponses.add(r2) ;
+        secondResponses.add(r3) ;
+        thirdResponses.add(r2) ;
+        thirdResponses.add(r3) ;
 
-        ArrayList<ArrayList<Long>> userResponses = new ArrayList<ArrayList<Long>>() ;
+        ArrayList<ArrayList<ResponseEntity>> userResponses = new ArrayList<ArrayList<ResponseEntity>>() ;
 
         userResponses.add(firstResponses) ;
         userResponses.add(secondResponses) ;
@@ -554,18 +558,18 @@ public class QuizzSystemTests
     @Test
     public void should_give_some_survey_points_with_array_list_of_responses_id()
     {
-        ArrayList<Long> firstResponses = new ArrayList<Long>() ;
-        ArrayList<Long> secondResponses = new ArrayList<Long>() ;
-        ArrayList<Long> thirdResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> firstResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> secondResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> thirdResponses = new ArrayList<ResponseEntity>() ;
 
-        firstResponses.add(new Long(2)) ;
-        firstResponses.add(new Long(3)) ;
-        secondResponses.add(new Long(1)) ;
-        secondResponses.add(new Long(3)) ;
-        thirdResponses.add(new Long(2)) ;
-        thirdResponses.add(new Long(4)) ;
+        firstResponses.add(r2) ;
+        firstResponses.add(r3) ;
+        secondResponses.add(r1) ;
+        secondResponses.add(r3) ;
+        thirdResponses.add(r2) ;
+        thirdResponses.add(r4) ;
 
-        ArrayList<ArrayList<Long>> userResponses = new ArrayList<ArrayList<Long>>() ;
+        ArrayList<ArrayList<ResponseEntity>> userResponses = new ArrayList<ArrayList<ResponseEntity>>() ;
 
         userResponses.add(firstResponses) ;
         userResponses.add(secondResponses) ;
@@ -578,18 +582,18 @@ public class QuizzSystemTests
     @Test
     public void should_not_give_survey_points_with_array_list_of_responses_id()
     {
-        ArrayList<Long> firstResponses = new ArrayList<Long>() ;
-        ArrayList<Long> secondResponses = new ArrayList<Long>() ;
-        ArrayList<Long> thirdResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> firstResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> secondResponses = new ArrayList<ResponseEntity>() ;
+        ArrayList<ResponseEntity> thirdResponses = new ArrayList<ResponseEntity>() ;
 
-        firstResponses.add(new Long(4)) ;
-        firstResponses.add(new Long(4)) ;
-        secondResponses.add(new Long(4)) ;
-        secondResponses.add(new Long(4)) ;
-        thirdResponses.add(new Long(4)) ;
-        thirdResponses.add(new Long(4)) ;
+        firstResponses.add(r4) ;
+        firstResponses.add(r4) ;
+        secondResponses.add(r4) ;
+        secondResponses.add(r4) ;
+        thirdResponses.add(r4) ;
+        thirdResponses.add(r4) ;
 
-        ArrayList<ArrayList<Long>> userResponses = new ArrayList<ArrayList<Long>>() ;
+        ArrayList<ArrayList<ResponseEntity>> userResponses = new ArrayList<ArrayList<ResponseEntity>>() ;
 
         userResponses.add(firstResponses) ;
         userResponses.add(secondResponses) ;
@@ -603,14 +607,14 @@ public class QuizzSystemTests
     @Test
     public void should_calculate_survey_score_with_array_of_responses_id()
     {
-        Long[][] userResponses = new Long[3][2] ;
+        ResponseEntity[][] userResponses = new ResponseEntity[3][2] ;
 
-        userResponses[0][0] = new Long(2) ;
-        userResponses[0][1] = new Long(3) ;
-        userResponses[1][0] = new Long(2) ;
-        userResponses[1][1] = new Long(3) ;
-        userResponses[2][0] = new Long(2) ;
-        userResponses[2][1] = new Long(3) ;
+        userResponses[0][0] = r2 ;
+        userResponses[0][1] = r3 ;
+        userResponses[1][0] = r2 ;
+        userResponses[1][1] = r3 ;
+        userResponses[2][0] = r2 ;
+        userResponses[2][1] = r3 ;
 
         float result = QuizzSystem.calculateSurveyScore(survey, userResponses) ;
 
@@ -623,14 +627,14 @@ public class QuizzSystemTests
     @Test
     public void should_give_all_survey_points_with_array_of_responses_id()
     {
-        Long[][] userResponses = new Long[3][2] ;
+        ResponseEntity[][] userResponses = new ResponseEntity[3][2] ;
 
-        userResponses[0][0] = new Long(2) ;
-        userResponses[0][1] = new Long(3) ;
-        userResponses[1][0] = new Long(2) ;
-        userResponses[1][1] = new Long(3) ;
-        userResponses[2][0] = new Long(2) ;
-        userResponses[2][1] = new Long(3) ;
+        userResponses[0][0] = r2 ;
+        userResponses[0][1] = r3 ;
+        userResponses[1][0] = r2 ;
+        userResponses[1][1] = r3 ;
+        userResponses[2][0] = r2 ;
+        userResponses[2][1] = r3 ;
 
 
         Assert.assertEquals(20.0, QuizzSystem.calculateSurveyScore(survey, userResponses), 0) ;
@@ -639,14 +643,14 @@ public class QuizzSystemTests
     @Test
     public void should_give_some_survey_points_with_array_of_responses_id()
     {
-        Long[][] userResponses = new Long[3][2] ;
+        ResponseEntity[][] userResponses = new ResponseEntity[3][2] ;
 
-        userResponses[0][0] = new Long(2) ;
-        userResponses[0][1] = new Long(3) ;
-        userResponses[1][0] = new Long(1) ;
-        userResponses[1][1] = new Long(3) ;
-        userResponses[2][0] = new Long(2) ;
-        userResponses[2][1] = new Long(4) ;
+        userResponses[0][0] = r2 ;
+        userResponses[0][1] = r3 ;
+        userResponses[1][0] = r1 ;
+        userResponses[1][1] = r3 ;
+        userResponses[2][0] = r2 ;
+        userResponses[2][1] = r4 ;
 
 
         Assert.assertEquals(6.0, QuizzSystem.calculateSurveyScore(survey, userResponses), 0) ;
@@ -655,14 +659,14 @@ public class QuizzSystemTests
     @Test
     public void should_not_give_survey_points_with_array_of_responses_id()
     {
-        Long[][] userResponses = new Long[3][2] ;
+        ResponseEntity[][] userResponses = new ResponseEntity[3][2] ;
 
-        userResponses[0][0] = new Long(4) ;
-        userResponses[0][1] = new Long(4) ;
-        userResponses[1][0] = new Long(4) ;
-        userResponses[1][1] = new Long(4) ;
-        userResponses[2][0] = new Long(4) ;
-        userResponses[2][1] = new Long(4) ;
+        userResponses[0][0] = r4 ;
+        userResponses[0][1] = r4 ;
+        userResponses[1][0] = r4 ;
+        userResponses[1][1] = r4 ;
+        userResponses[2][0] = r4 ;
+        userResponses[2][1] = r4 ;
 
 
         Assert.assertEquals(0.0, QuizzSystem.calculateSurveyScore(survey, userResponses), 0) ;

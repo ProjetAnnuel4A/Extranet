@@ -83,12 +83,14 @@ public class SurveyServiceImpl implements SurveyService
     {
         SurveyEntity surveyEntity = surveyRepository.findById(surveyId) ;
 
+        /*
         List<QuestionEntity> questions = surveyEntity.getQuestions() ;
 
         for(int i = 0 ; i < questions.size() ; i++)
         {
             questionService.removeQuestion(questions.get(i).getId()) ;
         }
+        */
 
         surveyRepository.delete(surveyId) ;
 

@@ -25,7 +25,7 @@ public class SurveyEntityTests
     private static ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
 
 
-    private static ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+    private static ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
 
 
     private static QuestionEntity q1 ;

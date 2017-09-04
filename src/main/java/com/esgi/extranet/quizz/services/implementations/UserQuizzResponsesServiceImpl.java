@@ -1,7 +1,9 @@
 package com.esgi.extranet.quizz.services.implementations ;
 
+import com.esgi.extranet.quizz.entities.ResponseEntity;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
+import com.esgi.extranet.quizz.repositories.ResponseRepository;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
 import com.esgi.extranet.quizz.repositories.UserQuizzResponsesRepository ;
 import com.esgi.extranet.quizz.services.interfaces.UserQuizzResponsesService ;
@@ -21,18 +23,27 @@ public class UserQuizzResponsesServiceImpl implements UserQuizzResponsesService
     private UserQuizzRepository userQuizzRepository ;
     private UserQuizzResponsesRepository userQuizzResponsesRepository ;
 
+    private ResponseRepository responseRepository ;
+
 
     @Autowired
-    public UserQuizzResponsesServiceImpl(UserQuizzResponsesRepository userQuizzResponsesRepository)
+    public UserQuizzResponsesServiceImpl(UserQuizzResponsesRepository userQuizzResponsesRepository, ResponseRepository responseRepository)
     {
-        this.userQuizzRepository = null ;
         this.userQuizzResponsesRepository = userQuizzResponsesRepository ;
+        this.responseRepository = responseRepository ;
     }
 
     public UserQuizzResponsesServiceImpl(UserQuizzRepository userQuizzRepository, UserQuizzResponsesRepository userQuizzResponsesRepository)
     {
         this.userQuizzRepository = userQuizzRepository ;
         this.userQuizzResponsesRepository = userQuizzResponsesRepository ;
+    }
+
+    public UserQuizzResponsesServiceImpl(UserQuizzRepository userQuizzRepository, UserQuizzResponsesRepository userQuizzResponsesRepository, ResponseRepository responseRepository)
+    {
+        this.userQuizzRepository = userQuizzRepository ;
+        this.userQuizzResponsesRepository = userQuizzResponsesRepository ;
+        this.responseRepository = responseRepository ;
     }
 
 
@@ -87,7 +98,7 @@ public class UserQuizzResponsesServiceImpl implements UserQuizzResponsesService
 
 
     @Override
-    public List<Long> getResponsesFromAnUserQuizzResponses(Long userQuizzResponsesId)
+    public List<ResponseEntity> getResponsesFromAnUserQuizzResponses(Long userQuizzResponsesId)
     {
         UserQuizzResponsesEntity userQuizzResponsesEntity = userQuizzResponsesRepository.findById(userQuizzResponsesId) ;
 
@@ -99,8 +110,9 @@ public class UserQuizzResponsesServiceImpl implements UserQuizzResponsesService
     public boolean addResponseForAnUserQuizzResponses(Long userQuizzResponsesId, Long responseId)
     {
         UserQuizzResponsesEntity userQuizzResponsesEntity = userQuizzResponsesRepository.findById(userQuizzResponsesId) ;
+        ResponseEntity responseEntity = responseRepository.findById(responseId) ;
 
-        userQuizzResponsesEntity.getResponses().add(responseId) ;
+        userQuizzResponsesEntity.getResponses().add(responseEntity) ;
 
         userQuizzResponsesRepository.save(userQuizzResponsesEntity) ;
 
@@ -112,11 +124,11 @@ public class UserQuizzResponsesServiceImpl implements UserQuizzResponsesService
     public boolean removeResponseFromAnUserQuizzResponses(Long userQuizzResponsesId, Long responseId)
     {
         UserQuizzResponsesEntity userQuizzResponsesEntity = userQuizzResponsesRepository.findById(userQuizzResponsesId) ;
-        List<Long> userResponses = userQuizzResponsesEntity.getResponses() ;
+        List<ResponseEntity> userResponses = userQuizzResponsesEntity.getResponses() ;
 
         for(int i = 0 ; i < userResponses.size() ; i++)
         {
-            if(userResponses.get(i).equals(responseId))
+            if(userResponses.get(i).getId().equals(responseId))
             {
                 userResponses.remove(i) ;
                 userQuizzResponsesEntity.setResponses(userResponses) ;

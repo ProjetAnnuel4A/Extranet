@@ -623,19 +623,16 @@
                     }
                 }
 
-                console.log("[réponse] réponse description : " + domResponses.find("input.responseDescription")[indexResponse].value) ;
                 $.post("/responses/addResponse",
                 {
                     description: domResponses.find("input.responseDescription")[indexResponse].value,
                     imageId: domResponses.find("input.responseImage")[indexResponse].value
                 }).done(function(data)
                 {
-                    console.log("[réponse] réponse id : " + data["id"]) ;
                     responses[indexQuestion].push(data["id"]) ;
 
                     if(domResponses.find("input.correctResponse")[indexResponse].checked)
                     {
-                        console.log("[réponse] réponse correcte id : " + data["id"]) ;
                         correctResponses[indexQuestion].push(data["id"]) ;
                     }
                 }).done(function()
@@ -697,7 +694,6 @@
                 }
 
                 var questionReference = "q" + (indexQuestion + 1) ;
-                console.log("[question] référence question : " + questionReference) ;
                 $.post("/questions/addQuestion",
                 {
                     description: domQuestions.find("input.questionDescription")[indexQuestion].value,
@@ -706,8 +702,6 @@
                     imageId: domQuestions.find("input.questionImage")[indexQuestion].value
                 }).done(function(data)
                 {
-                    console.log("[question] question id : " + data["id"]) ;
-
                     saveResponsesForAQuestion(data["id"], indexQuestion, 0) ;
                 }) ;
             }
@@ -716,7 +710,7 @@
             {
                 if(indexQuestion >= questions.length)
                 {
-                    return true ;
+                    return window.location.replace("/teacher/surveys/viewSurveys/view") ;
                 }
 
                 $.post("/surveys/addQuestionForASurvey",
@@ -735,9 +729,6 @@
             {
                 var domSurvey = $("#surveyDetails") ;
 
-                console.log("[questionnaire] date début (avant ajout) :" + domSurvey.find("input.surveyBeginLine")[0].value) ;
-                console.log("[questionnaire] date fin (avant ajout) :" + domSurvey.find("input.surveyDeadLine")[0].value) ;
-
                 $.post("/surveys/addSurvey",
                 {
                     name: domSurvey.find("input.surveyName")[0].value,
@@ -748,10 +739,6 @@
                     imageId: domSurvey.find("input.surveyImage")[0].value
                 }).done(function(data)
                 {
-                    console.log("[questionnaire] date début (après ajout) : " + data["beginLine"]) ;
-                    console.log("[questionnaire] date fin (après ajout) : " + data["deadLine"]) ;
-                    console.log("[questionnaire] questionnaire id : " + data["id"]) ;
-
                     return saveQuestionsForASurvey(data["id"], 0) ;
                 }) ;
             }
@@ -778,9 +765,6 @@
 
                             alert("Le nom de ce questionnaire existe déjà") ;
                         }
-                    }).done(function()
-                    {
-                        //window.location.replace("/teacher/surveys/viewSurveys/view") ;
                     }) ;
                 }
             }

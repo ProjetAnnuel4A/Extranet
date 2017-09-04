@@ -153,7 +153,7 @@ public class SurveyServiceTests
     public void should_get_questions_from_a_survey() throws Exception
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
 
         QuestionEntity question = QuestionEntity.builder()
                 .id(new Long(1))
@@ -184,7 +184,7 @@ public class SurveyServiceTests
     public void should_add_question_for_a_survey() throws Exception
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
 
         QuestionEntity question = QuestionEntity.builder()
                 .id(new Long(1))
@@ -209,7 +209,7 @@ public class SurveyServiceTests
     public void should_remove_question_from_a_survey() throws Exception
     {
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
 
         QuestionEntity question = QuestionEntity.builder()
                 .id(new Long(1))

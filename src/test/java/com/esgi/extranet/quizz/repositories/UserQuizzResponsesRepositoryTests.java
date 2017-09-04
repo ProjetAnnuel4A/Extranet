@@ -1,5 +1,6 @@
 package com.esgi.extranet.quizz.repositories ;
 
+import com.esgi.extranet.quizz.entities.ResponseEntity;
 import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 import org.junit.Assert ;
 import org.junit.Test ;
@@ -35,7 +36,7 @@ public class UserQuizzResponsesRepositoryTests
                 .id(new Long(1))
                 .userQuizzId(new Long(1))
                 .questionId(new Long(1))
-                .responses(new ArrayList<Long>())
+                .responses(new ArrayList<ResponseEntity>())
                 .build() ;
 
         userQuizzResponsesRepository.save(userQuizzResponsesEntity) ;

@@ -42,7 +42,7 @@ public class UserQuizzEntityTests
 
 
         ArrayList<ResponseEntity> responses = new ArrayList<ResponseEntity>() ;
-        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
 
         QuestionEntity question = QuestionEntity.builder()
                 .id(new Long(4))

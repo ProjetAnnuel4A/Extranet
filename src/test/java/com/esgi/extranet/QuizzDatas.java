@@ -65,10 +65,15 @@ public class QuizzDatas
         responses.add(r4) ;
 
 
-        ArrayList<Long> correctResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> correctResponses = new ArrayList<ResponseEntity>() ;
 
-        correctResponses.add(new Long (2)) ;
-        correctResponses.add(new Long (3)) ;
+        correctResponses.add(r2) ;
+        correctResponses.add(r3) ;
+
+        ArrayList<Long> correctResponsesId = new ArrayList<Long>() ;
+
+        correctResponsesId.add(r2.getId()) ;
+        correctResponsesId.add(r3.getId()) ;
 
 
         QuestionEntity q1 = QuestionEntity.builder()

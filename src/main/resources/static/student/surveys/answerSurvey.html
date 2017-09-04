@@ -224,11 +224,11 @@
             $.getJSON("/surveys/getSurvey?surveyId=" + surveyId, function(data)
             {
                 surveyDatas = data ;
-                surveyQuestions = data["questions"] ;
+                surveyQuestions = data["questions"].sort(function (a, b){return a.id - b.id ;}) ;
 
                 $.each(surveyQuestions, function(key, val)
                 {
-                    questionsResponses[key] = val["responses"] ;
+                    questionsResponses[key] = val["responses"].sort(function (a, b){return a.id - b.id ;}) ;
                 }) ;
             }).done(function()
             {
@@ -260,7 +260,7 @@
 
                     if(qval["allOrNone"] == true)
                     {
-                        qDom += "<td class='col'>(tout correct ou rien)</td>" ;
+                        qDom += "<td class='col' style='padding-left:10px'>(tout correct ou rien)</td>" ;
                     }
 
                     qDom += "</tr><br/> <div class='responses' style='margin-left:100px'></div>" ;
@@ -273,7 +273,7 @@
 
                         rDom += "<td class='col'> <div class='responseImage'></div> </td>" ;
                         rDom += "<td class='col'>" + rval["description"] + "</td>" ;
-                        rDom += "<td class='col' style='padding-left:10px'> <input type='checkbox' class='response' value=" + rval["id"] + "/> </td>" ;
+                        rDom += "<td class='col' style='padding-left:10px'> <input type='checkbox' class='response' value='" + rval["id"] + "'/> </td>" ;
 
                         $("#" + qval["id"]).find("div.responses").append(rDom + "</tr>") ;
                     }) ;
@@ -285,55 +285,73 @@
             }) ;
 
 
+            var questionsResponsesChecked = {} ;
+
+            function calculateScore(userQuizzId, surveyId)
+            {
+                $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId, function(data)
+                {
+                    $.post("/updateUserQuizzScore?userQuizzId=" + userQuizzId + "&score=" + data).done(function()
+                    {
+                        window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
+                    }) ;
+                }) ;
+            }
+
+            function saveResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked)
+            {
+                var domQuestions = $("div.question") ;
+
+                if(indexQuestion >= domQuestions.length)
+                {
+                    return calculateScore(userQuizzId, surveyId) ;
+                }
+
+                else if((questionsResponsesChecked[domQuestions[indexQuestion].id].length == 0) || (indexResponseChecked >= questionsResponsesChecked[domQuestions[indexQuestion].id].length))
+                {
+                    indexQuestion = indexQuestion + 1 ;
+                    indexResponseChecked = 0 ;
+
+                    return saveResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked) ;
+                }
+
+                $.post("/usersQuizzResponses/addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + domQuestions[indexQuestion].id, function(data)
+                {
+                    $.post("/usersQuizzResponses/addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + data["id"] + "&responseId=" + questionsResponsesChecked[domQuestions[indexQuestion].id][indexResponseChecked]) ;
+                }).done(function()
+                {
+                    indexResponseChecked = indexResponseChecked + 1 ;
+                    saveResponsesChecked(userQuizzId, indexQuestion, indexResponseChecked) ;
+                }) ;
+            }
+
             function confirm(userId, surveyId)
             {
                 var userQuizzId = 0 ;
 
-                $.post("/usersQuizz/addUserQuizz?userId=" + userId + "&surveyId=" + surveyId + "&note=null", function(data)
+                $.post("/usersQuizz/addUserQuizz?userId=" + userId + "&surveyId=" + surveyId + "&score=0", function(data)
                 {
                     userQuizzId = data["id"] ;
                 }).done(function()
                 {
-
-                    var questionsResponsesChecked = {} ;
-
-                    $(".question").each(function(data)
+                    $("div.question").each(function(qkey, qval)
                     {
-                        $.each(data, function(qkey, qval)
+                        var responses = [] ;
+                        var domResponses = $("div.question[id='" + qval["id"] + "']").children("div.responses").children("tr").children("td").children("input.response") ;
+
+                        domResponses.each(function(rkey, rval)
                         {
-                            var responses = [] ;
-
-                            $(".response:checked=true<.question:" + qval["id"]).each(function(data)
+                            if(rval["checked"])
                             {
-                                $.each(data, function(rkey, rval)
-                                {
-                                    questionsResponsesChecked[qval["id"]] = responses.push(rval["value"]);
-                                }) ;
-                            }) ;
+                                responses.push(rval["value"]) ;
+                            }
                         }) ;
-                    }) ;
 
-                }).done(function()
-                {
-                    $.each(questionsResponsesChecked, function(qkey, qval)
-                    {
-                        $.post("/usersQuizzResponses/addUserQuizzResponses?userQuizzId=" + userQuizzId + "&questionId=" + qkey, function(data)
-                        {
-                            $.each(qval, function(rkey, rval)
-                            {
-                                $.post("/usersQuizzResponses/addResponseForAnUserQuizzResponses?userQuizzResponsesId=" + data["id"] + "&questionId=" + qkey + "&responseId=" + rval["value"]) ;
-                            }) ;
-                        }) ;
+                        questionsResponsesChecked[qval["id"]] = responses ;
                     }) ;
                 }).done(function()
                 {
-                    $.post("/quizzSystem/calculateSurveyScoreWithUserQuizzIdAndSurveyId?userQuizzId=" + userQuizzId + "&surveyId=" + surveyId, function(data)
-                    {
-                        $.post("/updateUserQuizzScore?userQuizzId=" + userQuizzId + "&score=" + data) ;
-                    }) ;
-                }).done(function()
-                {
-                    window.location.replace("/student/surveys/seeResults/view?userId=" + userId) ;
+                    saveResponsesChecked(userQuizzId, 0, 0) ;
                 }) ;
             }
 

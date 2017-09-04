@@ -1,5 +1,6 @@
 package com.esgi.extranet.quizz.services ;
 
+import com.esgi.extranet.quizz.entities.ResponseEntity;
 import com.esgi.extranet.quizz.entities.UserQuizzEntity ;
 import com.esgi.extranet.quizz.entities.UserQuizzResponsesEntity ;
 import com.esgi.extranet.quizz.repositories.UserQuizzRepository ;
@@ -45,7 +46,7 @@ public class UserQuizzServiceTests
     @BeforeAll
     public static void initialize_datas()
     {
-        userQuizzService = new UserQuizzServiceImpl(userQuizzRepository) ;
+        userQuizzService = new UserQuizzServiceImpl(userQuizzRepository, userQuizzResponsesRepository) ;
 
         userQuizz = UserQuizzEntity.builder()
                 .id(new Long(1))
@@ -57,9 +58,9 @@ public class UserQuizzServiceTests
         userQuizzRepository.save(userQuizz) ;
 
 
-        userQuizzResponsesService = new UserQuizzResponsesServiceImpl(userQuizzResponsesRepository) ;
+        userQuizzResponsesService = new UserQuizzResponsesServiceImpl(userQuizzRepository, userQuizzResponsesRepository) ;
 
-        ArrayList<Long> userResponses = new ArrayList<Long>() ;
+        ArrayList<ResponseEntity> userResponses = new ArrayList<ResponseEntity>() ;
 
         userQuizzResponses = UserQuizzResponsesEntity.builder()
                 .id(new Long(1))
@@ -215,7 +216,7 @@ public class UserQuizzServiceTests
 
         boolean result = userQuizzService.addResponseForAnUserQuizz(userQuizz.getId(), new Long(1), response) ;
 
-        List<Long> responses = userQuizzService.getResponsesFromAnUserQuizz(userQuizz.getId(), new Long(1)) ;
+        List<ResponseEntity> responses = userQuizzService.getResponsesFromAnUserQuizz(userQuizz.getId(), new Long(1)) ;
 
 
         Assert.assertNotNull(userQuizz) ;
